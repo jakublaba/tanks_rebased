@@ -19,12 +19,9 @@ public final class Controller {
     //private List<Button> menuButtons;
     @FXML
     private javafx.scene.control.Button startBtn;
-
-
     public static Pane layerPane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
-
     private int timeGame = GameSettings.GameTime;
 
 
@@ -45,6 +42,35 @@ public final class Controller {
             primaryStage.setResizable(false);
             primaryStage.show();
             setGameBoard();
+
+            gameLoop = new AnimationTimer() {
+                long lastTime = 0;
+                @Override
+                public void handle(long currentTime) {
+                    if(currentTime - lastTime >= 1000000000) {
+                        timerLabel.setVisible(true);
+                        if(timeGame == GameSettings.GameTime)
+                            timerLabel.setVisible(false);
+                        if (timeGame == 0)
+                            gameLoop.stop();
+                        else if(timeGame >= 60 && timeGame < 600 && timeGame%60 >= 10)
+                            timerLabel.setText("0" + (timeGame-timeGame%60)/60 + ":" + timeGame%60);
+                        else if(timeGame >= 60 && timeGame < 600 && timeGame%60 < 10)
+                            timerLabel.setText("0" + (timeGame-timeGame%60)/60 + ":0" + timeGame%60);
+                        else if(timeGame > 0 && timeGame < 60 && timeGame%60 >= 10)
+                            timerLabel.setText("00" + ":" + (timeGame%60));
+                        else if(timeGame > 0 && timeGame < 60)
+                            timerLabel.setText("00" + ":0" + (timeGame%60));
+                        else
+                            timerLabel.setText((timeGame-timeGame%60)/60 + ":" + timeGame%60);
+
+                        timerLabel.setTranslateX(GameSettings.WINDOW_WIDTH/2 - timerLabel.getWidth()/2);
+                        lastTime = currentTime;
+                        timeGame--;
+                    }
+                }
+            };
+            gameLoop.start();
     }
 
     private void setGameBoard() {
@@ -58,11 +84,9 @@ public final class Controller {
         leftLine.setStartY(0);
         leftLine.setEndX(GameSettings.WINDOW_WIDTH-120);
         leftLine.setEndY(GameSettings.WINDOW_HEIGHT);
-        timerLabel = new Label((GameSettings.GameTime - GameSettings.GameTime%60)/60 + ":" + GameSettings.GameTime%60);
-        timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.1); -fx-font-weight: bold");
-        timerLabel.setPrefWidth(300);
-        timerLabel.setTranslateX(GameSettings.WINDOW_WIDTH/2 - 150);
-        timerLabel.setTranslateY(GameSettings.WINDOW_HEIGHT/4);
+        timerLabel = new Label("");
+        timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.03); -fx-font-weight: bold;");
+        timerLabel.setTranslateY(GameSettings.WINDOW_HEIGHT/3);
         layerPane.getChildren().add(rightLine);
         layerPane.getChildren().add(leftLine);
         layerPane.getChildren().add(timerLabel);

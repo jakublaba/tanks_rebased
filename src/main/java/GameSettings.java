@@ -25,5 +25,5 @@ public interface GameSettings {
     String TANK_BARREL_IMG = "graphics/tankhead.png";
 
     //rozgrywka
-    int GameTime = 200;
+    int GameTime = 66;
 }
