@@ -18,7 +18,10 @@ public final class GameSettings {
     public static double WidthOfTankBorder = 120;
 
     //własności komórki
-    public static Color [] CELL_COLOR_SEQUENCE = {Color.OLIVEDRAB, Color.GOLD, Color.CRIMSON};
+    public static double CELL_SIZE = 10;
+    public static double CELL_VELOCITY = 5;
+    public static int CELL_HEALTH = 3;
+    public static Color [] CELL_COLOR_SEQUENCE = {Color.GREEN, Color.YELLOW, Color.RED};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
     public static int CellHealth = 3;
