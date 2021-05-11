@@ -22,9 +22,7 @@ public final class Controller {
     public static Pane layerPane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
-    private int timeGame = GameSettings.GameTime;
-
-
+    private int timeGame;
 
     @FXML
     private void startButtonPressed() throws java.io.IOException {
@@ -42,7 +40,10 @@ public final class Controller {
             primaryStage.setResizable(false);
             primaryStage.show();
             setGameBoard();
+            GameSettings.loadConfigFile();
+            timeGame = (int)(GameSettings.GameTime);
 
+            GameBoard gameBoard = new GameBoard();
             gameLoop = new AnimationTimer() {
                 long lastTime = 0;
                 @Override
@@ -68,6 +69,7 @@ public final class Controller {
                         lastTime = currentTime;
                         timeGame--;
                     }
+
                 }
             };
             gameLoop.start();
@@ -105,5 +107,5 @@ public final class Controller {
     }
 
     private void pauseButtonPressed() {}
-    private void loadConfigFile() {}
+
 }

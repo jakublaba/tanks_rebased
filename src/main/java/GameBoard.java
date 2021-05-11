@@ -14,6 +14,7 @@ public class GameBoard {
         //do inicjalizowania kolonii trzeba będzie zaimplementować jakiś algorytm wykrywający sąsiadujące komórki
         //colony = new Colony();
     }
+    public void updateGame() {}
     public void cellCollision () {}
     public void bombCollision () {}
     public void removeCell () {}

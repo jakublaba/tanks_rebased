@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <Text fill="WHITE" layoutX="184.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TANKS" textAlignment="CENTER" wrappingWidth="432.240234375">
+         <font>
+            <Font name="Bauhaus 93" size="120.0" />
+         </font></Text>
+      <Line endX="120.0" endY="800.0" startX="120.0" />
+      <Line endX="680.0" endY="800.0" startX="680.0" />
+   </children>
+</AnchorPane>
