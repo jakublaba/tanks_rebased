@@ -9,10 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public final class GameClient extends Application {
-    private KeyCode getKey(KeyEvent keyPressed) {
-        return keyPressed.getCode();
-    }
-
     public void start(Stage primaryStage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
