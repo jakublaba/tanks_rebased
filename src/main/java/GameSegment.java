@@ -1,20 +1,35 @@
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public abstract class GameSegment {
-    private double x, y, currentSize, currentVelocity;
+    protected double x, y, currentSize, currentVelocity;
     private Color currentColor;
+    protected Rectangle segmentShape;
 
-    public GameSegment (double x, double y, double initialSize, double initialVelocity, Color initialColor) {
+    public GameSegment (double x, double y, double initialSize, double initialVelocity) {
         this.x = x;
         this.y = y;
         currentSize = initialSize;
         currentVelocity = initialVelocity;
-        currentColor = initialColor;
+        //Zostawiłem to w tym konstruktorze, bo to chyba bedzie współna część dla Cell i Bullet
+        segmentShape = new Rectangle();
+        segmentShape.setWidth(initialSize);
+        segmentShape.setHeight(initialSize);
+        segmentShape.setX(x - initialSize/2);
+        segmentShape.setY(y - initialSize/2);
     }
-    public double getX () { return x; }
-    public double getY () { return y; }
+    protected double getX () { return x; }
+    protected double getY () { return y; }
     public double getCurrentSize () { return currentSize; }
-    public void draw () {}
+    public void draw (Pane pane) {
+        segmentShape.setY(y);
+        pane.getChildren().remove(segmentShape);
+        if(y < GameSettings.WINDOW_HEIGHT)
+            pane.getChildren().add(segmentShape);
+    }
     protected void move () {}
-    protected void resize () {}
+    protected void resize () {
+
+    }
 }

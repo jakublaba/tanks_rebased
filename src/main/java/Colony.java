@@ -11,7 +11,7 @@ public class Colony {
     }
     public int getInitialCellHpSum () { return initialCellHpSum; }
     public boolean isColonyAlive () { return cells.size() != 0; }
-    public void draw () { cells.forEach(GameSegment::draw); }
+    //public void draw () { cells.forEach(GameSegment::draw); }
     public void move () { cells.forEach(GameSegment::move); }
     //w poniższej metodzie trzeba będzie napisać jakiś algorytm, żeby odpowiednio "zsunąć" ze sobą komórki, aby nie rozbić kolonii
     public void resize () { cells.forEach(GameSegment::resize); }
