@@ -155,23 +155,30 @@ public final class Controller {
     private void setGameBoard() {
         Line rightLine = new Line();
         Line leftLine = new Line();
-        rightLine.setStartX(120);
+        Line horizontalLine = new Line();
+        rightLine.setStartX(GameSettings.WidthOfTankBorder);
         rightLine.setStartY(0);
-        rightLine.setEndX(120);
-        rightLine.setEndY(GameSettings.WINDOW_HEIGHT);
+        rightLine.setEndX(GameSettings.WidthOfTankBorder);
+        rightLine.setEndY(GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
         leftLine.setStartX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
         leftLine.setStartY(0);
         leftLine.setEndX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
-        leftLine.setEndY(GameSettings.WINDOW_HEIGHT);
+        leftLine.setEndY(GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
+        horizontalLine.setStartX(GameSettings.WidthOfTankBorder);
+        horizontalLine.setStartY(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
+        horizontalLine.setEndX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
+        horizontalLine.setEndY(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
         timerLabel = new Label("");
         timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.03); -fx-font-weight: bold;");
         timerLabel.setTranslateY(GameSettings.WINDOW_HEIGHT/3);
         layerPane.getChildren().add(rightLine);
         layerPane.getChildren().add(leftLine);
+        layerPane.getChildren().add(horizontalLine);
         layerPane.getChildren().add(timerLabel);
         leftTank = new Tank('L');
         rightTank = new Tank('R');
         testTank = new Tank('T');
+        Bomb.draw(layerPane);
     }
 
 

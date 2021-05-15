@@ -33,7 +33,7 @@ public class GameBoard {
                     x.move(timeBetween);
                     x.draw(pane);
             }
-            cells.removeIf(x -> x.getY() > GameSettings.WINDOW_HEIGHT);
+            cells.removeIf(x -> x.getY() > GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
             cells.removeIf(x -> x.getCurrentSize() < 0);
 
             lastTimeOfMoveCell = time;

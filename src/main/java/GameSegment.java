@@ -25,7 +25,7 @@ public abstract class GameSegment {
     public void draw (Pane pane) {
         segmentShape.setY(y);
         pane.getChildren().remove(segmentShape);
-        if(y < GameSettings.WINDOW_HEIGHT)
+        if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder)
             pane.getChildren().add(segmentShape);
     }
     protected void move () {}

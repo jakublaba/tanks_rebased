@@ -29,6 +29,7 @@ public class Cell extends GameSegment {
         super.draw(pane);
         label.setTranslateY(y);
         pane.getChildren().remove(label);
+        if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder)
         pane.getChildren().add(label);
     }
     public void move(double time){
