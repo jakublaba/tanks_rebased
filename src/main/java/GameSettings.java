@@ -6,19 +6,19 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public final class GameSettings {
+    //własności okna
     public static double WINDOW_WIDTH = 800;
     public static double WINDOW_HEIGHT = 800;
     Color TANKS_FIELD_COLOR_ONE = Color.web("#3798D8"); //Zdefiniowane na później
     Color TANKS_FIELD_COLOR_TWO = Color.web("E4E8EB");
     Color WAR_FIELD_COLOR_ONE = Color.web("0D9068");
     Color WAR_FIELD_COLOR_TWO = Color.web("0D9068");
+    public static double WidthOfTankBorder = 120;
 
     //własności komórki
-    public static double CELL_SIZE = 10;
-    public static double CELL_VELOCITY = 5;
-    public static int CELL_HEALTH = 3;
-    public static Color [] CELL_COLOR_SEQUENCE = {Color.GREEN, Color.YELLOW, Color.RED};
+    public static Color [] CELL_COLOR_SEQUENCE = {Color.OLIVEDRAB, Color.GOLD, Color.CRIMSON};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
     public static int CellHealth = 3;
@@ -39,10 +39,11 @@ public final class GameSettings {
     //własności czołgu
     public static double TANK_VELOCITY = 5;
     public static String TANK_BODY_IMG = "graphics/tankbody.png";
-    public static String TANK_BARREL_IMG_L = "graphics/tankhead_left.png";
-    public static String TANK_BARREL_IMG_R = "graphics/tankhead_right.png";
+    public static String TANK_BARREL_IMG = "graphics/tankhead.png";
     public static double BARREL_ROTATION = 1;
+    public static double BARREL_LENGTH = 90;
     public static double BarrelAngleLimit = 50;
+
     //dałeś bindingi na odwrót
     public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
@@ -55,18 +56,20 @@ public final class GameSettings {
     public static final KeyCode LeftPlayerBarrelDown = KeyCode.A;
     public static final KeyCode LeftPlayerFire = KeyCode.SHIFT;
 
+
     //rozgrywka
     public static double GameTime = 200;
     public static double Interval = 3;
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
-    public static String configFileName;
+    public static String ConfigFileName;
+    public static double TimeBetweenCellGenerating = 1;
 
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
         try{
             readingFile = new Scanner(new File("src/main/resources/config/configFile.txt"));
-            configFileName = readingFile.nextLine();
+            ConfigFileName = readingFile.nextLine();
             while(readingFile.hasNextLine()){
                 String tmpLine = readingFile.nextLine();
                 if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)\\]$")) {
