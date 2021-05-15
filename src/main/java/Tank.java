@@ -16,7 +16,6 @@ public class Tank {
     private List<Bullet> bullets;
     private Image bodyImg, barrelImg;
     private ImageView bodyView, barrelView;
-    Rotate r = new Rotate();
 
     public Tank (char side) {
         if (side != 'L' && side != 'R' && side != 'T') {
@@ -25,7 +24,6 @@ public class Tank {
         }
         this.side = side;
         position = GameSettings.WINDOW_HEIGHT / 2;
-        barrelLength = GameSettings.BARREL_LENGTH;
         barrelAngle = side == 'R' ? 180 : 0;
         bullets = new ArrayList<Bullet>();
         bodyImg = new Image(getClass().getResource(GameSettings.TANK_BODY_IMG).toExternalForm());
@@ -33,6 +31,7 @@ public class Tank {
         String imgChoice = GameSettings.TANK_BARREL_IMG;
         barrelImg = new Image(getClass().getResource(imgChoice).toExternalForm());
         barrelView = new ImageView(barrelImg);
+        barrelLength = barrelImg.getWidth()/2;
         if(side == 'R') {
             barrelView.setRotate(180);
         }
@@ -66,21 +65,25 @@ public class Tank {
         }
     }
     public void rotateBarrel (KeyCode key) {
-        if ((key == KeyCode.A && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == KeyCode.RIGHT && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit )) {
-            barrelAngle += GameSettings.BARREL_ROTATION;
-            barrelView.setRotate(barrelView.getRotate() + GameSettings.BARREL_ROTATION);
-        } else if ((key == KeyCode.D && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == KeyCode.LEFT && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit) ) {
+        if ((key == KeyCode.A && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == KeyCode.RIGHT && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
             barrelAngle -= GameSettings.BARREL_ROTATION;
+            barrelView.setRotate(barrelView.getRotate() + GameSettings.BARREL_ROTATION);
+        } else if ((key == KeyCode.D && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == KeyCode.LEFT && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit) ) {
+            barrelAngle += GameSettings.BARREL_ROTATION;
             barrelView.setRotate(barrelView.getRotate() - GameSettings.BARREL_ROTATION);
         }
     }
     public void shoot () {
-        double rcos = Math.cos(barrelAngle);
-        double rsin = Math.sin(barrelAngle);
+        double rsin = side == 'L' ? Math.sin(barrelAngle) : Math.sin(barrelAngle - 180);
+        double rcos = side == 'L' ? Math.cos(barrelAngle) : Math.cos(barrelAngle - 180);
         double x0 = side == 'L' ? bodyImg.getWidth()/2 : GameSettings.WINDOW_WIDTH - bodyImg.getWidth()/2;
         double y0 = position;
-        Bullet bulletFired = new Bullet(barrelLength * rcos + x0, barrelLength * rsin + y0, rcos, rsin);
+        double x1 = rcos + x0;
+        double y1 = barrelAngle >= 0 ? rsin + y0 : y0 - rsin;
+        Bullet bulletFired = side == 'L' ? new Bullet(x1, y1, rcos, rsin) : new Bullet(x1, y1, -rcos, -rsin);
         bullets.add(bulletFired);
     }
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
+    public double getBarrelAngle () { return barrelAngle; }
+    public ImageView getBarrelView () { return barrelView; }
 }
