@@ -4,7 +4,7 @@ Spokojny wariant gry
 [R1] BulletRadius [5]
 [V2] CellVelocity [100]
 [H1] CellSize [50]
-[P1] CellHealth [6]
+[P1] CellHealth [10]
 [T2] CellRegenerationInterval [10]
 [T1] Interval [1]
 [DV1] BulletVelocityIncrease [5]
