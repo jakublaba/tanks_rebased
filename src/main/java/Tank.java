@@ -60,7 +60,6 @@ public class Tank {
         }
     }
     public void rotateBarrel (KeyCode key) {
-        System.out.println("To jest kat: " + barrelAngle);
         if ((key == KeyCode.A && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == KeyCode.RIGHT && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit )) {
             barrelAngle += GameSettings.BARREL_ROTATION;
             barrelView.setRotate(barrelView.getRotate()+GameSettings.BARREL_ROTATION);

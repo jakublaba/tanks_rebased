@@ -17,9 +17,18 @@ public final class Controller {
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
     private int timeGame;
-    private GameBoard gameBoard = new GameBoard();
-    private KeyCode keyCode;
+    private final GameBoard gameBoard = new GameBoard();
     private Tank leftTank, rightTank, testTank;
+
+    private boolean keyDIsPressed;
+    private boolean keyAIsPressed;
+    private boolean keyWIsPressed;
+    private boolean keySIsPressed;
+    private boolean keyUpIsPressed;
+    private boolean keyDownIsPressed;
+    private boolean keyRightIsPressed;
+    private boolean keyLeftIsPressed;
+
     private KeyCode getKey(KeyEvent keyPressed) {
         return keyPressed.getCode();
     }
@@ -34,8 +43,6 @@ public final class Controller {
         layerPane.getChildren().add(gameField);
         root.setCenter(layerPane);
         Scene scene = new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT);
-        scene.setOnKeyPressed(keyEvent -> keyCode = getKey(keyEvent));
-        scene.setOnKeyReleased(keyEvent -> keyCode = null);
         primaryStage.setTitle("Tanks");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -43,6 +50,44 @@ public final class Controller {
         setGameBoard();
         GameSettings.loadConfigFile();
         timeGame = (int)(GameSettings.GameTime);
+        scene.setOnKeyPressed(key->{
+            KeyCode keyCode = key.getCode();
+            if(keyCode.equals(KeyCode.W))
+                keyWIsPressed = true;
+            if(keyCode.equals(KeyCode.S))
+                keySIsPressed = true;
+            if(keyCode.equals(KeyCode.A))
+                keyAIsPressed = true;
+            if(keyCode.equals(KeyCode.D))
+                keyDIsPressed = true;
+            if(keyCode.equals(KeyCode.UP))
+                keyUpIsPressed = true;
+            if(keyCode.equals(KeyCode.DOWN))
+                keyDownIsPressed = true;
+            if(keyCode.equals(KeyCode.LEFT))
+                keyLeftIsPressed = true;
+            if(keyCode.equals(KeyCode.RIGHT))
+                keyRightIsPressed = true;
+        });
+        scene.setOnKeyReleased(key->{
+            KeyCode keyCode = key.getCode();
+            if(keyCode.equals(KeyCode.W))
+                keyWIsPressed = false;
+            if(keyCode.equals(KeyCode.S))
+                keySIsPressed = false;
+            if(keyCode.equals(KeyCode.A))
+                keyAIsPressed = false;
+            if(keyCode.equals(KeyCode.D))
+                keyDIsPressed = false;
+            if(keyCode.equals(KeyCode.UP))
+                keyUpIsPressed = false;
+            if(keyCode.equals(KeyCode.DOWN))
+                keyDownIsPressed = false;
+            if(keyCode.equals(KeyCode.LEFT))
+                keyLeftIsPressed = false;
+            if(keyCode.equals(KeyCode.RIGHT))
+                keyRightIsPressed = false;
+        });
 
         gameLoop = new AnimationTimer() {
             long lastTime = 0;
@@ -71,22 +116,33 @@ public final class Controller {
                     lastTime = currentTime;
                     timeGame--;
                 }
-
                 //TANKS
                 leftTank.draw(layerPane);
-                if (keyCode == KeyCode.W || keyCode == KeyCode.S) {
-                    leftTank.move(keyCode);
+                if (keyWIsPressed && !keySIsPressed) {
+                    leftTank.move(KeyCode.W);
                 }
-                if (keyCode == KeyCode.A || keyCode == KeyCode.D) {
-                    leftTank.rotateBarrel(keyCode);
+                if (keySIsPressed && !keyWIsPressed) {
+                    leftTank.move(KeyCode.S);
+                }
+                if (keyAIsPressed && !keyDIsPressed) {
+                    leftTank.rotateBarrel(KeyCode.A);
+                }
+                if (keyDIsPressed && !keyAIsPressed) {
+                    leftTank.rotateBarrel(KeyCode.D);
                 }
 
                 rightTank.draw(layerPane);
-                if (keyCode == KeyCode.UP || keyCode == KeyCode.DOWN) {
-                    rightTank.move(keyCode);
+                if (keyUpIsPressed && !keyDownIsPressed) {
+                    rightTank.move(KeyCode.UP);
                 }
-                if (keyCode == KeyCode.LEFT || keyCode == KeyCode.RIGHT) {
-                    rightTank.rotateBarrel(keyCode);
+                if (keyDownIsPressed && !keyUpIsPressed) {
+                    rightTank.move(KeyCode.DOWN);
+                }
+                if (keyLeftIsPressed && !keyRightIsPressed) {
+                    rightTank.rotateBarrel(KeyCode.LEFT);
+                }
+                if (keyRightIsPressed && !keyLeftIsPressed) {
+                    rightTank.rotateBarrel(KeyCode.RIGHT);
                 }
 
                 //GAME BOARD
