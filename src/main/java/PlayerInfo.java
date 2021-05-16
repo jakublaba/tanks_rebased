@@ -7,5 +7,6 @@ public class PlayerInfo {
         score = 0;
     }
     public int getScore () { return score; }
+    public Tank getTank () { return tank; }
     public void increaseScore (int points) { score += points; }
 }

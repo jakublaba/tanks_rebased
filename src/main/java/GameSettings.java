@@ -41,7 +41,6 @@ public final class GameSettings {
     public static String TANK_BODY_IMG = "graphics/tankbody.png";
     public static String TANK_BARREL_IMG = "graphics/tankhead.png";
     public static double BARREL_ROTATION = 1;
-    public static double BARREL_LENGTH = 90;
     public static double BarrelAngleLimit = 50;
 
     //dałeś bindingi na odwrót
@@ -67,7 +66,7 @@ public final class GameSettings {
 
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
-        try{
+        try {
             readingFile = new Scanner(new File("src/main/resources/config/configFile.txt"));
             ConfigFileName = readingFile.nextLine();
             while(readingFile.hasNextLine()){

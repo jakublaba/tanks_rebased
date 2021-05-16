@@ -133,9 +133,11 @@ public final class Controller {
                 }
                 if (keyAIsPressed && !keyDIsPressed) {
                     leftTank.rotateBarrel(KeyCode.A);
+                    System.out.println("Barrel Angle (L): " + leftTank.getBarrelAngle());
                 }
                 if (keyDIsPressed && !keyAIsPressed) {
                     leftTank.rotateBarrel(KeyCode.D);
+                    System.out.println("Barrel Angle (L): " + leftTank.getBarrelAngle());
                 }
                 if (keySpaceIsPressed) {
                     leftTank.shoot();
@@ -150,9 +152,11 @@ public final class Controller {
                 }
                 if (keyLeftIsPressed && !keyRightIsPressed) {
                     rightTank.rotateBarrel(KeyCode.LEFT);
+                    System.out.println("Barrel Angle (L): " + rightTank.getBarrelAngle());
                 }
                 if (keyRightIsPressed && !keyLeftIsPressed) {
                     rightTank.rotateBarrel(KeyCode.RIGHT);
+                    System.out.println("Barrel Angle (L): " + rightTank.getBarrelAngle());
                 }
                 if (keyShiftIsPressed) {
                     rightTank.shoot();
