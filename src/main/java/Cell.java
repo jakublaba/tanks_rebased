@@ -6,7 +6,6 @@ import javafx.scene.shape.Rectangle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class Cell extends GameSegment {
-    public boolean alive;
     private final boolean memberOfColony;
     private final int initialHp;
     private int currentHp;
@@ -22,7 +21,6 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
         this.memberOfColony = memberOfColony;
-        alive = true;
         initialHp = GameSettings.CellHealth;
         currentHp = GameSettings.CellHealth;
         label = new Label(String.valueOf(initialHp));
@@ -63,7 +61,6 @@ public final class Cell extends GameSegment {
         currentHp--;
         label.setText(String.valueOf(currentHp));
     }
-    public void die () { alive = false; }
     public void resize(){
         currentSize -= GameSettings.CellSizeDecrease;
         segmentShape.setWidth(currentSize);

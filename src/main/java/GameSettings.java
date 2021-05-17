@@ -27,14 +27,14 @@ public final class GameSettings {
     public static double CellSizeDecrease = 69;
 
     //własności pocisku
-    public static double BulletSize = 8;
-    public static double BulletVelocity = 5;
+    public static double BulletSize = 15;
+    public static double BulletVelocity = 1;
     public static Color BulletColor = Color.BLACK;
     public static double BulletFrequencyLimit = 10;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 5;
     public static double BulletVelocityIncrease = 15;
-    public static double BulletRadiusDecrease = 69;
+    public static double BulletRadiusDecrease = 2;
 
     //własności czołgu
     public static double TankVelocity = 5;

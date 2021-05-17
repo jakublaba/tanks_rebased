@@ -44,26 +44,24 @@ public class GameBoard {
             lastTimeOfDecrease = time;
         }
         var leftTank = leftPlayer.getTank();
-        var rightTank = rightPlayer.getTank();
         for (Bullet bullet : leftTank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
                 } else {
-                    cell.die();
                     cell.erase(pane);
                     removeCell(cell);
                 }
             }
         }
+        var rightTank = rightPlayer.getTank();
         for (Bullet bullet : rightTank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
                 } else {
-                    cell.die();
                     cell.erase(pane);
                     removeCell(cell);
                 }
