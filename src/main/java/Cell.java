@@ -38,7 +38,7 @@ public final class Cell extends GameSegment {
         }
         label.setTranslateY(y);
         pane.getChildren().remove(label);
-        if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder)
+        if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder )
         pane.getChildren().add(label);
     }
     public void erase (Pane pane) {

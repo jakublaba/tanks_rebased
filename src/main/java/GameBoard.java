@@ -37,9 +37,23 @@ public class GameBoard {
             lastTimeOfMoveCell = time;
         }
 
-        if(time - lastTimeOfDecrease >= 1_000_000_000 * GameSettings.Interval){
+        if (time - lastTimeOfDecrease >= 1_000_000_000 * GameSettings.Interval) {
             for (Cell cell : cells) {
                 cell.resize();
+            }
+            for (Bullet bullet : leftPlayer.getTank().getBullets()) {
+                bullet.resize();
+                if (bullet.getCurrentSize() <= 0) {
+                    bullet.erase(pane);
+                    leftPlayer.getTank().removeBullet(bullet);
+                }
+            }
+            for (Bullet bullet : rightPlayer.getTank().getBullets()) {
+                bullet.resize();
+                if (bullet.getCurrentSize() <= 0) {
+                    bullet.erase(pane);
+                    rightPlayer.getTank().removeBullet(bullet);
+                }
             }
             lastTimeOfDecrease = time;
         }

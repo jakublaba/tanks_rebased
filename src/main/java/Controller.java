@@ -1,23 +1,41 @@
 import javafx.animation.AnimationTimer;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 
 public final class Controller {
     @FXML
-    private javafx.scene.control.Button startBtn;
+    private Button startBtn;
+    @FXML
+    private Button backBtn;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private AnchorPane rootPane;
     public static Pane layerPane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
     private int timeGame;
     private final GameBoard gameBoard = new GameBoard();
 
+    //movement
     private boolean keyDIsPressed;
     private boolean keyAIsPressed;
     private boolean keyWIsPressed;
@@ -26,6 +44,10 @@ public final class Controller {
     private boolean keyDownIsPressed;
     private boolean keyRightIsPressed;
     private boolean keyLeftIsPressed;
+    //shooting
+    //V E R B O S E
+    private long lastTimeOfLeftPlayerShot, lastTimeOfRightPlayerShot;
+    private boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
     private boolean keySpaceIsPressed;
     private boolean keyShiftIsPressed;
 
@@ -45,7 +67,6 @@ public final class Controller {
         primaryStage.setResizable(false);
         primaryStage.show();
         setGameBoard();
-        GameSettings.loadConfigFile();
         timeGame = (int)(GameSettings.GameTime);
         scene.setOnKeyPressed(key->{
             KeyCode keyCode = key.getCode();
@@ -121,6 +142,14 @@ public final class Controller {
                     lastTime = currentTime;
                     timeGame--;
                 }
+                if (currentTime - lastTimeOfLeftPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+                    leftPlayerAllowedToShoot = true;
+                    lastTimeOfLeftPlayerShot = currentTime;
+                }
+                if (currentTime - lastTimeOfRightPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+                    rightPlayerAllowedToShoot = true;
+                    lastTimeOfRightPlayerShot = currentTime;
+                }
                 //TANKS
                 gameBoard.leftPlayer.getTank().draw(layerPane);
                 if (keyWIsPressed && !keySIsPressed) {
@@ -137,8 +166,9 @@ public final class Controller {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
                     System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
-                if (keySpaceIsPressed) {
+                if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
                     gameBoard.leftPlayer.getTank().shoot();
+                    leftPlayerAllowedToShoot = false;
                 }
 
                 gameBoard.rightPlayer.getTank().draw(layerPane);
@@ -156,8 +186,9 @@ public final class Controller {
                     gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.RIGHT);
                     System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
-                if (keyShiftIsPressed) {
+                if (keyShiftIsPressed && rightPlayerAllowedToShoot) {
                     gameBoard.rightPlayer.getTank().shoot();
+                    rightPlayerAllowedToShoot = false;
                 }
 
                 //GAME BOARD
@@ -195,15 +226,84 @@ public final class Controller {
 
 
     @FXML
-    private void settingsButtonPressed() {
-        System.out.println("Tu będą ustawienia");
+    private void settingsButtonPressed() throws IOException {
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("settings.fxml")));
+            Stage stage = new Stage();
+            stage.setTitle("SnakeFX - Settings");
+            stage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
+            stage.setResizable(false);
+            stage.show();
+            Stage stage1 = (Stage) startBtn.getScene().getWindow();
+            stage1.hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    @FXML
+    private void sectionConfigurationPressed(){
+        Tab tabGameMark = tabPane.getSelectionModel().getSelectedItem();
+        if(tabGameMark.getText().equals("Manual Configuration")){
+            List<TextField> listOfTextFields = new ArrayList<>();
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setTranslateX(0);
+            scrollPane.setTranslateY(0);
+            scrollPane.setPrefWidth(800);
+            GridPane gridPane = new GridPane();
+            gridPane.setPrefWidth(800);
+            gridPane.setStyle("-fx-background-color: rgba(230, 230, 230, 0.2)");
+            for(int i = 0; i < GameSettings.configuration.length/2; i++){
+                Label tmpLabel = new Label(GameSettings.configuration[i * 2]);
+                tmpLabel.setStyle("-fx-font-size: 20px");
+                Button tmpBtn = new Button("Save " + GameSettings.configuration[i*2 + 1]);
+                TextField tmpTextField = new TextField();
+                tmpTextField.setPrefWidth(50);
+                gridPane.add(tmpLabel,0, i);
+                gridPane.add(tmpTextField,1, i);
+                listOfTextFields.add(tmpTextField);
+                gridPane.add(tmpBtn,2, i);
+                gridPane.setVgap(40);
+                tmpBtn.setOnAction(event-> {
+                    for(TextField tx: listOfTextFields){
+                        if(tx.getLayoutY() == tmpBtn.getLayoutY()){
+                            try {
+                                if (!GameSettings.setGameSettings(tmpBtn.getText().substring(5), tx.getText()))
+                                    System.out.println("Warnings! This value is unhandled: " + tx.getText());
+                            }
+                            catch (NumberFormatException e){
+                                System.out.println("Wrong format!");
+                                tx.clear();
+                            }
+                        }
+                    }
+                });
+            }
+            scrollPane.setContent(gridPane);
+            scrollPane.setStyle("-fx-background: transparent");
+            tabGameMark.setContent(scrollPane);
+        }
+    }
     @FXML
     private void exitButtonPressed() {
         System.exit(1);
     }
-
+    @FXML
+    public void backButtonAction() {
+        Stage stage = (Stage) backBtn.getScene().getWindow();
+        Parent root;
+        try {
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
+            Stage stage1 = new Stage();
+            stage1.setTitle("Snake");
+            stage1.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
+            stage1.show();
+            stage.hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void pauseButtonPressed() {}
 
 }

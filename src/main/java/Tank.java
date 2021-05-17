@@ -33,6 +33,7 @@ public class Tank {
         }
     }
     public void draw (Pane pane) {
+
         if (side == 'L') {
             bodyView.setX(0);
             bodyView.setY(position - bodyImg.getHeight()/2);
