@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="800.0" styleClass="gradbackground" stylesheets="@css/backgrounds.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <Text fill="WHITE" layoutX="184.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TANKS" textAlignment="CENTER" wrappingWidth="432.240234375">
+         <font>
+            <Font name="Bauhaus 93" size="120.0" />
+         </font></Text>
+      <Text fill="WHITE" layoutX="236.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" textAlignment="RIGHT" wrappingWidth="327.240234375">
+         <font>
+            <Font name="Bauhaus 93" size="28.0" />
+         </font>
+      </Text>
+      <TabPane fx:id="tabPane" layoutY="200.0" onMouseClicked="#sectionConfigurationPressed" onMousePressed="#sectionConfigurationPressed" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Game Properties">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Manual Configuration">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="backBtn" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" onAction="#backButtonAction" prefHeight="53.0" prefWidth="99.0" text="Back" />
+   </children>
+</AnchorPane>

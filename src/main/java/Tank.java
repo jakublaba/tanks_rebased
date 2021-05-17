@@ -34,6 +34,7 @@ public class Tank {
         if( side == 'R') barrelView.setRotate(180);
     }
     public void draw (Pane pane) {
+
         if (side == 'L') {
             bodyView.setX(0);
             bodyView.setY(position - bodyImg.getHeight()/2);

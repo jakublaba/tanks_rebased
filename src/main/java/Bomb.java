@@ -22,6 +22,7 @@ public class Bomb {
         bomb.setX(x - bombWidth/2);
         bomb.setY(y - GameSettings.WidthOfTankBorder - bombHeight);
         bomb.setFill(Color.BLACK);
+        bomb.toFront();
         Line rightLine = new Line();
         rightLine.setStartX(x + bombWidth/2);
         rightLine.setStartY(y - GameSettings.WidthOfTankBorder);

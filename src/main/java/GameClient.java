@@ -16,6 +16,7 @@ public final class GameClient extends Application {
             primaryStage.setScene(new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
             primaryStage.setResizable(false);
             primaryStage.show();
+            GameSettings.loadConfigFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
