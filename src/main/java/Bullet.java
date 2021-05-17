@@ -18,8 +18,8 @@ public final class Bullet extends GameSegment {
         double vectorLength = Math.sqrt(dirX*dirX + dirY*dirY);
         double normalisedX = dirX/vectorLength;
         double normalisedY = dirY/vectorLength;
-        x += normalisedX*3;
-        y += normalisedY*3;
+        x += normalisedX * GameSettings.BulletVelocity;
+        y += normalisedY * GameSettings.BulletVelocity;
     }
     @Override
     public void draw(Pane pane) {

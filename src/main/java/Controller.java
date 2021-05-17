@@ -37,7 +37,7 @@ public final class Controller {
     private int timeGame;
     private final GameBoard gameBoard = new GameBoard();
 
-
+    //movement
     private boolean keyDIsPressed;
     private boolean keyAIsPressed;
     private boolean keyWIsPressed;
@@ -46,6 +46,10 @@ public final class Controller {
     private boolean keyDownIsPressed;
     private boolean keyRightIsPressed;
     private boolean keyLeftIsPressed;
+    //shooting
+    //V E R B O S E
+    private long lastTimeOfLeftPlayerShot, lastTimeOfRightPlayerShot;
+    private boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
     private boolean keySpaceIsPressed;
     private boolean keyShiftIsPressed;
 
@@ -140,6 +144,14 @@ public final class Controller {
                     lastTime = currentTime;
                     timeGame--;
                 }
+                if (currentTime - lastTimeOfLeftPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+                    leftPlayerAllowedToShoot = true;
+                    lastTimeOfLeftPlayerShot = currentTime;
+                }
+                if (currentTime - lastTimeOfRightPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+                    rightPlayerAllowedToShoot = true;
+                    lastTimeOfRightPlayerShot = currentTime;
+                }
                 //TANKS
                 gameBoard.leftPlayer.getTank().draw(layerPane);
                 if (keyWIsPressed && !keySIsPressed) {
@@ -156,8 +168,9 @@ public final class Controller {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
                     System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
-                if (keySpaceIsPressed) {
+                if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
                     gameBoard.leftPlayer.getTank().shoot();
+                    leftPlayerAllowedToShoot = false;
                 }
 
                 gameBoard.rightPlayer.getTank().draw(layerPane);
@@ -175,8 +188,9 @@ public final class Controller {
                     gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.RIGHT);
                     System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
-                if (keyShiftIsPressed) {
+                if (keyShiftIsPressed && rightPlayerAllowedToShoot) {
                     gameBoard.rightPlayer.getTank().shoot();
+                    rightPlayerAllowedToShoot = false;
                 }
 
                 //GAME BOARD
@@ -220,7 +234,7 @@ public final class Controller {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("settings.fxml")));
             Stage stage = new Stage();
             stage.setTitle("SnakeFX - Settings");
-            stage.setScene(new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
+            stage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             stage.setResizable(false);
             stage.show();
             Stage stage1 = (Stage) startBtn.getScene().getWindow();
@@ -253,7 +267,7 @@ public final class Controller {
                 listOfTextFields.add(tmpTextField);
                 gridPane.add(tmpBtn,2, i);
                 gridPane.setVgap(40);
-                tmpBtn.setOnAction(event->{
+                tmpBtn.setOnAction(event-> {
                     for(TextField tx: listOfTextFields){
                         if(tx.getLayoutY() == tmpBtn.getLayoutY()){
                             try {
@@ -273,7 +287,6 @@ public final class Controller {
             tabGameMark.setContent(scrollPane);
         }
     }
-
     @FXML
     private void exitButtonPressed() {
         System.exit(1);
@@ -286,14 +299,12 @@ public final class Controller {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
             Stage stage1 = new Stage();
             stage1.setTitle("Snake");
-            stage1.setScene(new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
+            stage1.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             stage1.show();
             stage.hide();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     private void pauseButtonPressed() {}
-
 }

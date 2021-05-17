@@ -30,11 +30,11 @@ public final class GameSettings {
 
     //własności pocisku
     public static double BulletSize = 15;
-    public static double BulletVelocity = 1;
+    public static double BulletVelocity = 0.5;
     public static Color BulletColor = Color.BLACK;
-    public static double BulletFrequencyLimit = 10;
+    public static double BulletFrequencyLimit = 2;
     public static int BulletNumberLimit = 15;
-    public static double BulletRadius = 5;
+    public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
     public static double BulletRadiusDecrease = 2;
 
@@ -97,8 +97,8 @@ public final class GameSettings {
                 System.out.println("Set V1: " + BulletVelocity);
             }
             case "X1" -> {
-                NumberOfBullets = Integer.parseInt(y);
-                System.out.println("Set X1: " + NumberOfBullets);
+                BulletNumberLimit = Integer.parseInt(y);
+                System.out.println("Set X1: " + BulletNumberLimit);
             }
             case "R1" -> {
                 BulletRadius = Double.parseDouble(y);
