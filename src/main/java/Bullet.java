@@ -5,19 +5,19 @@ public final class Bullet extends GameSegment {
     private Circle segmentShape;
     private final double dirX, dirY;
     public Bullet (double x, double y, double dirX, double dirY) {
-        super(x, y, GameSettings.BULLET_SIZE, GameSettings.BULLET_VELOCITY);
+        super(x, y, GameSettings.BulletSize, GameSettings.BulletVelocity);
         this.dirX = dirX;
         this.dirY = dirY;
         segmentShape = new Circle(x, y, currentSize);
         segmentShape.setCenterX(x);
         segmentShape.setCenterY(y);
-        segmentShape.setFill(GameSettings.BULLET_COLOR);
+        segmentShape.setFill(GameSettings.BulletColor);
     }
     @Override
     public void move() {
         double vectorLength = Math.sqrt(dirX*dirX + dirY*dirY);
-        double normalisedX = dirX / vectorLength;
-        double normalisedY = dirY / vectorLength;
+        double normalisedX = dirX/vectorLength;
+        double normalisedY = dirY/vectorLength;
         x += normalisedX*currentVelocity;
         y += normalisedY*currentVelocity;
     }

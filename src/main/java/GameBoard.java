@@ -1,7 +1,6 @@
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GameBoard {
@@ -33,7 +32,7 @@ public class GameBoard {
                     x.move(timeBetween);
                     x.draw(pane);
             }
-            cells.removeIf(x -> x.getY() > GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
+            cells.removeIf(x -> x.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(x -> x.getCurrentSize() < 0);
 
             lastTimeOfMoveCell = time;

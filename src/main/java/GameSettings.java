@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public final class GameSettings {
     //własności okna
-    public static double WINDOW_WIDTH = 800;
-    public static double WINDOW_HEIGHT = 800;
+    public static double WindowWidth = 800;
+    public static double WindowHeight = 800;
     Color TANKS_FIELD_COLOR_ONE = Color.web("#3798D8"); //Zdefiniowane na później
     Color TANKS_FIELD_COLOR_TWO = Color.web("E4E8EB");
     Color WAR_FIELD_COLOR_ONE = Color.web("0D9068");
@@ -18,7 +18,7 @@ public final class GameSettings {
     public static double WidthOfTankBorder = 120;
 
     //własności komórki
-    public static Color [] CELL_COLOR_SEQUENCE = {Color.OLIVEDRAB, Color.GOLD, Color.CRIMSON};
+    public static Color [] CellColorSequence = {Color.OLIVEDRAB, Color.GOLD, Color.CRIMSON};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
     public static int CellHealth = 3;
@@ -27,20 +27,19 @@ public final class GameSettings {
     public static double CellSizeDecrease = 69;
 
     //własności pocisku
-    public static double BULLET_SIZE = 8;
-    public static double BULLET_VELOCITY = 15;
-    public static Color BULLET_COLOR = Color.BLACK;
-    public static double BulletVelocity = 20;
-    public static int NumberOfBullets = 15;
+    public static double BulletSize = 8;
+    public static double BulletVelocity = 5;
+    public static Color BulletColor = Color.BLACK;
+    public static int BulletNumberLimit = 15;
     public static double BulletRadius = 5;
     public static double BulletVelocityIncrease = 15;
     public static double BulletRadiusDecrease = 69;
 
     //własności czołgu
-    public static double TANK_VELOCITY = 5;
-    public static String TANK_BODY_IMG = "graphics/tankbody.png";
-    public static String TANK_BARREL_IMG = "graphics/tankhead.png";
-    public static double BARREL_ROTATION = 1;
+    public static double TankVelocity = 5;
+    public static String TankBodyImg = "graphics/tankbody.png";
+    public static String TankBarrelImg = "graphics/tankhead.png";
+    public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
 
     //dałeś bindingi na odwrót
@@ -82,8 +81,8 @@ public final class GameSettings {
                             System.out.println("Set V1: " + BulletVelocity);
                         }
                         case "X1" -> {
-                            NumberOfBullets = Integer.parseInt(numberSubstring);
-                            System.out.println("Set X1: " + NumberOfBullets);
+                            BulletNumberLimit = Integer.parseInt(numberSubstring);
+                            System.out.println("Set X1: " + BulletNumberLimit);
                         }
                         case "R1" -> {
                             BulletRadius = Double.parseDouble(numberSubstring);

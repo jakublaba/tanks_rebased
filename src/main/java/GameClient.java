@@ -2,8 +2,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,7 +11,7 @@ public final class GameClient extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
             primaryStage.setTitle("Tanks");
-            primaryStage.setScene(new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
+            primaryStage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             primaryStage.setResizable(false);
             primaryStage.show();
         } catch (IOException e) {

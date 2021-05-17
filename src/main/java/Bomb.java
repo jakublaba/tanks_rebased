@@ -1,4 +1,3 @@
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -6,8 +5,8 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Bomb {
-    private static final double x = GameSettings.WINDOW_WIDTH / 2;
-    private static final double y = GameSettings.WINDOW_HEIGHT;
+    private static final double x = GameSettings.WindowWidth / 2;
+    private static final double y = GameSettings.WindowHeight;
     private static double bombHeight = 50;
     private static double bombWidth = 100;
 
