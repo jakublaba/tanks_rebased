@@ -3,7 +3,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
@@ -41,7 +40,7 @@ public final class Controller {
         layerPane = new Pane();
         layerPane.getChildren().add(gameField);
         root.setCenter(layerPane);
-        Scene scene = new Scene(root, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT);
+        Scene scene = new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight);
         primaryStage.setTitle("Tanks");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -119,7 +118,7 @@ public final class Controller {
                     else
                         timerLabel.setText((timeGame-timeGame%60)/60 + ":" + timeGame%60);
 
-                    timerLabel.setTranslateX(GameSettings.WINDOW_WIDTH/2 - timerLabel.getWidth()/2);
+                    timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
                     lastTime = currentTime;
                     timeGame--;
                 }
@@ -176,18 +175,18 @@ public final class Controller {
         rightLine.setStartX(GameSettings.WidthOfTankBorder);
         rightLine.setStartY(0);
         rightLine.setEndX(GameSettings.WidthOfTankBorder);
-        rightLine.setEndY(GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
-        leftLine.setStartX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
+        rightLine.setEndY(GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+        leftLine.setStartX(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
         leftLine.setStartY(0);
-        leftLine.setEndX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
-        leftLine.setEndY(GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
+        leftLine.setEndX(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
+        leftLine.setEndY(GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         horizontalLine.setStartX(GameSettings.WidthOfTankBorder);
-        horizontalLine.setStartY(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
-        horizontalLine.setEndX(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
-        horizontalLine.setEndY(GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder);
+        horizontalLine.setStartY(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
+        horizontalLine.setEndX(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
+        horizontalLine.setEndY(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
         timerLabel = new Label("");
         timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.03); -fx-font-weight: bold;");
-        timerLabel.setTranslateY(GameSettings.WINDOW_HEIGHT/3);
+        timerLabel.setTranslateY(GameSettings.WindowHeight /3);
         layerPane.getChildren().add(rightLine);
         layerPane.getChildren().add(leftLine);
         layerPane.getChildren().add(horizontalLine);

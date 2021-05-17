@@ -1,9 +1,7 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.TextAlignment;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,13 +13,13 @@ public final class Cell extends GameSegment {
     private Rectangle segmentShape;
 
     public Cell (boolean memberOfColony) {
-        super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize/2, GameSettings.WINDOW_WIDTH - GameSettings.WidthOfTankBorder - GameSettings.CellSize/2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
+        super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize/2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize/2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
         segmentShape = new Rectangle();
         segmentShape.setWidth(GameSettings.CellSize);
         segmentShape.setHeight(GameSettings.CellSize);
         segmentShape.setX(x - GameSettings.CellSize/2);
         segmentShape.setY(y - GameSettings.CellSize/2);
-        segmentShape.setFill(GameSettings.CELL_COLOR_SEQUENCE[0]);
+        segmentShape.setFill(GameSettings.CellColorSequence[0]);
         this.memberOfColony = memberOfColony;
         this.initialHp = GameSettings.CellHealth;
         this.currentHp = GameSettings.CellHealth;
@@ -35,7 +33,7 @@ public final class Cell extends GameSegment {
     public void draw (Pane pane){
         segmentShape.setY(y);
         pane.getChildren().remove(segmentShape);
-        if(y < GameSettings.WINDOW_HEIGHT) {
+        if(y < GameSettings.WindowHeight) {
             pane.getChildren().add(segmentShape);
         }
         label.setTranslateY(y);
@@ -43,7 +41,7 @@ public final class Cell extends GameSegment {
         if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder)
         pane.getChildren().add(label);
     }
-    public void move(double time){
+    public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
 
@@ -55,12 +53,13 @@ public final class Cell extends GameSegment {
 
     public void getDamaged () {
         double tmp = 0;
-        for(int i = 0; i < GameSettings.CELL_COLOR_SEQUENCE.length; i++){
-            if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CELL_COLOR_SEQUENCE.length)
-                segmentShape.setFill(GameSettings.CELL_COLOR_SEQUENCE[GameSettings.CELL_COLOR_SEQUENCE.length -i -1]);
-            tmp+= 1.0/GameSettings.CELL_COLOR_SEQUENCE.length;
+        for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
+            if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length) {
+                segmentShape.setFill(GameSettings.CellColorSequence[GameSettings.CellColorSequence.length - i - 1]);
+            }
+            tmp += 1.0/GameSettings.CellColorSequence.length;
         }
-        currentHp = currentHp <= 0 ? 0 : currentHp - 1;
+        currentHp--;
         label.setText(String.valueOf(currentHp));
     }
     public void resize(){

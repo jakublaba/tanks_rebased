@@ -1,7 +1,6 @@
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GameBoard {
@@ -20,22 +19,21 @@ public class GameBoard {
         //colony = new Colony();
     }
     public void updateGame(long time, Pane pane) {
-        if(time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000){
+        if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
             Cell cell = new Cell (false);
             cells.add(cell);
             lastTimeOfGeneratingCell = time;
         }
         //Co 15 000 000 nanosekund aktualizowana jest pozycja komórek => częstoliwość około 60 Hz
-        if(time - lastTimeOfMoveCell >= 15_000_000) {
+        if (time - lastTimeOfMoveCell >= 15_000_000) {
             double timeBetween = ((double)time - (double)lastTimeOfMoveCell)/1_000_000_000;
             //System.out.println("Czas między zmianami: " + timeBetween);
             for (Cell x : cells) {
                     x.move(timeBetween);
                     x.draw(pane);
             }
-            cells.removeIf(x -> x.getY() > GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder);
+            cells.removeIf(x -> x.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(x -> x.getCurrentSize() < 0);
-
             lastTimeOfMoveCell = time;
         }
 
@@ -45,11 +43,31 @@ public class GameBoard {
             }
             lastTimeOfDecrease = time;
         }
+        var leftTank = leftPlayer.getTank();
+        for (Bullet bullet : leftTank.getBullets()) {
+            var cell = cellCollision(bullet);
+            if (cell != null) {
+                if (cell.getCurrentHp() > 0) {
+                    cell.getDamaged();
+                } else {
+                    removeCell(cell);
+                }
+            }
+        }
     }
-    public void cellCollision () {}
+    public Cell cellCollision (Bullet bullet) {
+        for (Cell cell : cells) {
+            if (Math.abs(bullet.getX() - cell.getX()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
+                Math.abs(bullet.getY() - cell.getY()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                return cell;
+            }
+        }
+        return null;
+    }
     public void bombCollision () {}
-    public void removeCell () {
-
+    private void removeCell (Cell cellToRemove) {
+        if (cellToRemove == null) return;
+        cells.remove(cellToRemove);
     }
     public void removeColony () {}
     private void addPoints(@NotNull PlayerInfo player, int points) { player.increaseScore(points); }
