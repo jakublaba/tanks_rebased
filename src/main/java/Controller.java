@@ -17,7 +17,6 @@ public final class Controller {
     public static Label timerLabel;
     private int timeGame;
     private final GameBoard gameBoard = new GameBoard();
-    private Tank leftTank, rightTank, testTank;
 
     private boolean keyDIsPressed;
     private boolean keyAIsPressed;
@@ -123,42 +122,42 @@ public final class Controller {
                     timeGame--;
                 }
                 //TANKS
-                leftTank.draw(layerPane);
+                gameBoard.leftPlayer.getTank().draw(layerPane);
                 if (keyWIsPressed && !keySIsPressed) {
-                    leftTank.move(KeyCode.W);
+                    gameBoard.leftPlayer.getTank().move(KeyCode.W);
                 }
                 if (keySIsPressed && !keyWIsPressed) {
-                    leftTank.move(KeyCode.S);
+                    gameBoard.leftPlayer.getTank().move(KeyCode.S);
                 }
                 if (keyAIsPressed && !keyDIsPressed) {
-                    leftTank.rotateBarrel(KeyCode.A);
-                    System.out.println("Barrel Angle (L): " + leftTank.getBarrelAngle());
+                    gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.A);
+                    System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keyDIsPressed && !keyAIsPressed) {
-                    leftTank.rotateBarrel(KeyCode.D);
-                    System.out.println("Barrel Angle (L): " + leftTank.getBarrelAngle());
+                    gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
+                    System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keySpaceIsPressed) {
-                    leftTank.shoot();
+                    gameBoard.leftPlayer.getTank().shoot();
                 }
 
-                rightTank.draw(layerPane);
+                gameBoard.rightPlayer.getTank().draw(layerPane);
                 if (keyUpIsPressed && !keyDownIsPressed) {
-                    rightTank.move(KeyCode.UP);
+                    gameBoard.rightPlayer.getTank().move(KeyCode.UP);
                 }
                 if (keyDownIsPressed && !keyUpIsPressed) {
-                    rightTank.move(KeyCode.DOWN);
+                    gameBoard.rightPlayer.getTank().move(KeyCode.DOWN);
                 }
                 if (keyLeftIsPressed && !keyRightIsPressed) {
-                    rightTank.rotateBarrel(KeyCode.LEFT);
-                    System.out.println("Barrel Angle (L): " + rightTank.getBarrelAngle());
+                    gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.LEFT);
+                    System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
                 if (keyRightIsPressed && !keyLeftIsPressed) {
-                    rightTank.rotateBarrel(KeyCode.RIGHT);
-                    System.out.println("Barrel Angle (L): " + rightTank.getBarrelAngle());
+                    gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.RIGHT);
+                    System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
                 if (keyShiftIsPressed) {
-                    rightTank.shoot();
+                    gameBoard.rightPlayer.getTank().shoot();
                 }
 
                 //GAME BOARD
@@ -191,9 +190,6 @@ public final class Controller {
         layerPane.getChildren().add(leftLine);
         layerPane.getChildren().add(horizontalLine);
         layerPane.getChildren().add(timerLabel);
-        leftTank = new Tank('L');
-        rightTank = new Tank('R');
-        testTank = new Tank('T');
         Bomb.draw(layerPane);
     }
 

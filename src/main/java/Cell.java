@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class Cell extends GameSegment {
+    public boolean alive;
     private final boolean memberOfColony;
     private final int initialHp;
     private int currentHp;
@@ -21,9 +22,10 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
         this.memberOfColony = memberOfColony;
-        this.initialHp = GameSettings.CellHealth;
-        this.currentHp = GameSettings.CellHealth;
-        this.label = new Label(String.valueOf(initialHp));
+        alive = true;
+        initialHp = GameSettings.CellHealth;
+        currentHp = GameSettings.CellHealth;
+        label = new Label(String.valueOf(initialHp));
         label.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
         label.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
         label.setAlignment(Pos.CENTER);
@@ -32,24 +34,24 @@ public final class Cell extends GameSegment {
     }
     public void draw (Pane pane){
         segmentShape.setY(y);
-        pane.getChildren().remove(segmentShape);
+        erase(pane);
         if(y < GameSettings.WindowHeight) {
             pane.getChildren().add(segmentShape);
         }
         label.setTranslateY(y);
-        pane.getChildren().remove(label);
         pane.getChildren().add(label);
+    }
+    public void erase (Pane pane) {
+        pane.getChildren().remove(segmentShape);
+        pane.getChildren().remove(label);
     }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
-
     public int getCurrentHp () { return currentHp; }
-
     private void regenerate () {
         currentHp = currentHp >= initialHp ? initialHp : currentHp + 1;
     }
-
     public void getDamaged () {
         double tmp = 0;
         for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
@@ -61,6 +63,7 @@ public final class Cell extends GameSegment {
         currentHp--;
         label.setText(String.valueOf(currentHp));
     }
+    public void die () { alive = false; }
     public void resize(){
         currentSize -= GameSettings.CellSizeDecrease;
         segmentShape.setWidth(currentSize);
