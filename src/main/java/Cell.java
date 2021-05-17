@@ -21,9 +21,9 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
         this.memberOfColony = memberOfColony;
-        this.initialHp = GameSettings.CellHealth;
-        this.currentHp = GameSettings.CellHealth;
-        this.label = new Label(String.valueOf(initialHp));
+        initialHp = GameSettings.CellHealth;
+        currentHp = GameSettings.CellHealth;
+        label = new Label(String.valueOf(initialHp));
         label.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
         label.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
         label.setAlignment(Pos.CENTER);
@@ -32,7 +32,7 @@ public final class Cell extends GameSegment {
     }
     public void draw (Pane pane){
         segmentShape.setY(y);
-        pane.getChildren().remove(segmentShape);
+        erase(pane);
         if(y < GameSettings.WindowHeight) {
             pane.getChildren().add(segmentShape);
         }
@@ -41,16 +41,17 @@ public final class Cell extends GameSegment {
         if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder)
         pane.getChildren().add(label);
     }
+    public void erase (Pane pane) {
+        pane.getChildren().remove(segmentShape);
+        pane.getChildren().remove(label);
+    }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
-
     public int getCurrentHp () { return currentHp; }
-
     private void regenerate () {
         currentHp = currentHp >= initialHp ? initialHp : currentHp + 1;
     }
-
     public void getDamaged () {
         double tmp = 0;
         for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
