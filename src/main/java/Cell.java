@@ -40,7 +40,7 @@ public final class Cell extends GameSegment {
         pane.getChildren().remove(label);
         pane.getChildren().add(label);
     }
-    public void move(double time){
+    public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
 
@@ -53,11 +53,12 @@ public final class Cell extends GameSegment {
     public void getDamaged () {
         double tmp = 0;
         for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
-            if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length)
-                segmentShape.setFill(GameSettings.CellColorSequence[GameSettings.CellColorSequence.length -i -1]);
-            tmp+= 1.0/GameSettings.CellColorSequence.length;
+            if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length) {
+                segmentShape.setFill(GameSettings.CellColorSequence[GameSettings.CellColorSequence.length - i - 1]);
+            }
+            tmp += 1.0/GameSettings.CellColorSequence.length;
         }
-        currentHp = currentHp <= 0 ? 0 : currentHp - 1;
+        currentHp--;
         label.setText(String.valueOf(currentHp));
     }
     public void resize(){

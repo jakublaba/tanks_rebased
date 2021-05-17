@@ -55,10 +55,8 @@ public class Tank {
     public void move (KeyCode key) {
         if ((key == KeyCode.W && side == 'L' || key == KeyCode.UP && side == 'R') && position > bodyImg.getHeight()/2) {
             position -= GameSettings.TankVelocity;
-            bodyView.setX(bodyView.getX()-GameSettings.TankVelocity);
         } else if ((key == KeyCode.S && side == 'L' || key == KeyCode.DOWN && side == 'R') && position < GameSettings.WindowHeight - bodyImg.getHeight()/2) {
             position += GameSettings.TankVelocity;
-            bodyView.setX(bodyView.getX()+GameSettings.TankVelocity);
         }
     }
     public void rotateBarrel (KeyCode key) {
@@ -84,5 +82,5 @@ public class Tank {
     }
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
     public double getBarrelAngle () { return barrelAngle; }
-    public ImageView getBarrelView () { return barrelView; }
+    public List<Bullet> getBullets () { return bullets; }
 }

@@ -30,6 +30,7 @@ public final class GameSettings {
     public static double BulletSize = 8;
     public static double BulletVelocity = 5;
     public static Color BulletColor = Color.BLACK;
+    public static double BulletFrequencyLimit = 10;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 5;
     public static double BulletVelocityIncrease = 15;
