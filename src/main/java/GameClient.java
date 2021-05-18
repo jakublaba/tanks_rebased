@@ -5,16 +5,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public final class GameClient extends Application {
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
             primaryStage.setTitle("Tanks");
             primaryStage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             primaryStage.setResizable(false);
             primaryStage.show();
             GameSettings.loadConfigFile();
+            GameSettings.setConfigurationList();
         } catch (IOException e) {
             e.printStackTrace();
         }

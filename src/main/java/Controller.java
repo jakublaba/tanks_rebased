@@ -1,9 +1,6 @@
 import javafx.animation.AnimationTimer;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -50,6 +47,7 @@ public final class Controller {
     private boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
     private boolean keySpaceIsPressed;
     private boolean keyShiftIsPressed;
+
 
     @FXML
     private void startButtonPressed() throws java.io.IOException {
@@ -249,23 +247,39 @@ public final class Controller {
     }
 
     @FXML
+    private void initialize(){
+        if(tabPane!=null){
+            System.out.println("Ustawienia");
+            Tab tab = tabPane.getTabs().get(0);
+            GridPane gridPane = new GridPane();
+            gridPane.setTranslateX(0);
+            gridPane.setTranslateY(0);
+            gridPane.setPrefWidth(800);
+            gridPane.setStyle("-fx-background-color: rgba(230, 230, 230, 0.2)");
+            tab.setContent(gridPane);
+        }
+    }
+
+    @FXML
     private void sectionConfigurationPressed(){
         Tab tabGameMark = tabPane.getSelectionModel().getSelectedItem();
-        if(tabGameMark.getText().equals("Manual Configuration")){
+        if(tabGameMark.getText().equals(tabPane.getTabs().get(1).getText())){
             List<TextField> listOfTextFields = new ArrayList<>();
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setTranslateX(0);
             scrollPane.setTranslateY(0);
             scrollPane.setPrefWidth(800);
             GridPane gridPane = new GridPane();
-            gridPane.setPrefWidth(800);
+            gridPane.setPrefWidth(785);
             gridPane.setStyle("-fx-background-color: rgba(230, 230, 230, 0.2)");
-            for(int i = 0; i < GameSettings.configuration.length/2; i++){
-                Label tmpLabel = new Label(GameSettings.configuration[i * 2]);
+            for(int i = 0; i < GameSettings.getConfigurationList().size(); i++){
+                Label tmpLabel = new Label(GameSettings.getConfigurationList().get(i)[0]);
                 tmpLabel.setStyle("-fx-font-size: 20px");
-                Button tmpBtn = new Button("Save " + GameSettings.configuration[i*2 + 1]);
+                Button tmpBtn = new Button("Save " + GameSettings.getConfigurationList().get(i)[1]);
                 TextField tmpTextField = new TextField();
                 tmpTextField.setPrefWidth(50);
+                tmpTextField.setText(GameSettings.getConfigurationList().get(i)[2]);
+                tmpTextField.setId(GameSettings.getConfigurationList().get(i)[1]);
                 gridPane.add(tmpLabel,0, i);
                 gridPane.add(tmpTextField,1, i);
                 listOfTextFields.add(tmpTextField);
@@ -273,7 +287,7 @@ public final class Controller {
                 gridPane.setVgap(40);
                 tmpBtn.setOnAction(event-> {
                     for(TextField tx: listOfTextFields){
-                        if(tx.getLayoutY() == tmpBtn.getLayoutY()){
+                        if(tx.getId().equals(tmpBtn.getText().substring(5))){
                             try {
                                 if (!GameSettings.setGameSettings(tmpBtn.getText().substring(5), tx.getText()))
                                     System.out.println("Warnings! This value is unhandled: " + tx.getText());
@@ -290,6 +304,7 @@ public final class Controller {
             scrollPane.setStyle("-fx-background: transparent");
             tabGameMark.setContent(scrollPane);
         }
+
     }
     @FXML
     private void exitButtonPressed() {

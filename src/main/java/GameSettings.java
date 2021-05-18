@@ -35,7 +35,7 @@ public final class GameSettings {
     public static double BulletSize = 15;
     public static double BulletVelocity = 0.5;
     public static Color BulletColor = Color.BLACK;
-    public static double BulletFrequencyLimit = 1;
+    public static double BulletFrequencyLimit = 0.01;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
@@ -66,10 +66,31 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 10000;
+    public static double TimeBetweenCellGenerating = 0.02  ;
 
     //okno ustawień
-    public static String[] configuration = new String[] {"Bullet Velocity","V1","NumberOfBullets","X1","BulletRadius","R1","CellVelocity","V2","CellSize","H1","CellHealth","P1","CellRegenerationInterval","T2","Interval","T1","BulletVelocityIncrease","DV1","CellVelocityIncrease","DV2","BulletRadiusDecrease","DR1","CellSizeDecrease","DH1","GameTime","T3"};
+    private static final ArrayList<String[]> configurationList = new ArrayList<>();
+
+    public static void setConfigurationList(){
+        configurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
+        configurationList.add(new String[]{"NumberOfBullets", "X1", String.valueOf(BulletNumberLimit)});
+        configurationList.add(new String[]{"BulletRadius", "R1", String.valueOf(BulletRadius)});
+        configurationList.add(new String[]{"CellVelocity", "V2", String.valueOf(CellVelocity)});
+        configurationList.add(new String[]{"CellSize", "H1", String.valueOf(CellSize)});
+        configurationList.add(new String[]{"CellHealth", "P1", String.valueOf(CellHealth)});
+        configurationList.add(new String[]{"Interval", "T1", String.valueOf(CellRegenerationInterval)});
+        configurationList.add(new String[]{"CellRegenerationInterval", "T2", String.valueOf(CellRegenerationInterval)});
+        configurationList.add(new String[]{"BulletVelocityIncrease", "DV1", String.valueOf(BulletVelocityIncrease)});
+        configurationList.add(new String[]{"CellVelocityIncrease", "DV2", String.valueOf(CellVelocityIncrease)});
+        configurationList.add(new String[]{"BulletRadiusDecrease", "DR1", String.valueOf(BulletRadiusDecrease)});
+        configurationList.add(new String[]{"CellSizeDecrease", "DH1", String.valueOf(CellSizeDecrease)});
+        configurationList.add(new String[]{"GameTime", "T3", String.valueOf(GameTime)});
+    }
+    public static ArrayList<String[]> getConfigurationList(){
+        return configurationList;
+    }
+
+
 
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
