@@ -34,7 +34,6 @@ public class GameBoard {
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(cell -> cell.getCurrentSize() < 0);
-            //cells.removeIf(cell -> cell.getCurrentHp() <= 0);
             lastTimeOfMoveCell = time;
         }
 
@@ -71,6 +70,15 @@ public class GameBoard {
                 }
                 break;
             }
+            if (bombCollision(bullet)) {
+                //System.out.printf("Bomb collision (L)");
+                bullet.erase(pane);
+                leftTank.removeBullet(bullet);
+                if (Bomb.fatalCollision(bullet)) {
+                    System.exit(0);
+                }
+                break;
+            }
         }
         var rightTank = rightPlayer.getTank();
         for (Bullet bullet : rightTank.getBullets()) {
@@ -80,6 +88,15 @@ public class GameBoard {
                 rightTank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
+                }
+                break;
+            }
+            if (bombCollision(bullet)) {
+                //System.out.println("Bomb collision (R)");
+                bullet.erase(pane);
+                rightTank.removeBullet(bullet);
+                if (Bomb.fatalCollision(bullet)) {
+                    System.exit(0);
                 }
                 break;
             }
@@ -94,7 +111,11 @@ public class GameBoard {
         }
         return null;
     }
-    public void bombCollision () {}
+    public boolean bombCollision (Bullet bullet) {
+        boolean yCondition = bullet.getY() >= GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - Bomb.height;
+        boolean xCondition = bullet.getX() >= GameSettings.WindowWidth/2 - Bomb.width/2 && bullet.getX() <= GameSettings.WindowWidth/2 + Bomb.width/2;
+        return yCondition && xCondition;
+    }
     private void removeCell (Cell cellToRemove) {
         if (cellToRemove == null) return;
         cells.remove(cellToRemove);

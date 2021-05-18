@@ -32,7 +32,7 @@ public final class GameSettings {
     public static double BulletSize = 15;
     public static double BulletVelocity = 0.5;
     public static Color BulletColor = Color.BLACK;
-    public static double BulletFrequencyLimit = 0.01;
+    public static double BulletFrequencyLimit = 0.5;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
@@ -45,7 +45,7 @@ public final class GameSettings {
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
 
-    //dałeś bindingi na odwrót
+    //to chyba w ogóle niepotrzebne jest
     public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
     public static final KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
@@ -63,7 +63,8 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 0.02  ;
+    public static double TimeBetweenCellGenerating = 5;
+
 
     //okno ustawień
     private static final ArrayList<String[]> configurationList = new ArrayList<>();

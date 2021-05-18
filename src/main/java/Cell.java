@@ -41,10 +41,6 @@ public final class Cell extends GameSegment {
         }
 
     }
-    public void erase (Pane pane) {
-
-
-    }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
