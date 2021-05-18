@@ -34,6 +34,7 @@ public class GameBoard {
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(cell -> cell.getCurrentSize() < 0);
+            //cells.removeIf(cell -> cell.getCurrentHp() <= 0);
             lastTimeOfMoveCell = time;
         }
 
@@ -63,9 +64,6 @@ public class GameBoard {
             if (cell != null) {
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                } else {
-                    cell.erase(pane);
-                    removeCell(cell);
                 }
             }
         }
@@ -75,9 +73,6 @@ public class GameBoard {
             if (cell != null) {
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                } else {
-                    cell.erase(pane);
-                    removeCell(cell);
                 }
             }
         }

@@ -1,5 +1,5 @@
 Spokojny wariant gry
-[V1] BulletVelocity [1]
+[V1] BulletVelocity [10]
 [X1] NumberOfBullets [15]
 [R1] BulletRadius [5]
 [V2] CellVelocity [100]
