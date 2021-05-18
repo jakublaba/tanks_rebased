@@ -44,10 +44,6 @@ public final class Cell extends GameSegment {
         if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder )
         pane.getChildren().add(label);
     }
-    public void erase (Pane pane) {
-
-
-    }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }

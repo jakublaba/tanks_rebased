@@ -48,7 +48,7 @@ public final class GameSettings {
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
 
-    //dałeś bindingi na odwrót
+    //to chyba w ogóle niepotrzebne jest
     public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
     public static final KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
