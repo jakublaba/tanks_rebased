@@ -1,5 +1,5 @@
 Spokojny wariant gry
-[V1] BulletVelocity [10]
+[V1] BulletVelocity [3]
 [X1] NumberOfBullets [10]
 [R1] BulletRadius [5]
 [V2] CellVelocity [100]
@@ -11,5 +11,5 @@ Spokojny wariant gry
 [DV2] CellVelocityIncrease [5]
 [DR1] BulletRadiusDecrease [1]
 [DH1] CellSizeDecrease [2]
-[T3] GameTime [605]
+[T3] GameTime [600]
 [IMG] ImageExtension [JPG]

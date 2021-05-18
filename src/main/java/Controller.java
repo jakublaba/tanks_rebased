@@ -1,14 +1,10 @@
 import javafx.animation.AnimationTimer;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -34,7 +30,7 @@ public final class Controller {
     public static Pane layerPane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
-    private int timeGame;
+    private int gameTime;
     private final GameBoard gameBoard = new GameBoard();
 
     //movement
@@ -47,7 +43,6 @@ public final class Controller {
     private boolean keyRightIsPressed;
     private boolean keyLeftIsPressed;
     //shooting
-    //V E R B O S E
     private long lastTimeOfLeftPlayerShot, lastTimeOfRightPlayerShot;
     private boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
     private boolean keySpaceIsPressed;
@@ -55,7 +50,7 @@ public final class Controller {
 
     @FXML
     private void startButtonPressed() throws java.io.IOException {
-        Stage Menu = (Stage) startBtn.getScene().getWindow();
+        Stage Menu = (Stage)startBtn.getScene().getWindow();
         Menu.hide();
         Pane gameField = new Pane();
         Stage primaryStage = new Stage();
@@ -69,8 +64,8 @@ public final class Controller {
         primaryStage.setResizable(false);
         primaryStage.show();
         setGameBoard();
-        timeGame = (int)(GameSettings.GameTime);
-        scene.setOnKeyPressed(key->{
+        gameTime = (int)(GameSettings.GameTime);
+        scene.setOnKeyPressed(key-> {
             KeyCode keyCode = key.getCode();
             if(keyCode.equals(KeyCode.W))
                 keyWIsPressed = true;
@@ -93,7 +88,7 @@ public final class Controller {
             if(keyCode.equals(KeyCode.SHIFT))
                 keyShiftIsPressed = true;
         });
-        scene.setOnKeyReleased(key->{
+        scene.setOnKeyReleased(key-> {
             KeyCode keyCode = key.getCode();
             if(keyCode.equals(KeyCode.W))
                 keyWIsPressed = false;
@@ -121,28 +116,31 @@ public final class Controller {
             long lastTime = 0;
             @Override
             public void handle(long currentTime) {
+                if (gameTime == 0) {
+                    System.exit(0);
+                }
                 if(currentTime - lastTime >= 1000000000) {
                     timerLabel.setVisible(true);
-                    if(timeGame == GameSettings.GameTime)
+                    if(gameTime == GameSettings.GameTime)
                         timerLabel.setVisible(false);
-                    if (timeGame == 0)
+                    if (gameTime == 0)
                         gameLoop.stop();
-                    else if(timeGame >= 600 && timeGame%60 <10)
-                        timerLabel.setText((timeGame-timeGame%60)/60 + ":" + "0" + timeGame%60);
-                    else if(timeGame >= 60 && timeGame < 600 && timeGame%60 >= 10)
-                        timerLabel.setText("0" + (timeGame-timeGame%60)/60 + ":" + timeGame%60);
-                    else if(timeGame >= 60 && timeGame < 600 && timeGame%60 < 10)
-                        timerLabel.setText("0" + (timeGame-timeGame%60)/60 + ":0" + timeGame%60);
-                    else if(timeGame > 0 && timeGame < 60 && timeGame%60 >= 10)
-                        timerLabel.setText("00" + ":" + (timeGame%60));
-                    else if(timeGame > 0 && timeGame < 60)
-                        timerLabel.setText("00" + ":0" + (timeGame%60));
+                    else if(gameTime >= 600 && gameTime %60 <10)
+                        timerLabel.setText((gameTime - gameTime %60)/60 + ":" + "0" + gameTime %60);
+                    else if(gameTime >= 60 && gameTime < 600 && gameTime %60 >= 10)
+                        timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":" + gameTime %60);
+                    else if(gameTime >= 60 && gameTime < 600 && gameTime %60 < 10)
+                        timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":0" + gameTime %60);
+                    else if(gameTime > 0 && gameTime < 60 && gameTime %60 >= 10)
+                        timerLabel.setText("00" + ":" + (gameTime %60));
+                    else if(gameTime > 0 && gameTime < 60)
+                        timerLabel.setText("00" + ":0" + (gameTime %60));
                     else
-                        timerLabel.setText((timeGame-timeGame%60)/60 + ":" + timeGame%60);
+                        timerLabel.setText((gameTime - gameTime %60)/60 + ":" + gameTime %60);
 
                     timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
                     lastTime = currentTime;
-                    timeGame--;
+                    gameTime--;
                 }
                 if (currentTime - lastTimeOfLeftPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
                     leftPlayerAllowedToShoot = true;
@@ -168,11 +166,9 @@ public final class Controller {
                 }
                 if (keyAIsPressed && !keyDIsPressed) {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.A);
-                    //System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keyDIsPressed && !keyAIsPressed) {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
-                    //System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
                     gameBoard.leftPlayer.getTank().shoot();
@@ -188,11 +184,9 @@ public final class Controller {
                 }
                 if (keyLeftIsPressed && !keyRightIsPressed) {
                     gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.LEFT);
-                    System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
                 if (keyRightIsPressed && !keyLeftIsPressed) {
                     gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.RIGHT);
-                    System.out.println("Barrel Angle (L): " + gameBoard.rightPlayer.getTank().getBarrelAngle());
                 }
                 if (keyShiftIsPressed && rightPlayerAllowedToShoot) {
                     gameBoard.rightPlayer.getTank().shoot();

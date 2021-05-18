@@ -45,7 +45,7 @@ public final class GameSettings {
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
 
-    //dałeś bindingi na odwrót
+    //to chyba w ogóle niepotrzebne jest
     public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
     public static final KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
@@ -63,7 +63,7 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 10000;
+    public static double TimeBetweenCellGenerating = 5;
 
     //okno ustawień
     public static String[] configuration = new String[] {"Bullet Velocity","V1","NumberOfBullets","X1","BulletRadius","R1","CellVelocity","V2","CellSize","H1","CellHealth","P1","CellRegenerationInterval","T2","Interval","T1","BulletVelocityIncrease","DV1","CellVelocityIncrease","DV2","BulletRadiusDecrease","DR1","CellSizeDecrease","DH1","GameTime","T3"};
