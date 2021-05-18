@@ -152,6 +152,12 @@ public final class Controller {
                     rightPlayerAllowedToShoot = true;
                     lastTimeOfRightPlayerShot = currentTime;
                 }
+                if (gameBoard.leftPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
+                    leftPlayerAllowedToShoot = false;
+                }
+                if (gameBoard.rightPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
+                    rightPlayerAllowedToShoot = false;
+                }
                 //TANKS
                 gameBoard.leftPlayer.getTank().draw(layerPane);
                 if (keyWIsPressed && !keySIsPressed) {
@@ -162,11 +168,11 @@ public final class Controller {
                 }
                 if (keyAIsPressed && !keyDIsPressed) {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.A);
-                    System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
+                    //System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keyDIsPressed && !keyAIsPressed) {
                     gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
-                    System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
+                    //System.out.println("Barrel Angle (L): " + gameBoard.leftPlayer.getTank().getBarrelAngle());
                 }
                 if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
                     gameBoard.leftPlayer.getTank().shoot();

@@ -19,7 +19,6 @@ public final class GameClient extends Application {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
         launch(args);
     }

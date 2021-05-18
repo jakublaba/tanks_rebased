@@ -33,7 +33,7 @@ public final class Bullet extends GameSegment {
     }
     @Override
     protected void resize() {
-        currentSize -= GameSettings.BulletRadiusDecrease;
-        segmentShape.setRadius(currentSize);
+        this.currentSize -= GameSettings.BulletRadiusDecrease;
+        this.segmentShape.setRadius(currentSize);
     }
 }

@@ -62,15 +62,15 @@ public final class Cell extends GameSegment {
         label.setText(String.valueOf(currentHp));
     }
     public void resize(){
-        currentSize -= GameSettings.CellSizeDecrease;
-        segmentShape.setWidth(currentSize);
-        segmentShape.setHeight(currentSize);
-        segmentShape.setX(segmentShape.getX()+GameSettings.CellSizeDecrease/2);
-        segmentShape.setY(segmentShape.getY()+GameSettings.CellSizeDecrease/2);
-        label.setMinSize(currentSize, currentSize);
-        label.setMaxSize(currentSize, currentSize);
-        label.setAlignment(Pos.CENTER);
-        label.setTranslateX(x - currentSize/2);
-        label.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
+        this.currentSize -= GameSettings.CellSizeDecrease;
+        this.segmentShape.setWidth(currentSize);
+        this.segmentShape.setHeight(currentSize);
+        this.segmentShape.setX(segmentShape.getX()+GameSettings.CellSizeDecrease/2);
+        this.segmentShape.setY(segmentShape.getY()+GameSettings.CellSizeDecrease/2);
+        this.label.setMinSize(currentSize, currentSize);
+        this.label.setMaxSize(currentSize, currentSize);
+        this.label.setAlignment(Pos.CENTER);
+        this.label.setTranslateX(x - currentSize/2);
+        this.label.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
     }
 }
