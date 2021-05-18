@@ -33,7 +33,6 @@ public class Tank {
         }
     }
     public void draw (Pane pane) {
-
         if (side == 'L') {
             bodyView.setX(0);
             bodyView.setY(position - bodyImg.getHeight()/2);
@@ -51,12 +50,20 @@ public class Tank {
         pane.getChildren().add(bodyView);
         pane.getChildren().add(barrelView);
         bullets.forEach(bullet -> bullet.draw(pane));
-        bullets.forEach(Bullet::move);
+        for (Bullet bullet : bullets) {
+            bullet.move();
+            if (side == 'L' && bullet.getX() > GameSettings.WindowWidth - GameSettings.WidthOfTankBorder || side == 'R' && bullet.getX() < GameSettings.WidthOfTankBorder || (bullet.getY() < 0 || bullet.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder)) {
+                bullet.erase(pane);
+                removeBullet(bullet);
+                //System.out.println("Current amount of bullets: " + bullets.size());
+                break; //bez tego występuje ConcurrentModificationException - usuwamy elementy z listy, po której nadal iterujemy
+            }
+        }
     }
     public void move (KeyCode key) {
         if ((key == KeyCode.W && side == 'L' || key == KeyCode.UP && side == 'R') && position > bodyImg.getHeight()/2) {
             position -= GameSettings.TankVelocity;
-        } else if ((key == KeyCode.S && side == 'L' || key == KeyCode.DOWN && side == 'R') && position < GameSettings.WindowHeight - bodyImg.getHeight()/2) {
+        } else if ((key == KeyCode.S && side == 'L' || key == KeyCode.DOWN && side == 'R') && position < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - bodyImg.getHeight()/2) {
             position += GameSettings.TankVelocity;
         }
     }

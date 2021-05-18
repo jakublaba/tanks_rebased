@@ -34,6 +34,7 @@ public class GameBoard {
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(cell -> cell.getCurrentSize() < 0);
+            //cells.removeIf(cell -> cell.getCurrentHp() <= 0);
             lastTimeOfMoveCell = time;
         }
 
@@ -46,6 +47,7 @@ public class GameBoard {
                 if (bullet.getCurrentSize() <= 0) {
                     bullet.erase(pane);
                     leftPlayer.getTank().removeBullet(bullet);
+                    break;
                 }
             }
             for (Bullet bullet : rightPlayer.getTank().getBullets()) {
@@ -53,6 +55,7 @@ public class GameBoard {
                 if (bullet.getCurrentSize() <= 0) {
                     bullet.erase(pane);
                     rightPlayer.getTank().removeBullet(bullet);
+                    break;
                 }
             }
             lastTimeOfDecrease = time;
@@ -61,24 +64,24 @@ public class GameBoard {
         for (Bullet bullet : leftTank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
+                bullet.erase(pane);
+                leftTank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                } else {
-                    cell.erase(pane);
-                    removeCell(cell);
                 }
+                break;
             }
         }
         var rightTank = rightPlayer.getTank();
         for (Bullet bullet : rightTank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
+                bullet.erase(pane);
+                rightTank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                } else {
-                    cell.erase(pane);
-                    removeCell(cell);
                 }
+                break;
             }
         }
     }
