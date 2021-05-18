@@ -52,7 +52,7 @@ public class Tank {
         bullets.forEach(bullet -> bullet.draw(pane));
         for (Bullet bullet : bullets) {
             bullet.move();
-            if (bullet.x < GameSettings.WidthOfTankBorder || bullet.x > GameSettings.WindowWidth - GameSettings.WidthOfTankBorder || bullet.y < 0 || bullet.y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder) {
+            if (side == 'L' && bullet.getX() > GameSettings.WindowWidth - GameSettings.WidthOfTankBorder || side == 'R' && bullet.getX() < GameSettings.WidthOfTankBorder || (bullet.getY() < 0 || bullet.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder)) {
                 bullet.erase(pane);
                 removeBullet(bullet);
                 //System.out.println("Current amount of bullets: " + bullets.size());
