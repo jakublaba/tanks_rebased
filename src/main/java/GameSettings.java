@@ -63,7 +63,7 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 1;
+    public static double TimeBetweenCellGenerating = 0.1;
 
     //okno ustawień
     public static String[] configuration = new String[] {"Bullet Velocity","V1","NumberOfBullets","X1","BulletRadius","R1","CellVelocity","V2","CellSize","H1","CellHealth","P1","CellRegenerationInterval","T2","Interval","T1","BulletVelocityIncrease","DV1","CellVelocityIncrease","DV2","BulletRadiusDecrease","DR1","CellSizeDecrease","DH1","GameTime","T3"};
@@ -79,7 +79,7 @@ public final class GameSettings {
                     System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
-                    if(setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))) == false)
+                    if(!setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
                         System.out.println("Warnings! This line is unhandled: " + tmpLine);
                 }
 
@@ -154,5 +154,4 @@ public final class GameSettings {
         }
         return true;
     }
-
 }

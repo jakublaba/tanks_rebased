@@ -32,16 +32,18 @@ public final class Cell extends GameSegment {
     }
     public void draw (Pane pane){
         segmentShape.setY(y);
-        erase(pane);
-        if(y < GameSettings.WindowHeight) {
-            pane.getChildren().add(segmentShape);
-        }
-        label.setTranslateY(y);
-        pane.getChildren().add(label);
-    }
-    public void erase (Pane pane) {
         pane.getChildren().remove(segmentShape);
         pane.getChildren().remove(label);
+        if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && currentHp!=0) {
+            pane.getChildren().add(segmentShape);
+            label.setTranslateY(y);
+            pane.getChildren().add(label);
+        }
+
+    }
+    public void erase (Pane pane) {
+
+
     }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
