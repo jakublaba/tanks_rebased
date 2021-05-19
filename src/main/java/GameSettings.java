@@ -63,7 +63,7 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 5;
+    public static double TimeBetweenCellGenerating = 0.5;
 
 
     //okno ustawień
@@ -93,9 +93,9 @@ public final class GameSettings {
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
         try {
-            readingFile = new Scanner(new File("src/main/resources/config/configFile.txt"));
+            readingFile = new Scanner(new File("src/main/resources/config/shooting.txt"));
             ConfigFileName = readingFile.nextLine();
-            while(readingFile.hasNextLine()){
+            while(readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
                 if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)\\]$")) {
                     System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
