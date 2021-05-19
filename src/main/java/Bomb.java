@@ -12,7 +12,8 @@ public class Bomb {
 
     private Bomb () {}
     public static boolean fatalCollision (Bullet bullet) {
-        return Math.abs(GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - Bomb.height - bullet.getY()) <= 1;
+        double epsilon = GameSettings.BulletVelocity;
+        return Math.abs(GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - Bomb.height - bullet.getY()) <= epsilon;
     }
     public static void draw (Pane pane) {
         Rectangle bombImg = new Rectangle();

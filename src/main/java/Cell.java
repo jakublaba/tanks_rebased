@@ -47,6 +47,7 @@ public final class Cell extends GameSegment {
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
+    public int getInitialHp () { return initialHp; }
     public int getCurrentHp () { return currentHp; }
     private void regenerate () {
         currentHp = currentHp >= initialHp ? initialHp : currentHp + 1;

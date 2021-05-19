@@ -4,9 +4,16 @@
 
 .tab-pane
 {
+<<<<<<< HEAD
     -fx-tab-min-width:380px;
     -fx-tab-min-height:40px
 }
+=======
+    -fx-tab-min-width:249px;
+    -fx-tab-min-height:40px
+}
+
+>>>>>>> b9da74e (Okno)
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
 }

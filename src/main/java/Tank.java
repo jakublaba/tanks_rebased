@@ -25,8 +25,7 @@ public class Tank {
         bullets = new ArrayList<>();
         bodyImg = new Image(getClass().getResource(GameSettings.TankBodyImg).toExternalForm());
         bodyView = new ImageView(bodyImg);
-        String imgChoice = GameSettings.TankBarrelImg;
-        barrelImg = new Image(getClass().getResource(imgChoice).toExternalForm());
+        barrelImg = new Image(getClass().getResource(GameSettings.TankBarrelImg).toExternalForm());
         barrelView = new ImageView(barrelImg);
         if(side == 'R') {
             barrelView.setRotate(180);
@@ -61,17 +60,17 @@ public class Tank {
         }
     }
     public void move (KeyCode key) {
-        if ((key == KeyCode.W && side == 'L' || key == KeyCode.UP && side == 'R') && position > bodyImg.getHeight()/2) {
+        if ((key == GameSettings.LeftPlayerMoveUp && side == 'L' || key == GameSettings.RightPlayerMoveUp && side == 'R') && position > bodyImg.getHeight()/2) {
             position -= GameSettings.TankVelocity;
-        } else if ((key == KeyCode.S && side == 'L' || key == KeyCode.DOWN && side == 'R') && position < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - bodyImg.getHeight()/2) {
+        } else if ((key == GameSettings.LeftPlayerMoveDown && side == 'L' || key == GameSettings.RightPlayerMoveDown && side == 'R') && position < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - bodyImg.getHeight()/2) {
             position += GameSettings.TankVelocity;
         }
     }
     public void rotateBarrel (KeyCode key) {
-        if ((key == KeyCode.A && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == KeyCode.RIGHT && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
+        if ((key == GameSettings.LeftPlayerBarrelDown && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelDown && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
             barrelAngle -= GameSettings.BarrelRotation;
             barrelView.setRotate(barrelView.getRotate() + GameSettings.BarrelRotation);
-        } else if ((key == KeyCode.D && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == KeyCode.LEFT && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit) ) {
+        } else if ((key == GameSettings.LeftPlayerBarrelUp && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelUp && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit) ) {
             barrelAngle += GameSettings.BarrelRotation;
             barrelView.setRotate(barrelView.getRotate() - GameSettings.BarrelRotation);
         }
