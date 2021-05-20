@@ -102,6 +102,7 @@ public class GameBoard {
             }
         }
     }
+
     public Cell cellCollision (Bullet bullet) {
         for (Cell cell : cells) {
             if (Math.abs(bullet.getX() - cell.getX()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
@@ -111,11 +112,13 @@ public class GameBoard {
         }
         return null;
     }
+
     public boolean bombCollision (Bullet bullet) {
         boolean yCondition = bullet.getY() >= GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - Bomb.height;
         boolean xCondition = bullet.getX() >= GameSettings.WindowWidth/2 - Bomb.width/2 && bullet.getX() <= GameSettings.WindowWidth/2 + Bomb.width/2;
         return yCondition && xCondition;
     }
+
     private void removeCell (Cell cellToRemove) {
         if (cellToRemove == null) return;
         cells.remove(cellToRemove);

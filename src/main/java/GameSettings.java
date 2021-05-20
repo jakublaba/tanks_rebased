@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -39,7 +38,7 @@ public final class GameSettings {
     public static double BulletRadiusDecrease = 2;
 
     //własności czołgu
-    public static double TankVelocity = 5;
+    public static double TankVelocity = 3;
     public static String TankBodyImg = "graphics/tankbody.png";
     public static String TankBarrelImg = "graphics/tankhead.png";
     public static double BarrelRotation = 1;
@@ -87,13 +86,10 @@ public final class GameSettings {
     public static ArrayList<String[]> getConfigurationList(){
         return configurationList;
     }
-
-
-
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
         try {
-            readingFile = new Scanner(new File("src/main/resources/config/shooting.txt"));
+            readingFile = new Scanner(new File("src/main/resources/config/configFile.txt"));
             ConfigFileName = readingFile.nextLine();
             while(readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
@@ -101,7 +97,7 @@ public final class GameSettings {
                     System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
-                    if(!setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
+                    if(setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
                         System.out.println("Warnings! This line is unhandled: " + tmpLine);
                 }
 
@@ -171,9 +167,9 @@ public final class GameSettings {
                 System.out.println("Set IMG: " + y);
             }
             default -> {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

@@ -67,10 +67,10 @@ public class Tank {
         }
     }
     public void rotateBarrel (KeyCode key) {
-        if ((key == GameSettings.LeftPlayerBarrelDown && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelUp && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
+        if ((key == GameSettings.LeftPlayerBarrelDown && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelDown && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
             barrelAngle -= GameSettings.BarrelRotation;
             barrelView.setRotate(barrelView.getRotate() + GameSettings.BarrelRotation);
-        } else if ((key == GameSettings.LeftPlayerBarrelUp && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelDown && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit) ) {
+        } else if ((key == GameSettings.LeftPlayerBarrelUp && side == 'L' && barrelAngle < GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelUp && side == 'R' && barrelAngle - 180 < GameSettings.BarrelAngleLimit) ) {
             barrelAngle += GameSettings.BarrelRotation;
             barrelView.setRotate(barrelView.getRotate() - GameSettings.BarrelRotation);
         }

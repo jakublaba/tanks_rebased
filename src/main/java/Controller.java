@@ -34,14 +34,14 @@ public final class Controller {
     private final GameBoard gameBoard = new GameBoard();
 
     //movement
-    private boolean keyDIsPressed;
-    private boolean keyAIsPressed;
-    private boolean keyWIsPressed;
-    private boolean keySIsPressed;
-    private boolean keyUpIsPressed;
-    private boolean keyDownIsPressed;
-    private boolean keyRightIsPressed;
-    private boolean keyLeftIsPressed;
+    private boolean leftBarrelUpPressed;
+    private boolean leftBarrelDownPressed;
+    private boolean leftMoveUpPressed;
+    private boolean leftMoveDownPressed;
+    private boolean rightMoveUpPressed;
+    private boolean rightMoveDownPressed;
+    private boolean rightBarrelDownPressed;
+    private boolean rightBarrelUpPressed;
     //shooting
     private long lastTimeOfLeftPlayerShot, lastTimeOfRightPlayerShot;
     private boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
@@ -68,49 +68,69 @@ public final class Controller {
         gameTime = (int)(GameSettings.GameTime);
         scene.setOnKeyPressed(key-> {
             KeyCode keyCode = key.getCode();
-            if(keyCode.equals(KeyCode.W))
-                keyWIsPressed = true;
-            if(keyCode.equals(KeyCode.S))
-                keySIsPressed = true;
-            if(keyCode.equals(KeyCode.A))
-                keyAIsPressed = true;
-            if(keyCode.equals(KeyCode.D))
-                keyDIsPressed = true;
-            if(keyCode.equals(KeyCode.UP))
-                keyUpIsPressed = true;
-            if(keyCode.equals(KeyCode.DOWN))
-                keyDownIsPressed = true;
-            if(keyCode.equals(KeyCode.LEFT))
-                keyLeftIsPressed = true;
-            if(keyCode.equals(KeyCode.RIGHT))
-                keyRightIsPressed = true;
-            if(keyCode.equals(KeyCode.SPACE))
+            if (keyCode.equals(KeyCode.W)) {
+                leftMoveUpPressed = true;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerMoveDown)) {
+                leftMoveDownPressed = true;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerBarrelDown)) {
+                leftBarrelDownPressed = true;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerBarrelUp)) {
+                leftBarrelUpPressed = true;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerMoveUp)) {
+                rightMoveUpPressed = true;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerMoveDown)) {
+                rightMoveDownPressed = true;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerBarrelUp)) {
+                rightBarrelUpPressed = true;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerBarrelDown)) {
+                rightBarrelDownPressed = true;
+            }
+            if (keyCode.equals(KeyCode.SPACE)) {
                 keySpaceIsPressed = true;
-            if(keyCode.equals(KeyCode.SHIFT))
+            }
+            if (keyCode.equals(KeyCode.SHIFT)) {
                 keyShiftIsPressed = true;
+            }
         });
         scene.setOnKeyReleased(key-> {
             KeyCode keyCode = key.getCode();
-            if(keyCode.equals(KeyCode.W))
-                keyWIsPressed = false;
-            if(keyCode.equals(KeyCode.S))
-                keySIsPressed = false;
-            if(keyCode.equals(KeyCode.A))
-                keyAIsPressed = false;
-            if(keyCode.equals(KeyCode.D))
-                keyDIsPressed = false;
-            if(keyCode.equals(KeyCode.UP))
-                keyUpIsPressed = false;
-            if(keyCode.equals(KeyCode.DOWN))
-                keyDownIsPressed = false;
-            if(keyCode.equals(KeyCode.LEFT))
-                keyLeftIsPressed = false;
-            if(keyCode.equals(KeyCode.RIGHT))
-                keyRightIsPressed = false;
-            if(keyCode.equals(KeyCode.SPACE))
+            if (keyCode.equals(KeyCode.W)) {
+                leftMoveUpPressed = false;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerMoveDown)) {
+                leftMoveDownPressed = false;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerBarrelDown)) {
+                leftBarrelDownPressed = false;
+            }
+            if (keyCode.equals(GameSettings.LeftPlayerBarrelUp)) {
+                leftBarrelUpPressed = false;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerMoveUp)) {
+                rightMoveUpPressed = false;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerMoveDown)) {
+                rightMoveDownPressed = false;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerBarrelUp)) {
+                rightBarrelUpPressed = false;
+            }
+            if (keyCode.equals(GameSettings.RightPlayerBarrelDown)) {
+                rightBarrelDownPressed = false;
+            }
+            if (keyCode.equals(KeyCode.SPACE)) {
                 keySpaceIsPressed = false;
-            if(keyCode.equals(KeyCode.SHIFT))
+            }
+            if (keyCode.equals(KeyCode.SHIFT)) {
                 keyShiftIsPressed = false;
+            }
         });
 
         gameLoop = new AnimationTimer() {
@@ -122,22 +142,23 @@ public final class Controller {
                 }
                 if(currentTime - lastTime >= 1000000000) {
                     timerLabel.setVisible(true);
-                    if(gameTime == GameSettings.GameTime)
+                    if (gameTime == GameSettings.GameTime) {
                         timerLabel.setVisible(false);
-                    if (gameTime == 0)
+                    } else if (gameTime == 0) {
                         gameLoop.stop();
-                    else if(gameTime >= 600 && gameTime %60 <10)
+                    } else if (gameTime >= 600 && gameTime %60 <10) {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + "0" + gameTime %60);
-                    else if(gameTime >= 60 && gameTime < 600 && gameTime %60 >= 10)
+                    } else if (gameTime >= 60 && gameTime < 600 && gameTime %60 >= 10) {
                         timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":" + gameTime %60);
-                    else if(gameTime >= 60 && gameTime < 600 && gameTime %60 < 10)
+                    } else if (gameTime >= 60 && gameTime < 600 && gameTime %60 < 10) {
                         timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":0" + gameTime %60);
-                    else if(gameTime > 0 && gameTime < 60 && gameTime %60 >= 10)
+                    } else if (gameTime > 0 && gameTime < 60 && gameTime %60 >= 10) {
                         timerLabel.setText("00" + ":" + (gameTime %60));
-                    else if(gameTime > 0 && gameTime < 60)
+                    } else if (gameTime > 0 && gameTime < 60) {
                         timerLabel.setText("00" + ":0" + (gameTime %60));
-                    else
+                    } else {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + gameTime %60);
+                    }
 
                     timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
                     lastTime = currentTime;
@@ -159,17 +180,17 @@ public final class Controller {
                 }
                 //TANKS
                 gameBoard.leftPlayer.getTank().draw(layerPane);
-                if (keyWIsPressed && !keySIsPressed) {
-                    gameBoard.leftPlayer.getTank().move(KeyCode.W);
+                if (leftMoveUpPressed && !leftMoveDownPressed) {
+                    gameBoard.leftPlayer.getTank().move(GameSettings.LeftPlayerMoveUp);
                 }
-                if (keySIsPressed && !keyWIsPressed) {
-                    gameBoard.leftPlayer.getTank().move(KeyCode.S);
+                if (leftMoveDownPressed && !leftMoveUpPressed) {
+                    gameBoard.leftPlayer.getTank().move(GameSettings.LeftPlayerMoveDown);
                 }
-                if (keyAIsPressed && !keyDIsPressed) {
-                    gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.A);
+                if (leftBarrelDownPressed && !leftBarrelUpPressed) {
+                    gameBoard.leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelDown);
                 }
-                if (keyDIsPressed && !keyAIsPressed) {
-                    gameBoard.leftPlayer.getTank().rotateBarrel(KeyCode.D);
+                if (leftBarrelUpPressed && !leftBarrelDownPressed) {
+                    gameBoard.leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelUp);
                 }
                 if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
                     gameBoard.leftPlayer.getTank().shoot();
@@ -177,17 +198,17 @@ public final class Controller {
                 }
 
                 gameBoard.rightPlayer.getTank().draw(layerPane);
-                if (keyUpIsPressed && !keyDownIsPressed) {
-                    gameBoard.rightPlayer.getTank().move(KeyCode.UP);
+                if (rightMoveUpPressed && !rightMoveDownPressed) {
+                    gameBoard.rightPlayer.getTank().move(GameSettings.RightPlayerMoveUp);
                 }
-                if (keyDownIsPressed && !keyUpIsPressed) {
-                    gameBoard.rightPlayer.getTank().move(KeyCode.DOWN);
+                if (rightMoveDownPressed && !rightMoveUpPressed) {
+                    gameBoard.rightPlayer.getTank().move(GameSettings.RightPlayerMoveDown);
                 }
-                if (keyLeftIsPressed && !keyRightIsPressed) {
-                    gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.LEFT);
+                if (rightBarrelUpPressed && !rightBarrelDownPressed) {
+                    gameBoard.rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelUp);
                 }
-                if (keyRightIsPressed && !keyLeftIsPressed) {
-                    gameBoard.rightPlayer.getTank().rotateBarrel(KeyCode.RIGHT);
+                if (rightBarrelDownPressed && !rightBarrelUpPressed) {
+                    gameBoard.rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelDown);
                 }
                 if (keyShiftIsPressed && rightPlayerAllowedToShoot) {
                     gameBoard.rightPlayer.getTank().shoot();
@@ -288,7 +309,7 @@ public final class Controller {
                     for(TextField tx: listOfTextFields){
                         if(tx.getId().equals(tmpBtn.getText().substring(5))){
                             try {
-                                if (!GameSettings.setGameSettings(tmpBtn.getText().substring(5), tx.getText()))
+                                if (GameSettings.setGameSettings(tmpBtn.getText().substring(5), tx.getText()))
                                     System.out.println("Warnings! This value is unhandled: " + tx.getText());
                             }
                             catch (NumberFormatException e){
