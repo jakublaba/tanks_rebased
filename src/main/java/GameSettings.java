@@ -48,17 +48,16 @@ public final class GameSettings {
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
 
-    //to chyba w ogóle niepotrzebne jest
     public static KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static KeyCode RightPlayerMoveDown = KeyCode.DOWN;
     public static KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
     public static KeyCode RightPlayerBarrelDown = KeyCode.LEFT;
-    public static KeyCode RightPlayerFire = KeyCode.SPACE;
+    public static KeyCode RightPlayerFire = KeyCode.SHIFT;
     public static KeyCode LeftPlayerMoveUp = KeyCode.W;
     public static KeyCode LeftPlayerMoveDown = KeyCode.S;
     public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
     public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static KeyCode LeftPlayerFire = KeyCode.SHIFT;
+    public static KeyCode LeftPlayerFire = KeyCode.SPACE;
 
     //rozgrywka
     public static double GameTime = 200;

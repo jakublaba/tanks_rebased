@@ -267,7 +267,7 @@ public final class Controller {
 
     @FXML
     private void initialize(){
-        if(tabPane!=null) {
+        if(tabPane != null) {
             setGamePropertiesTab();
             setManualConfigurationTab();
             setControlsTab();
