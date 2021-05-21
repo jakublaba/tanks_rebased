@@ -15,10 +15,11 @@
             <Font name="Bauhaus 93" size="28.0" />
          </font>
       </Text>
-      <TabPane fx:id="tabPane" layoutY="200.0" onMousePressed="#sectionConfigurationPressed" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" stylesheets="@css/tabPane.css" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutY="200.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" stylesheets="@css/tabPane.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Game Properties" />
-          <Tab text="Manual Configuration">
+          <Tab text="Manual Configuration"/>
+            <Tab text="Controls">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

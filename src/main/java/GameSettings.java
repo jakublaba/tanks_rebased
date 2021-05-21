@@ -1,10 +1,14 @@
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -45,16 +49,16 @@ public final class GameSettings {
     public static double BarrelAngleLimit = 50;
 
     //to chyba w ogóle niepotrzebne jest
-    public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
-    public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
-    public static final KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
-    public static final KeyCode RightPlayerBarrelDown = KeyCode.LEFT;
-    public static final KeyCode RightPlayerFire = KeyCode.SPACE;
-    public static final KeyCode LeftPlayerMoveUp = KeyCode.W;
-    public static final KeyCode LeftPlayerMoveDown = KeyCode.S;
-    public static final KeyCode LeftPlayerBarrelUp = KeyCode.D;
-    public static final KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static final KeyCode LeftPlayerFire = KeyCode.SHIFT;
+    public static KeyCode RightPlayerMoveUp = KeyCode.UP;
+    public static KeyCode RightPlayerMoveDown = KeyCode.DOWN;
+    public static KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
+    public static KeyCode RightPlayerBarrelDown = KeyCode.LEFT;
+    public static KeyCode RightPlayerFire = KeyCode.SPACE;
+    public static KeyCode LeftPlayerMoveUp = KeyCode.W;
+    public static KeyCode LeftPlayerMoveDown = KeyCode.S;
+    public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
+    public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
+    public static KeyCode LeftPlayerFire = KeyCode.SHIFT;
 
     //rozgrywka
     public static double GameTime = 200;
@@ -62,34 +66,41 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 0.5;
+    public static double TimeBetweenCellGenerating = 1;
+    public static double VolumeOfMusic = 0.25;
+    public static double VolumeOfMusicEffects = 0.25;
 
 
     //okno ustawień
-    private static final ArrayList<String[]> configurationList = new ArrayList<>();
+    private static final ArrayList<String[]> ConfigurationList = new ArrayList<>();
+    public static boolean MakeScreenshot = false;
+
+    //plik konfiguracyjny
+    public static String PathConfigFile = "src/main/resources/config/configFile.txt";
 
     public static void setConfigurationList(){
-        configurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
-        configurationList.add(new String[]{"NumberOfBullets", "X1", String.valueOf(BulletNumberLimit)});
-        configurationList.add(new String[]{"BulletRadius", "R1", String.valueOf(BulletRadius)});
-        configurationList.add(new String[]{"CellVelocity", "V2", String.valueOf(CellVelocity)});
-        configurationList.add(new String[]{"CellSize", "H1", String.valueOf(CellSize)});
-        configurationList.add(new String[]{"CellHealth", "P1", String.valueOf(CellHealth)});
-        configurationList.add(new String[]{"Interval", "T1", String.valueOf(CellRegenerationInterval)});
-        configurationList.add(new String[]{"CellRegenerationInterval", "T2", String.valueOf(CellRegenerationInterval)});
-        configurationList.add(new String[]{"BulletVelocityIncrease", "DV1", String.valueOf(BulletVelocityIncrease)});
-        configurationList.add(new String[]{"CellVelocityIncrease", "DV2", String.valueOf(CellVelocityIncrease)});
-        configurationList.add(new String[]{"BulletRadiusDecrease", "DR1", String.valueOf(BulletRadiusDecrease)});
-        configurationList.add(new String[]{"CellSizeDecrease", "DH1", String.valueOf(CellSizeDecrease)});
-        configurationList.add(new String[]{"GameTime", "T3", String.valueOf(GameTime)});
+        ConfigurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
+        ConfigurationList.add(new String[]{"Number Of Bullets", "X1", String.valueOf(BulletNumberLimit)});
+        ConfigurationList.add(new String[]{"Bullet Radius", "R1", String.valueOf(BulletRadius)});
+        ConfigurationList.add(new String[]{"Cell Velocity", "V2", String.valueOf(CellVelocity)});
+        ConfigurationList.add(new String[]{"Cell Size", "H1", String.valueOf(CellSize)});
+        ConfigurationList.add(new String[]{"Cell Health", "P1", String.valueOf(CellHealth)});
+        ConfigurationList.add(new String[]{"Interval", "T1", String.valueOf(CellRegenerationInterval)});
+        ConfigurationList.add(new String[]{"Cell Regeneration Interval", "T2", String.valueOf(CellRegenerationInterval)});
+        ConfigurationList.add(new String[]{"Bullet Velocity Increase", "DV1", String.valueOf(BulletVelocityIncrease)});
+        ConfigurationList.add(new String[]{"Cell Velocity Increase", "DV2", String.valueOf(CellVelocityIncrease)});
+        ConfigurationList.add(new String[]{"Bullet Radius Decrease", "DR1", String.valueOf(BulletRadiusDecrease)});
+        ConfigurationList.add(new String[]{"Cell Size Decrease", "DH1", String.valueOf(CellSizeDecrease)});
+        ConfigurationList.add(new String[]{"Game Time", "T3", String.valueOf(GameTime)});
     }
     public static ArrayList<String[]> getConfigurationList(){
-        return configurationList;
+        return ConfigurationList;
     }
+
     public static void loadConfigFile() throws InputMismatchException {
         Scanner readingFile;
         try {
-            readingFile = new Scanner(new File("src/main/resources/config/configFile.txt"));
+            readingFile = new Scanner(new File(PathConfigFile));
             ConfigFileName = readingFile.nextLine();
             while(readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
@@ -97,10 +108,9 @@ public final class GameSettings {
                     System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
-                    if(setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
+                    if(!setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
                         System.out.println("Warnings! This line is unhandled: " + tmpLine);
                 }
-
             }
         }
         catch(FileNotFoundException e){
@@ -167,9 +177,32 @@ public final class GameSettings {
                 System.out.println("Set IMG: " + y);
             }
             default -> {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    public static List<TextField> saveConfigFile(List<TextField> textFieldsList, String nameOfFile){
+        List <TextField> incorrectTextFieldList = new ArrayList<TextField>();
+        String nameOfFileWithExtension = nameOfFile.replace(' ', '_') + ".txt";
+        PrintWriter writingFile;
+        try {
+            writingFile = new PrintWriter("src/main/resources/config/"+ nameOfFileWithExtension);
+            writingFile.println(nameOfFile);
+            for (int i = 0; i < textFieldsList.size(); i++){
+                try{
+                    GameSettings.setGameSettings(GameSettings.getConfigurationList().get(i)[1], textFieldsList.get(i).getText());
+                    writingFile.println("[" + GameSettings.getConfigurationList().get(i)[1] + "] " + GameSettings.getConfigurationList().get(i)[0].replaceAll(" ", "") + " [" + textFieldsList.get(i).getText() + "]");
+                } catch (NumberFormatException e){
+                    incorrectTextFieldList.add(textFieldsList.get(i));
+                }
+            }
+            writingFile.close();
+            System.out.println("Configuration File Saved");
+        } catch (FileNotFoundException e) {
+            System.out.println("There is no file");
+        }
+        return incorrectTextFieldList;
     }
 }

@@ -11,5 +11,5 @@ Przykład 1
 [DV2] CellVelocityIncrease [5]
 [DR1] BulletRadiusDecrease [1]
 [DH1] CellSizeDecrease [2]
-[T3] GameTime [100]
-[IMG] ImageExtension [JPG]
+[T3] GameTime [5]
+[IMG] ImageExtension [PNG]

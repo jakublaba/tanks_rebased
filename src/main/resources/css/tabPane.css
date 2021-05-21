@@ -4,9 +4,10 @@
 
 .tab-pane
 {
-    -fx-tab-min-width:380px;
+    -fx-tab-min-width:249px;
     -fx-tab-min-height:40px
 }
+
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
 }
