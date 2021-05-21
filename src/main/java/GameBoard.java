@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoard {
-    private List<Cell> cells;
+    private final List<Cell> cells;
     private Colony colony; //we wstępnych pracach nad projektem jedna - w późniejszej fazie to pole zostanie przekształcone w listę koloni
     public final PlayerInfo leftPlayer, rightPlayer;
     private long lastTimeOfGeneratingCell;
