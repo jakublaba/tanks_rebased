@@ -91,10 +91,10 @@ public final class Controller {
             if (keyCode.equals(GameSettings.RightPlayerBarrelDown)) {
                 rightBarrelDownPressed = true;
             }
-            if (keyCode.equals(GameSettings.leftPlayerShoot)) {
+            if (keyCode.equals(GameSettings.LeftPlayerFire)) {
                 leftPlayerShootPressed = true;
             }
-            if (keyCode.equals(GameSettings.rightPlayerShoot)) {
+            if (keyCode.equals(GameSettings.RightPlayerFire)) {
                 rightPlayerShootPressed = true;
             }
         });
@@ -124,10 +124,10 @@ public final class Controller {
             if (keyCode.equals(GameSettings.RightPlayerBarrelDown)) {
                 rightBarrelDownPressed = false;
             }
-            if (keyCode.equals(GameSettings.leftPlayerShoot)) {
+            if (keyCode.equals(GameSettings.LeftPlayerFire)) {
                 leftPlayerShootPressed = false;
             }
-            if (keyCode.equals(GameSettings.rightPlayerShoot)) {
+            if (keyCode.equals(GameSettings.RightPlayerFire)) {
                 rightPlayerShootPressed = false;
             }
         });
