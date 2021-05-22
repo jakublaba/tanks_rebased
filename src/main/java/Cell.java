@@ -10,7 +10,7 @@ public final class Cell extends GameSegment {
     private final int initialHp;
     private int currentHp;
     private final Label label;
-    private Rectangle segmentShape;
+    private final Rectangle segmentShape;
 
     public Cell (boolean memberOfColony) {
         super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize/2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize/2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
@@ -21,8 +21,8 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
         this.memberOfColony = memberOfColony;
-        initialHp = GameSettings.CellHealth;
-        currentHp = GameSettings.CellHealth;
+        initialHp = ThreadLocalRandom.current().nextInt(1,9);
+        currentHp = initialHp;
         label = new Label(String.valueOf(initialHp));
         label.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
         label.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
@@ -44,19 +44,23 @@ public final class Cell extends GameSegment {
         y += GameSettings.CellVelocity * time;
     }
     public int getInitialHp () { return initialHp; }
-    public int getCurrentHp () { return currentHp; }
-    private void regenerate () {
-        currentHp = currentHp >= initialHp ? initialHp : currentHp + 1;
+    public int getCurrentHp () {
+        return currentHp;
+    }
+    public void regenerate () {
+        label.setText(String.valueOf(currentHp));
+        if(currentHp < initialHp && currentHp > 0)
+            currentHp++;
     }
     public void getDamaged () {
         double tmp = 0;
+        currentHp = currentHp < 1 ? currentHp : currentHp - 1;
         for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
             if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length) {
                 segmentShape.setFill(GameSettings.CellColorSequence[GameSettings.CellColorSequence.length - i - 1]);
             }
             tmp += 1.0/GameSettings.CellColorSequence.length;
         }
-        currentHp--;
         label.setText(String.valueOf(currentHp));
     }
     public void resize(){

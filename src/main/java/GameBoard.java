@@ -8,6 +8,7 @@ public class GameBoard {
     private Colony colony; //we wstępnych pracach nad projektem jedna - w późniejszej fazie to pole zostanie przekształcone w listę koloni
     public final PlayerInfo leftPlayer, rightPlayer;
     private long lastTimeOfGeneratingCell;
+    private long lastTimeOfIncreaseHealth;
     private long lastTimeOfMoveCell;
     private long lastTimeOfDecrease;
 
@@ -23,6 +24,8 @@ public class GameBoard {
             Cell cell = new Cell (false);
             cells.add(cell);
             lastTimeOfGeneratingCell = time;
+            leftPlayer.drawScore(pane, 'L');
+            rightPlayer.drawScore(pane, 'R');
         }
         //Co 15 000 000 nanosekund aktualizowana jest pozycja komórek => częstoliwość około 60 Hz
         if (time - lastTimeOfMoveCell >= 15_000_000) {
@@ -58,6 +61,8 @@ public class GameBoard {
                 }
             }
             lastTimeOfDecrease = time;
+            GameSettings.CellVelocity += GameSettings.CellVelocityIncrease;
+            GameSettings.BulletVelocity += GameSettings.BulletVelocityIncrease;
         }
         var leftTank = leftPlayer.getTank();
         for (Bullet bullet : leftTank.getBullets()) {
@@ -67,11 +72,14 @@ public class GameBoard {
                 leftTank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
+                    if(cell.getCurrentHp() == 0)
+                        leftPlayer.increaseScore(cell.getInitialHp());
                 }
                 break;
             }
             if (bombCollision(bullet)) {
-                //System.out.printf("Bomb collision (L)");
+                System.out.print("Bomb collision (L)");
+                System.out.println("Lewy: " + leftPlayer.getScore() + "Prawy: " + rightPlayer.getScore());
                 bullet.erase(pane);
                 leftTank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
@@ -88,11 +96,14 @@ public class GameBoard {
                 rightTank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
+                    if(cell.getCurrentHp() == 0)
+                        rightPlayer.increaseScore(cell.getInitialHp());
                 }
                 break;
             }
             if (bombCollision(bullet)) {
-                //System.out.println("Bomb collision (R)");
+                System.out.println("Bomb collision (R)");
+                System.out.println("Lewy: " + leftPlayer.getScore() + "Prawy: " + rightPlayer.getScore());
                 bullet.erase(pane);
                 rightTank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
@@ -100,6 +111,13 @@ public class GameBoard {
                 }
                 break;
             }
+        }
+        if (time - lastTimeOfIncreaseHealth >= GameSettings.CellRegenerationInterval * 1_000_000_000) {
+
+            for(Cell cell : cells){
+                cell.regenerate();
+            }
+            lastTimeOfIncreaseHealth = time;
         }
     }
     public Cell cellCollision (Bullet bullet) {
@@ -121,5 +139,5 @@ public class GameBoard {
         cells.remove(cellToRemove);
     }
     public void removeColony () {}
-    private void addPoints(@NotNull PlayerInfo player, int points) { player.increaseScore(points); }
+
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" prefHeight="800.0" prefWidth="800.0" styleClass="gradbackground" stylesheets="@css/backgrounds.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane fx:id="gradBackground" prefHeight="800.0" prefWidth="800.0" styleClass="gradBackground" stylesheets="@css/backgrounds.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <Text fill="WHITE" layoutX="184.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TANKS" textAlignment="CENTER" wrappingWidth="432.240234375">
          <font>
