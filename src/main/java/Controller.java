@@ -252,20 +252,11 @@ public final class Controller {
     private void setManualConfigurationTab(){
         Tab tabConfiguration = tabPane.getTabs().get(1);
         List<TextField> listOfTextFields = new ArrayList<>();
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setTranslateX(0);
-        scrollPane.setTranslateY(0);
-        scrollPane.setPrefWidth(800);
-        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
-        GridPane gridConfigurationPane = new GridPane();
-        gridConfigurationPane.setTranslateX(0);
-        gridConfigurationPane.setTranslateY(0);
-        gridConfigurationPane.setPrefWidth(800);
-        gridConfigurationPane.setStyle("-fx-background-color: rgba(230, 230, 230, 0.2)");
-        gridConfigurationPane.setVgap(40);
-        int i;
-        for(i = 0; i < GameSettings.getConfigurationList().size(); i++){
-            Label tmpLabel = new Label(GameSettings.getConfigurationList().get(i)[0]);
+        ScrollPane scrollPane = ControllerSetter.setScrollPane(0, 0 , 800);
+        GridPane gridConfigurationPane = ControllerSetter.setGridPane(0, 0, 800);
+
+        for(int i = 0; i < GameSettings.getConfigurationList().size(); i++){
+            Label tmpLabel = ControllerSetter.setLabel(GameSettings.getConfigurationList().get(i)[0], 20, 0);
             tmpLabel.setStyle("-fx-font-size: 20px;-fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
 
             Button tmpBtn = ControllerSetter.setButton(200, 0, "Save " + GameSettings.getConfigurationList().get(i)[1], "css/tabPaneButtons.css");

@@ -12,7 +12,6 @@ public abstract class GameSegment {
         this.y = y;
         currentSize = initialSize;
         currentVelocity = initialVelocity;
-        //Zostawiłem to w tym konstruktorze, bo to chyba bedzie współna część dla Cell i Bullet
     }
     protected double getX () { return x; }
     protected double getY () { return y; }
