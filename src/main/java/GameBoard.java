@@ -5,35 +5,43 @@ import java.util.List;
 
 public class GameBoard {
     private final List<Cell> cells;
-    private Colony colony; //we wstępnych pracach nad projektem jedna - w późniejszej fazie to pole zostanie przekształcone w listę koloni
+    private  final List <Colony> colonies;
     public final PlayerInfo leftPlayer, rightPlayer;
     private long lastTimeOfGeneratingCell;
     private long lastTimeOfIncreaseHealth;
     private long lastTimeOfMoveCell;
     private long lastTimeOfDecrease;
+    private long lastTimeOfGeneratingColony;
 
     public GameBoard () {
         leftPlayer = new PlayerInfo('L');
         rightPlayer = new PlayerInfo('R');
         cells = new ArrayList<>();
-        //do inicjalizowania kolonii trzeba będzie zaimplementować jakiś algorytm wykrywający sąsiadujące komórki
-        //colony = new Colony();
+        colonies = new ArrayList<>();
     }
     public void updateGame(long time, Pane pane) {
         if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
-            Cell cell = new Cell (false);
+            Cell cell = new Cell ();
             cells.add(cell);
             lastTimeOfGeneratingCell = time;
             leftPlayer.drawScore(pane, 'L');
             rightPlayer.drawScore(pane, 'R');
         }
+        if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
+            Colony colony = new Colony();
+            colonies.add(colony);
+            lastTimeOfGeneratingColony = time;
+        }
         //Co 15 000 000 nanosekund aktualizowana jest pozycja komórek => częstoliwość około 60 Hz
         if (time - lastTimeOfMoveCell >= 15_000_000) {
             double timeBetween = ((double)time - (double)lastTimeOfMoveCell)/1_000_000_000;
-            //System.out.println("Czas między zmianami: " + timeBetween);
             for (Cell cell : cells) {
                 cell.move(timeBetween);
                 cell.draw(pane);
+            }
+            for (Colony colony : colonies){
+                colony.move(timeBetween);
+                colony.draw(pane);
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
             cells.removeIf(cell -> cell.getCurrentSize() < 0);
@@ -43,6 +51,9 @@ public class GameBoard {
         if (time - lastTimeOfDecrease >= 1_000_000_000 * GameSettings.Interval) {
             for (Cell cell : cells) {
                 cell.resize();
+            }
+            for (Colony colony : colonies){
+                colony.resize();
             }
             for (Bullet bullet : leftPlayer.getTank().getBullets()) {
                 bullet.resize();
