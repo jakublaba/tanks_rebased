@@ -5,7 +5,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -360,7 +359,7 @@ public final class Controller {
         gridConfigurationPane.setPrefWidth(800);
         gridConfigurationPane.setStyle("-fx-background-color: rgba(230, 230, 230, 0.2)");
         gridConfigurationPane.setVgap(40);
-        int i = 0;
+        int i;
         for(i = 0; i < GameSettings.getConfigurationList().size(); i++){
             Label tmpLabel = new Label(GameSettings.getConfigurationList().get(i)[0]);
             tmpLabel.setStyle("-fx-font-size: 20px;-fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
