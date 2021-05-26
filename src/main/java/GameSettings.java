@@ -65,7 +65,8 @@ public final class GameSettings {
     public static String ImageExtension = "PNG";
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 1;
+    public static double TimeBetweenCellGenerating = 3;
+    public static double TimeBetweenColonyGeneration = 2;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
 
