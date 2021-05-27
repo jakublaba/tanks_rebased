@@ -90,7 +90,8 @@ public final class Controller {
                     timerLabel.setVisible(true);
                     if (gameTime == GameSettings.GameTime) {
                         timerLabel.setVisible(false);
-                    } else if (gameTime == 0) {
+                    }
+                    if (gameTime == 0) {
                         gameLoop.stop();
                     } else if (gameTime >= 600 && gameTime %60 <10) {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + "0" + gameTime %60);
@@ -105,7 +106,6 @@ public final class Controller {
                     } else {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + gameTime %60);
                     }
-
                     timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
                     lastTime = currentTime;
                     gameTime--;
@@ -175,6 +175,7 @@ public final class Controller {
         timerLabel = new Label("");
         timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.03); -fx-font-weight: bold;");
         timerLabel.setTranslateY(GameSettings.WindowHeight /3);
+        timerLabel.setVisible(false);
         ControllerSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
         Bomb.draw(layerPane);
     }
