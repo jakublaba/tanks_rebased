@@ -1,5 +1,4 @@
 import javafx.scene.layout.Pane;
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class GameBoard {
         cells = new ArrayList<>();
         colonies = new ArrayList<>();
     }
-    public void updateGame(long time, Pane pane) {
+    public boolean updateGame(long time, Pane pane) {
         if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
             Cell cell = new Cell ();
             cells.add(cell);
@@ -32,7 +31,6 @@ public class GameBoard {
             colonies.add(colony);
             lastTimeOfGeneratingColony = time;
         }
-        //Co 15 000 000 nanosekund aktualizowana jest pozycja komórek => częstoliwość około 60 Hz
         if (time - lastTimeOfMoveCell >= 15_000_000) {
             double timeBetween = ((double)time - (double)lastTimeOfMoveCell)/1_000_000_000;
             for (Cell cell : cells) {
@@ -89,12 +87,10 @@ public class GameBoard {
                 break;
             }
             if (bombCollision(bullet)) {
-                System.out.print("Bomb collision (L)");
-                System.out.println("Lewy: " + leftPlayer.getScore() + "Prawy: " + rightPlayer.getScore());
                 bullet.erase(pane);
                 leftTank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
-                    System.exit(0);
+                    return true;
                 }
                 break;
             }
@@ -113,12 +109,10 @@ public class GameBoard {
                 break;
             }
             if (bombCollision(bullet)) {
-                System.out.println("Bomb collision (R)");
-                System.out.println("Lewy: " + leftPlayer.getScore() + "Prawy: " + rightPlayer.getScore());
                 bullet.erase(pane);
                 rightTank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
-                    System.exit(0);
+                    return true;
                 }
                 break;
             }
@@ -130,12 +124,25 @@ public class GameBoard {
             }
             lastTimeOfIncreaseHealth = time;
         }
+        return false;
     }
     public Cell cellCollision (Bullet bullet) {
         for (Cell cell : cells) {
-            if (Math.abs(bullet.getX() - cell.getX()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                Math.abs(bullet.getY() - cell.getY()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+            double cellCenterX = cell.getX();
+            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
+                Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
                 return cell;
+            }
+        }
+        for (Colony colony : colonies) {
+            for (Cell cell : colony.getCells()) {
+                double cellCenterX = cell.getX();
+                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
+                        Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                    return cell;
+                }
             }
         }
         return null;

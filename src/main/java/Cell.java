@@ -1,6 +1,8 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,6 +14,7 @@ public final class Cell extends GameSegment {
     private final Label label;
     private final Rectangle segmentShape;
     private int position;
+    private Circle coordCheck, coordCheck2;
 
     public Cell () {
         super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize/2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize/2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
@@ -31,6 +34,10 @@ public final class Cell extends GameSegment {
         label.setAlignment(Pos.CENTER);
         label.setTranslateX(x - GameSettings.CellSize/2);
         label.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
+        coordCheck = new Circle(x, y,3);
+        coordCheck.setFill(Color.RED);
+        coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
+        coordCheck2.setFill(Color.BLACK);
     }
     public Cell (double x, double y, double initialSize, double initialVelocity, int position) {
         super(x, y, initialSize, initialVelocity);
@@ -50,12 +57,24 @@ public final class Cell extends GameSegment {
         label.setAlignment(Pos.CENTER);
         label.setTranslateX(x - GameSettings.CellSize/2);
         label.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
+        coordCheck = new Circle(x, y,3);
+        coordCheck.setFill(Color.RED);
+        coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
+        coordCheck2.setFill(Color.BLACK);
     }
     public void draw (Pane pane){
+        coordCheck.setCenterX(x);
+        coordCheck.setCenterY(y);
+        coordCheck2.setCenterX(x);
+        coordCheck2.setCenterY(y + getCurrentSize()/2);
         segmentShape.setY(y);
+        pane.getChildren().remove(coordCheck);
+        pane.getChildren().remove(coordCheck2);
         pane.getChildren().remove(segmentShape);
         pane.getChildren().remove(label);
         if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && currentHp!=0) {
+            pane.getChildren().add(coordCheck);
+            pane.getChildren().add(coordCheck2);
             pane.getChildren().add(segmentShape);
             label.setTranslateY(y);
             pane.getChildren().add(label);

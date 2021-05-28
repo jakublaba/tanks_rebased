@@ -4,3 +4,10 @@
 #mainBackground {
   -fx-background-color: rgba(230, 230, 230, 0.2)
 }
+#gameBackground {
+  -fx-background-color: linear-gradient(to right, rgba(0, 102, 255, 0.5), rgba(204, 0, 0, 0.5));
+}
+#finishPaneBackground {
+    -fx-background-color:  rgba(230, 230, 230, 0.2);
+    -fx-background-radius: 10;
+}
