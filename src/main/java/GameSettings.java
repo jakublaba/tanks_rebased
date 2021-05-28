@@ -1,4 +1,3 @@
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -11,19 +10,17 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import static javafx.scene.paint.Color.rgb;
 
 public final class GameSettings {
     //własności okna
     public static double WindowWidth = 800;
     public static double WindowHeight = 800;
-    Color TANKS_FIELD_COLOR_ONE = Color.web("#3798D8"); //Zdefiniowane na później
-    Color TANKS_FIELD_COLOR_TWO = Color.web("E4E8EB");
-    Color WAR_FIELD_COLOR_ONE = Color.web("0D9068");
-    Color WAR_FIELD_COLOR_TWO = Color.web("0D9068");
     public static double WidthOfTankBorder = 120;
 
     //własności komórki
-    public static Color [] CellColorSequence = {Color.OLIVEDRAB, Color.GOLD, Color.CRIMSON};
+    public static Color [] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
+            rgb(255, 255, 102, 0.6), rgb(255, 204, 0, 0.6), rgb(255, 153, 0, 0.6), rgb(255, 51, 0, 0.6), rgb(255, 0, 0, 0.6)};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
     public static int CellHealth = 3;
@@ -66,7 +63,7 @@ public final class GameSettings {
     public static KeyCode Pause = KeyCode.P;
     public static String ConfigFileName;
     public static double TimeBetweenCellGenerating = 3;
-    public static double TimeBetweenColonyGeneration = 2;
+    public static double TimeBetweenColonyGeneration = 10;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
 
@@ -104,7 +101,7 @@ public final class GameSettings {
             ConfigFileName = readingFile.nextLine();
             while(readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
-                if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)\\]$")) {
+                if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)]$")) {
                     System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
@@ -184,7 +181,7 @@ public final class GameSettings {
     }
 
     public static List<TextField> saveConfigFile(List<TextField> textFieldsList, String nameOfFile){
-        List <TextField> incorrectTextFieldList = new ArrayList<TextField>();
+        List <TextField> incorrectTextFieldList = new ArrayList<>();
         String nameOfFileWithExtension = nameOfFile.replace(' ', '_') + ".txt";
         PrintWriter writingFile;
         try {
