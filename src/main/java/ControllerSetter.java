@@ -1,9 +1,22 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ControllerSetter {
     public static void addChildren(Pane pane, Node... elements){
@@ -116,6 +129,20 @@ public class ControllerSetter {
         return line;
     }
 
+    public static PieChart setPieChart(GameBoard gameBoard){
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Left Player: " + gameBoard.rightPlayer.getScore(), gameBoard.rightPlayer.getScore() == 0 ? 1 : gameBoard.rightPlayer.getScore()),
+                new PieChart.Data("Right Player: " + gameBoard.leftPlayer.getScore(), gameBoard.leftPlayer.getScore() == 0 ? 1 : gameBoard.leftPlayer.getScore()));
+        PieChart chart = new PieChart(pieChartData);
+        chart.setLegendVisible(false);
+        chart.setStyle("-fx-font-size: 17px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
+        chart.setMaxSize(500, 500);
+        chart.setMinSize(500, 500);
+        chart.setTranslateY(50);
+        chart.setTranslateX(50);
+        return chart;
+    }
+
     public static void setPressedKey(KeyCode keyCode){
         if (keyCode.equals(KeyCode.W)) {
             Controller.leftMoveUpPressed = true;
@@ -181,4 +208,16 @@ public class ControllerSetter {
             Controller.rightPlayerShootPressed = false;
         }
     }
+    public static void makeScreenshot(Pane pane){
+        WritableImage image = pane.snapshot(new SnapshotParameters(), null);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+        Date date = new Date();
+        File file = new File("src/main/resources/screenshots/screenshot[" + formatter.format(date) + "]." + GameSettings.ImageExtension.toLowerCase(Locale.ROOT));
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), GameSettings.ImageExtension.toLowerCase(Locale.ROOT), file);
+        } catch (IOException e) {
+            System.out.println("Screenshot issue");
+        }
+    }
+
 }

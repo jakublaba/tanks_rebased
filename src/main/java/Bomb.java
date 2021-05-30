@@ -3,6 +3,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import static javafx.scene.paint.Color.rgb;
+
 
 public class Bomb {
     private static final double x = GameSettings.WindowWidth / 2;
@@ -21,28 +23,28 @@ public class Bomb {
         bombImg.setWidth(width);
         bombImg.setX(x - width /2);
         bombImg.setY(y - GameSettings.WidthOfTankBorder - height);
-        bombImg.setFill(Color.BLACK);
+        bombImg.setFill(rgb(87, 107, 107, 0.5));
         bombImg.toFront();
         Line rightLine = new Line();
         rightLine.setStartX(x + width /2);
         rightLine.setStartY(y - GameSettings.WidthOfTankBorder);
         rightLine.setEndX(x + width /2);
         rightLine.setEndY(y - GameSettings.WidthOfTankBorder - height);
-        rightLine.setStroke(Color.GRAY);
+        rightLine.setStroke(rgb(87, 107, 107, 0.8));
         rightLine.setStrokeWidth(5);
         Line leftLine = new Line();
         leftLine.setStartX(x - width /2);
         leftLine.setStartY(y - GameSettings.WidthOfTankBorder);
         leftLine.setEndX(x - width /2);
         leftLine.setEndY(y - GameSettings.WidthOfTankBorder - height);
-        leftLine.setStroke(Color.GRAY);
+        leftLine.setStroke(rgb(87, 107, 107, 0.8));
         leftLine.setStrokeWidth(5);
         Line topLine = new Line();
         topLine.setStartX(x - width /2);
         topLine.setStartY(y - GameSettings.WidthOfTankBorder - height);
         topLine.setEndX(x + width /2);
         topLine.setEndY(y - GameSettings.WidthOfTankBorder - height);
-        topLine.setStroke(Color.ORANGE);
+        topLine.setStroke(rgb(255, 51, 0, 0.8));
         topLine.setStrokeWidth(5);
         pane.getChildren().add(bombImg);
         pane.getChildren().add(rightLine);

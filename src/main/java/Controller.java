@@ -1,8 +1,10 @@
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -10,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,10 +27,12 @@ public final class Controller {
     @FXML
     private TabPane tabPane;
     public static Pane layerPane;
+    public Pane finishPane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
     private int gameTime;
     private GameBoard gameBoard;
+    private Stage primaryStage;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -60,7 +63,7 @@ public final class Controller {
         Stage Menu = (Stage)startBtn.getScene().getWindow();
         Menu.hide();
         Pane gameField = new Pane();
-        Stage primaryStage = new Stage();
+        primaryStage = new Stage();
         BorderPane root = new BorderPane();
         layerPane = new Pane();
         layerPane.getChildren().add(gameField);
@@ -80,14 +83,14 @@ public final class Controller {
             @Override
             public void handle(long currentTime) {
                 if (gameTime == 0) {
-                    System.out.println("Lewy: " + gameBoard.leftPlayer.getScore() + "Prawy: " + gameBoard.rightPlayer.getScore());
-                    System.exit(0);
+                    showFinishPane(false);
                 }
                 if(currentTime - lastTime >= 1000000000) {
                     timerLabel.setVisible(true);
                     if (gameTime == GameSettings.GameTime) {
                         timerLabel.setVisible(false);
-                    } else if (gameTime == 0) {
+                    }
+                    if (gameTime == 0) {
                         gameLoop.stop();
                     } else if (gameTime >= 600 && gameTime %60 <10) {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + "0" + gameTime %60);
@@ -102,7 +105,6 @@ public final class Controller {
                     } else {
                         timerLabel.setText((gameTime - gameTime %60)/60 + ":" + gameTime %60);
                     }
-
                     timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
                     lastTime = currentTime;
                     gameTime--;
@@ -159,7 +161,9 @@ public final class Controller {
                 }
 
                 //GAME BOARD
-                gameBoard.updateGame(currentTime, layerPane);
+                if(gameBoard.updateGame(currentTime, layerPane)){
+                    showFinishPane(true);
+                }
             }
         };
         gameLoop.start();
@@ -170,8 +174,11 @@ public final class Controller {
         Line leftLine = ControllerSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line horizontalLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
         timerLabel = new Label("");
-        timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.03); -fx-font-weight: bold;");
+        timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.1); -fx-font-weight: bold;");
         timerLabel.setTranslateY(GameSettings.WindowHeight /3);
+        timerLabel.setVisible(false);
+        layerPane.setId("gameBackground");
+        layerPane.getStylesheets().add("css/backgrounds.css");
         ControllerSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
         Bomb.draw(layerPane);
     }
@@ -401,5 +408,37 @@ public final class Controller {
             e.printStackTrace();
         }
     }
+    public void showFinishPane(boolean bombCollision){
+        gameLoop.stop();
+        finishPane = ControllerSetter.setPane(100, 50, 600, "finishPaneBackground", "css/backgrounds.css");
+        finishPane.setPrefHeight(650);
+        finishPane.setVisible(true);
+        Label finishLabel = ControllerSetter.setLabel("Time Over", 0, 30);
+        if(bombCollision) {
+            finishLabel.setText("Bomb Collision!");
+        }
+        finishLabel.setPrefWidth(600);
+        finishLabel.setAlignment(Pos.CENTER);
+        finishLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
+        PieChart pieChart = ControllerSetter.setPieChart(gameBoard);
+        Button quitButton = ControllerSetter.setButton(5, 500, "Quit", "css/buttons.css");
+        quitButton.setPrefWidth(290);
+        quitButton.setOnAction(e -> exitButtonPressed());
+        Button againButton = ControllerSetter.setButton(305, 500, "Again!", "css/buttons.css");
+        againButton.setPrefWidth(290);
+        againButton.setOnAction(e -> {
+            primaryStage.close();
+            startButtonPressed();
+            //TODO: Obsługa tego zdarzenia - nie usuwają się komórki i kule z layerPane
+        });
+        layerPane.getChildren().clear();
+        ControllerSetter.addChildren(finishPane, finishLabel, pieChart, quitButton, againButton);
+        ControllerSetter.addChildren(layerPane, finishPane);
+        if(GameSettings.MakeScreenshot) {
+            ControllerSetter.makeScreenshot(layerPane);
+        }
+    }
+
     private void pauseButtonPressed() {}
+
 }
