@@ -128,9 +128,21 @@ public class GameBoard {
     }
     public Cell cellCollision (Bullet bullet) {
         for (Cell cell : cells) {
-            if (Math.abs(bullet.getX() - cell.getX()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                Math.abs(bullet.getY() - cell.getY()) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+            double cellCenterX = cell.getX();
+            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
+                Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
                 return cell;
+            }
+        }
+        for (Colony colony : colonies) {
+            for (Cell cell : colony.getCells()) {
+                double cellCenterX = cell.getX();
+                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
+                        Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                    return cell;
+                }
             }
         }
         return null;

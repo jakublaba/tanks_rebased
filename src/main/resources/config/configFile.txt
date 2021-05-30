@@ -11,5 +11,5 @@ Spokojny wariant gry
 [DV2] CellVelocityIncrease [1]
 [DR1] BulletRadiusDecrease [1]
 [DH1] CellSizeDecrease [3]
-[T3] GameTime [5]
+[T3] GameTime [600]
 [IMG] ImageExtension [PNG]

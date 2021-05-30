@@ -102,4 +102,5 @@ public class Colony {
             x.getLabel().setTranslateX(x.getX() - x.getCurrentSize()/2);
         }
     }
+    public List<Cell> getCells() { return cells; }
 }
