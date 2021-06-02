@@ -23,8 +23,6 @@ public class GameBoard {
             Cell cell = new Cell ();
             cells.add(cell);
             lastTimeOfGeneratingCell = time;
-            leftPlayer.drawScore(pane, 'L');
-            rightPlayer.drawScore(pane, 'R');
         }
         if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
             Colony colony = new Colony();
@@ -42,7 +40,8 @@ public class GameBoard {
                 colony.draw(pane);
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-            cells.removeIf(cell -> cell.getCurrentSize() < 0);
+            cells.removeIf(cell -> cell.getCurrentSize() <= 0);
+            cells.removeIf(cell -> cell.getCurrentHp() <= 0);
             lastTimeOfMoveCell = time;
         }
 
@@ -118,12 +117,13 @@ public class GameBoard {
             }
         }
         if (time - lastTimeOfIncreaseHealth >= GameSettings.CellRegenerationInterval * 1_000_000_000) {
-
             for(Cell cell : cells){
                 cell.regenerate();
             }
             lastTimeOfIncreaseHealth = time;
         }
+        leftPlayer.drawScore(pane, 'L');
+        rightPlayer.drawScore(pane, 'R');
         return false;
     }
     public Cell cellCollision (Bullet bullet) {
