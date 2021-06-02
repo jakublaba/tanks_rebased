@@ -11,7 +11,7 @@ public final class Cell extends GameSegment {
     private final boolean memberOfColony;
     private final int initialHp;
     private int currentHp;
-    private final Label label;
+    private final Label currentHpLabel;
     private final Rectangle segmentShape;
     private int position;
     private Circle coordCheck, coordCheck2;
@@ -28,12 +28,12 @@ public final class Cell extends GameSegment {
         initialHp = ThreadLocalRandom.current().nextInt(1,9);
         currentHp = initialHp;
         position = 0;
-        label = new Label(String.valueOf(initialHp));
-        label.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
-        label.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
-        label.setAlignment(Pos.CENTER);
-        label.setTranslateX(x - GameSettings.CellSize/2);
-        label.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
+        currentHpLabel = new Label(String.valueOf(initialHp));
+        currentHpLabel.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
+        currentHpLabel.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
+        currentHpLabel.setAlignment(Pos.CENTER);
+        currentHpLabel.setTranslateX(x - GameSettings.CellSize/2);
+        currentHpLabel.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
         coordCheck = new Circle(x, y,3);
         coordCheck.setFill(Color.RED);
         coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
@@ -51,12 +51,12 @@ public final class Cell extends GameSegment {
         initialHp = ThreadLocalRandom.current().nextInt(1,9);
         currentHp = initialHp;
         this.position = position;
-        label = new Label(String.valueOf(initialHp));
-        label.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
-        label.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
-        label.setAlignment(Pos.CENTER);
-        label.setTranslateX(x - GameSettings.CellSize/2);
-        label.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
+        currentHpLabel = new Label(String.valueOf(initialHp));
+        currentHpLabel.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
+        currentHpLabel.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
+        currentHpLabel.setAlignment(Pos.CENTER);
+        currentHpLabel.setTranslateX(x - GameSettings.CellSize/2);
+        currentHpLabel.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
         coordCheck = new Circle(x, y,3);
         coordCheck.setFill(Color.RED);
         coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
@@ -71,14 +71,20 @@ public final class Cell extends GameSegment {
         pane.getChildren().remove(coordCheck);
         pane.getChildren().remove(coordCheck2);
         pane.getChildren().remove(segmentShape);
-        pane.getChildren().remove(label);
-        if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && currentHp!=0) {
+        pane.getChildren().remove(currentHpLabel);
+        if(y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - currentSize){
+            segmentShape.setHeight(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - y);
+        }
+        if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && currentHp > 0) {
             pane.getChildren().add(coordCheck);
             pane.getChildren().add(coordCheck2);
             pane.getChildren().add(segmentShape);
-            label.setTranslateY(y);
-            pane.getChildren().add(label);
+            currentHpLabel.setTranslateY(y);
+            if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 0.75 * currentSize){
+                pane.getChildren().add(currentHpLabel);
+            }
         }
+
     }
     public void move (double time){
         y += GameSettings.CellVelocity * time;
@@ -89,7 +95,7 @@ public final class Cell extends GameSegment {
     }
     public Rectangle getSegmentShape(){return segmentShape;}
     public int getPosition(){return position;}
-    public Label getLabel(){ return label; }
+    public Label getLabel(){ return currentHpLabel; }
     public double getCurrentSize(){return currentSize;}
     public void setX(double x){
         this.x = x;
@@ -100,7 +106,7 @@ public final class Cell extends GameSegment {
     public void regenerate () {
         if(currentHp < initialHp && currentHp > 0)
             currentHp++;
-        label.setText(String.valueOf(currentHp));
+        currentHpLabel.setText(String.valueOf(currentHp));
     }
     public void getDamaged () {
         double tmp = 0;
@@ -111,7 +117,7 @@ public final class Cell extends GameSegment {
             }
             tmp += 1.0/GameSettings.CellColorSequence.length;
         }
-        label.setText(String.valueOf(currentHp));
+        currentHpLabel.setText(String.valueOf(currentHp));
     }
     public void resize(){
         this.currentSize -= GameSettings.CellSizeDecrease;
@@ -119,10 +125,10 @@ public final class Cell extends GameSegment {
         this.segmentShape.setHeight(currentSize);
         this.segmentShape.setX(segmentShape.getX()+GameSettings.CellSizeDecrease/2);
         this.segmentShape.setY(segmentShape.getY()-GameSettings.CellSizeDecrease/2);
-        this.label.setMinSize(currentSize, currentSize);
-        this.label.setMaxSize(currentSize, currentSize);
-        this.label.setAlignment(Pos.CENTER);
-        this.label.setTranslateX(x - currentSize/2);
-        this.label.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
+        this.currentHpLabel.setMinSize(currentSize, currentSize);
+        this.currentHpLabel.setMaxSize(currentSize, currentSize);
+        this.currentHpLabel.setAlignment(Pos.CENTER);
+        this.currentHpLabel.setTranslateX(x - currentSize/2);
+        this.currentHpLabel.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
     }
 }

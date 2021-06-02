@@ -167,6 +167,7 @@ public final class Controller {
             }
         };
         gameLoop.start();
+        PlayerInfo.setErrorList(layerPane);
     }
 
     private void setGameBoard() {
@@ -262,10 +263,9 @@ public final class Controller {
                     if(tx.getId().equals(tmpBtn.getText().substring(5))){
                         try {
                             if (!GameSettings.setGameSettings(tmpBtn.getText().substring(5), tx.getText()))
-                                System.out.println("Warnings! This value is unhandled: " + tx.getText());
+                                PlayerInfo.addInformation("[ERROR]This value is unhandled: " + tx.getText());
                         }
                         catch (NumberFormatException e){
-                            System.out.println("Wrong format!");
                             tx.clear();
                         }
                     }
@@ -313,7 +313,6 @@ public final class Controller {
                 configNameLabel.setVisible(true);
                 configNameTextField.setVisible(true);
                 gridConfigurationPane.add(saveConfigurationBtn, 2, position+1);
-
             }
         });
         gridConfigurationPane.add(saveConfigurationBtn, 0, GameSettings.getConfigurationList().size() + 1);

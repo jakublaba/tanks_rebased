@@ -85,14 +85,14 @@ public class ControllerSetter {
         return button;
     }
 
-    public static Label setLabel(String text, int x, int y){
+    public static Label setLabel(String text, double x, double y){
         Label label = new Label(text);
         label.setTranslateX(x);
         label.setTranslateY(y);
         return label;
     }
 
-    public static Label setLabel(String text, int x, int y, String path){
+    public static Label setLabel(String text, double x, double y, String path){
         Label label = new Label(text);
         label.setLayoutX(x);
         label.setLayoutY(y);
@@ -100,7 +100,7 @@ public class ControllerSetter {
         return label;
     }
 
-    public static Label setLabel(String text, int x, int y, String id, String path){
+    public static Label setLabel(String text, double x, double y, String id, String path){
         Label label = new Label(text);
         label.setLayoutX(x);
         label.setLayoutY(y);
