@@ -38,9 +38,9 @@ public class PlayerInfo {
     }
 
     public static void setErrorList(Pane pane){
-        firstErrorLine = ControllerSetter.setLabel("",GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 - 40, "css/tabLabel.css");
-        secondErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 -10, "css/tabLabel.css");
-        thirdErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 + 20, "css/tabLabel.css");
+        firstErrorLine = ControllerSetter.setLabel("",GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 - 40, "minLabel", "css/tabLabel.css");
+        secondErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 -10, "minLabel", "css/tabLabel.css");
+        thirdErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 + 20, "minLabel", "css/tabLabel.css");
         ControllerSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
         informAboutError(pane);
     }
