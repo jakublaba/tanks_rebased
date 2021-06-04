@@ -23,8 +23,6 @@ public class GameBoard {
             Cell cell = new Cell ();
             cells.add(cell);
             lastTimeOfGeneratingCell = time;
-            leftPlayer.drawScore(pane, 'L');
-            rightPlayer.drawScore(pane, 'R');
         }
         if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
             Colony colony = new Colony();
@@ -42,7 +40,8 @@ public class GameBoard {
                 colony.draw(pane);
             }
             cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-            cells.removeIf(cell -> cell.getCurrentSize() < 0);
+            cells.removeIf(cell -> cell.getCurrentSize() <= 0);
+            cells.removeIf(cell -> cell.getCurrentHp() <= 0);
             lastTimeOfMoveCell = time;
         }
 
@@ -118,12 +117,13 @@ public class GameBoard {
             }
         }
         if (time - lastTimeOfIncreaseHealth >= GameSettings.CellRegenerationInterval * 1_000_000_000) {
-
             for(Cell cell : cells){
                 cell.regenerate();
             }
             lastTimeOfIncreaseHealth = time;
         }
+        leftPlayer.drawScore(pane, 'L');
+        rightPlayer.drawScore(pane, 'R');
         return false;
     }
     public Cell cellCollision (Bullet bullet) {
@@ -152,10 +152,47 @@ public class GameBoard {
         boolean xCondition = bullet.getX() >= GameSettings.WindowWidth/2 - Bomb.width/2 && bullet.getX() <= GameSettings.WindowWidth/2 + Bomb.width/2;
         return yCondition && xCondition;
     }
-    private void removeCell (Cell cellToRemove) {
-        if (cellToRemove == null) return;
-        cells.remove(cellToRemove);
+    public void removeAllCells(){
+        cells.clear();
+        colonies.clear();
     }
-    public void removeColony () {}
 
+    public void updateTankPosition(Pane layerPane) {
+        //Left Player
+        leftPlayer.getTank().draw(layerPane);
+        if (Controller.leftMoveUpPressed && !Controller.leftMoveDownPressed) {
+            leftPlayer.getTank().move(GameSettings.LeftPlayerMoveUp);
+        }
+        if (Controller.leftMoveDownPressed && !Controller.leftMoveUpPressed) {
+            leftPlayer.getTank().move(GameSettings.LeftPlayerMoveDown);
+        }
+        if (Controller.leftBarrelDownPressed && !Controller.leftBarrelUpPressed) {
+            leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelDown);
+        }
+        if (Controller.leftBarrelUpPressed && !Controller.leftBarrelDownPressed) {
+            leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelUp);
+        }
+        if (Controller.leftPlayerShootPressed && Controller.leftPlayerAllowedToShoot) {
+            leftPlayer.getTank().shoot();
+            Controller.leftPlayerAllowedToShoot = false;
+        }
+        //Right Player
+        rightPlayer.getTank().draw(layerPane);
+        if (Controller.rightMoveUpPressed && !Controller.rightMoveDownPressed) {
+            rightPlayer.getTank().move(GameSettings.RightPlayerMoveUp);
+        }
+        if (Controller.rightMoveDownPressed && !Controller.rightMoveUpPressed) {
+            rightPlayer.getTank().move(GameSettings.RightPlayerMoveDown);
+        }
+        if (Controller.rightBarrelUpPressed && !Controller.rightBarrelDownPressed) {
+            rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelUp);
+        }
+        if (Controller.rightBarrelDownPressed && !Controller.rightBarrelUpPressed) {
+            rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelDown);
+        }
+        if (Controller.rightPlayerShootPressed && Controller.rightPlayerAllowedToShoot) {
+            rightPlayer.getTank().shoot();
+            Controller.rightPlayerAllowedToShoot = false;
+        }
+    }
 }

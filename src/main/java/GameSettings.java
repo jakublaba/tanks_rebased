@@ -13,12 +13,12 @@ import java.util.Scanner;
 import static javafx.scene.paint.Color.rgb;
 
 public final class GameSettings {
-    //własności okna
+    //Window
     public static double WindowWidth = 800;
     public static double WindowHeight = 800;
     public static double WidthOfTankBorder = 120;
 
-    //własności komórki
+    //Cell
     public static Color [] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
             rgb(255, 255, 102, 0.6), rgb(255, 204, 0, 0.6), rgb(255, 153, 0, 0.6), rgb(255, 51, 0, 0.6), rgb(255, 0, 0, 0.6)};
     public static double CellVelocity = 10;
@@ -28,7 +28,7 @@ public final class GameSettings {
     public static double CellVelocityIncrease = 5;
     public static double CellSizeDecrease = 69;
 
-    //własności pocisku
+    //Bullet
     public static double BulletSize = 15;
     public static double BulletVelocity = 0.5;
     public static Color BulletColor = Color.BLACK;
@@ -38,13 +38,13 @@ public final class GameSettings {
     public static double BulletVelocityIncrease = 15;
     public static double BulletRadiusDecrease = 2;
 
-    //własności czołgu
+    //Tank
     public static double TankVelocity = 3;
     public static String TankBodyImg = "graphics/tankbody.png";
     public static String TankBarrelImg = "graphics/tankhead.png";
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
-
+    //Control
     public static KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static KeyCode RightPlayerMoveDown = KeyCode.DOWN;
     public static KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
@@ -55,24 +55,24 @@ public final class GameSettings {
     public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
     public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
     public static KeyCode LeftPlayerFire = KeyCode.SPACE;
+    public static KeyCode Pause = KeyCode.P;
 
-    //rozgrywka
+    //Game
     public static double GameTime = 200;
     public static double Interval = 3;
     public static String ImageExtension = "PNG";
-    public static KeyCode Pause = KeyCode.P;
-    public static String ConfigFileName;
-    public static double TimeBetweenCellGenerating = 3;
-    public static double TimeBetweenColonyGeneration = 10;
+    public static double TimeBetweenCellGenerating = 2;
+    public static double TimeBetweenColonyGeneration = 100;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
 
 
-    //okno ustawień
+    //Settings
     private static final ArrayList<String[]> ConfigurationList = new ArrayList<>();
     public static boolean MakeScreenshot = false;
 
-    //plik konfiguracyjny
+    //Configuration File
+    public static String ConfigFileName;
     public static String PathConfigFile = "src/main/resources/config/configFile.txt";
 
     public static void setConfigurationList(){
@@ -89,6 +89,8 @@ public final class GameSettings {
         ConfigurationList.add(new String[]{"Bullet Radius Decrease", "DR1", String.valueOf(BulletRadiusDecrease)});
         ConfigurationList.add(new String[]{"Cell Size Decrease", "DH1", String.valueOf(CellSizeDecrease)});
         ConfigurationList.add(new String[]{"Game Time", "T3", String.valueOf(GameTime)});
+        ConfigurationList.add(new String[]{"Time Cells Generating", "T4", String.valueOf(TimeBetweenCellGenerating)});
+        ConfigurationList.add(new String[]{"Time Colonies Generating", "T5", String.valueOf(TimeBetweenColonyGeneration)});
     }
     public static ArrayList<String[]> getConfigurationList(){
         return ConfigurationList;
@@ -102,77 +104,36 @@ public final class GameSettings {
             while(readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
                 if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)]$")) {
-                    System.out.println("INCORRECT FORMAT: " + tmpLine + " - LINE SKIPPED!");
+                    PlayerInfo.addInformation("[WARNING]Incorrect Format:" + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
                     if(!setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
-                        System.out.println("Warnings! This line is unhandled: " + tmpLine);
+                        PlayerInfo.addInformation("[WARNING]This line is unhandled: " + tmpLine);
                 }
             }
         }
         catch(FileNotFoundException e){
-            System.out.println("There is no config file!");
+            PlayerInfo.addInformation("[WARNING]No Configuration File: " + PathConfigFile);
         }
     }
 
     public static boolean setGameSettings(String x, String y) throws NumberFormatException{
         switch (x) {
-            case "V1" -> {
-                BulletVelocity = Double.parseDouble(y);
-                System.out.println("Set V1: " + BulletVelocity);
-            }
-            case "X1" -> {
-                BulletNumberLimit = Integer.parseInt(y);
-                System.out.println("Set X1: " + BulletNumberLimit);
-            }
-            case "R1" -> {
-                BulletRadius = Double.parseDouble(y);
-                System.out.println("Set R1: " + BulletRadius);
-            }
-            case "V2" -> {
-                CellVelocity = Double.parseDouble(y);
-                System.out.println("Set V2: " + CellVelocity);
-            }
-            case "H1" -> {
-                CellSize = Double.parseDouble(y);
-                System.out.println("Set H1: " + CellSize);
-            }
-            case "P1" -> {
-                CellHealth = Integer.parseInt(y);
-                System.out.println("Set P1: " + CellHealth);
-            }
-            case "T2" -> {
-                CellRegenerationInterval = Double.parseDouble(y);
-                System.out.println("Set T2: " + CellRegenerationInterval);
-            }
-            case "T1" -> {
-                Interval = Double.parseDouble(y);
-                System.out.println("Set T1: " + Interval);
-            }
-            case "DV1" -> {
-                BulletVelocityIncrease = Double.parseDouble(y);
-                System.out.println("Set DV1: " + BulletVelocityIncrease);
-            }
-            case "DV2" -> {
-                CellVelocityIncrease = Double.parseDouble(y);
-                System.out.println("Set DV2: " + CellVelocityIncrease);
-            }
-            case "DR1" -> {
-                BulletRadiusDecrease = Double.parseDouble(y);
-                System.out.println("Set DR1: " + BulletRadiusDecrease);
-            }
-            case "DH1" -> {
-                CellSizeDecrease = Double.parseDouble(y);
-                System.out.println("Set DH1: " + CellSizeDecrease);
-            }
-            case "T3" -> {
-                GameTime = Double.parseDouble(y);
-                System.out.println("Set T3: " + GameTime);
-            }
-            case "IMG" -> {
-                ImageExtension = y;
-                System.out.println("Set IMG: " + y);
-            }
+            case "V1" -> BulletVelocity = Double.parseDouble(y);
+            case "X1" -> BulletNumberLimit = Integer.parseInt(y);
+            case "R1" -> BulletRadius = Double.parseDouble(y);
+            case "V2" -> CellVelocity = Double.parseDouble(y);
+            case "H1" -> CellSize = Double.parseDouble(y);
+            case "P1" -> CellHealth = Integer.parseInt(y);
+            case "T2" -> CellRegenerationInterval = Double.parseDouble(y);
+            case "T1" -> Interval = Double.parseDouble(y);
+            case "DV1" -> BulletVelocityIncrease = Double.parseDouble(y);
+            case "DV2" -> CellVelocityIncrease = Double.parseDouble(y);
+            case "DR1" -> BulletRadiusDecrease = Double.parseDouble(y);
+            case "DH1" -> CellSizeDecrease = Double.parseDouble(y);
+            case "T3" -> GameTime = Double.parseDouble(y);
+            case "T4" -> TimeBetweenCellGenerating = Double.parseDouble(y);
+            case "T5" -> TimeBetweenColonyGeneration = Double.parseDouble(y);
             default -> {
                 return false;
             }
@@ -196,9 +157,9 @@ public final class GameSettings {
                 }
             }
             writingFile.close();
-            System.out.println("Configuration File Saved");
+            PlayerInfo.addInformation("[GameSettings]Configuration File Saved: " + nameOfFileWithExtension);
         } catch (FileNotFoundException e) {
-            System.out.println("There is no file");
+            PlayerInfo.addInformation("[GameSettings]Saving Failed: " + nameOfFileWithExtension);
         }
         return incorrectTextFieldList;
     }
