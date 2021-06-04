@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,8 @@ public final class Controller {
     private int gameTime;
     private GameBoard gameBoard;
     private Stage primaryStage;
+    //Game Control:
+    public static boolean gamePaused;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -75,7 +78,13 @@ public final class Controller {
         primaryStage.show();
         setGameBoard();
         gameTime = (int)(GameSettings.GameTime);
-        scene.setOnKeyPressed(key-> ControllerSetter.setPressedKey(key.getCode()));
+        scene.setOnKeyPressed(key-> {
+            if(key.getCode().equals(GameSettings.Pause)){
+                pauseKeyPressed(layerPane);
+                gamePaused = true;
+            }
+            ControllerSetter.setPressedKey(key.getCode());
+        });
         scene.setOnKeyReleased(key-> ControllerSetter.setReleasedKey(key.getCode()));
 
         gameLoop = new AnimationTimer() {
@@ -193,9 +202,8 @@ public final class Controller {
             stage.setTitle("SnakeFX - Settings");
             stage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             stage.setResizable(false);
-            stage.show();
-            Stage stage1 = (Stage) startBtn.getScene().getWindow();
-            stage1.hide();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -390,22 +398,13 @@ public final class Controller {
 
     @FXML
     private void exitButtonPressed() {
-        System.exit(1);
+        Stage stage = (Stage) startBtn.getScene().getWindow();
+        stage.close();
     }
     @FXML
     public void backButtonAction() {
         Stage stage = (Stage) backBtn.getScene().getWindow();
-        Parent root;
-        try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-            Stage mainStage = new Stage();
-            mainStage.setTitle("Snake");
-            mainStage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
-            mainStage.show();
-            stage.hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stage.close();
     }
     public void showFinishPane(boolean bombCollision){
         gameLoop.stop();
@@ -438,6 +437,26 @@ public final class Controller {
         }
     }
 
-    private void pauseButtonPressed() {}
+    public void pauseKeyPressed(Pane pane) {
+        gameLoop.stop();
+        Pane pausePane = ControllerSetter.setPane(100,150, 600, "finishPaneBackground", "css/backgrounds.css");
+        pausePane.setPrefHeight(300);
+        Label pauseLabel = ControllerSetter.setLabel("Game Paused!", 20, 20);
+        pauseLabel.setPrefWidth(600);
+        pauseLabel.setAlignment(Pos.CENTER);
+        pauseLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
+        Button resumeButton = ControllerSetter.setButton(400, 200, "Play", "css/buttons.css");
+        resumeButton.setOnAction(e -> {
+            pausePane.setVisible(false);
+            gameLoop.start();
+            gamePaused = false;
+        });
+        Button settingsButton = ControllerSetter.setButton(5, 200, "Settings", "css/buttons.css");
+        settingsButton.setOnAction(e->{
+            settingsButtonPressed();
+        });
+        ControllerSetter.addChildren(pausePane, pauseLabel, resumeButton, settingsButton);
+        ControllerSetter.addChildren(pane, pausePane);
+    }
 
 }

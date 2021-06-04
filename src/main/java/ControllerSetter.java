@@ -174,6 +174,9 @@ public class ControllerSetter {
         else if (keyCode.equals(GameSettings.RightPlayerFire)) {
             Controller.rightPlayerShootPressed = true;
         }
+        else{
+            PlayerInfo.addInformation("[INFO]" + keyCode.toString() + "<-This key is not assigned!");
+        }
     }
 
     public static void setReleasedKey(KeyCode keyCode){
@@ -204,7 +207,7 @@ public class ControllerSetter {
         else if (keyCode.equals(GameSettings.LeftPlayerFire)) {
             Controller.leftPlayerShootPressed = false;
         }
-        else if (keyCode.equals(GameSettings.RightPlayerFire)) {
+        else if(keyCode.equals(GameSettings.RightPlayerFire)){
             Controller.rightPlayerShootPressed = false;
         }
     }
