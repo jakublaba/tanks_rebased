@@ -11,8 +11,11 @@ public class PlayerInfo {
     private Label scoreLabel;
     private static List<String> errorList = new ArrayList<>();;
     public static Label firstErrorLine;
+    private static double firstTransparentRatio = 1;
     public static Label secondErrorLine;
+    private static double secondTransparentRatio = 1;
     public static Label thirdErrorLine;
+    private static double thirdTransparentRatio = 1;
 
     public PlayerInfo (char side) {
         tank = new Tank(side);
@@ -37,63 +40,53 @@ public class PlayerInfo {
         return score;
     }
 
-    public static void setErrorList(Pane pane){
-        firstErrorLine = ControllerSetter.setLabel("",GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 - 40, "css/tabLabel.css");
-        secondErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 -10, "css/tabLabel.css");
-        thirdErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 + 20, "css/tabLabel.css");
-        ControllerSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
-        informAboutError(pane);
+    public static void updateErrorInformation(){
+        double ratio = 0.005;
+        if(errorList.size()!=0){
+            if(firstTransparentRatio == 1){
+                firstErrorLine.setText(errorList.get(0));
+                errorList.remove(0);
+            }
+            else if(secondTransparentRatio == 1){
+                secondErrorLine.setText(errorList.get(0));
+                errorList.remove(0);
+            }
+            else if(thirdTransparentRatio == 1){
+                thirdErrorLine.setText(errorList.get(0));
+                errorList.remove(0);
+            }
+        }
+        if(!firstErrorLine.getText().equals("")){
+            firstTransparentRatio = firstTransparentRatio - ratio < 0 ? 0 : firstTransparentRatio - ratio;
+            firstErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + firstTransparentRatio + ");");
+            if(firstTransparentRatio == 0){
+                firstErrorLine.setText("");
+                firstTransparentRatio = 1;
+            }
+        }
+        if(!secondErrorLine.getText().equals("")){
+            secondTransparentRatio = secondTransparentRatio - ratio < 0 ? 0 : secondTransparentRatio - ratio;
+            secondErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + secondTransparentRatio + ");");
+            if(secondTransparentRatio == 0){
+                secondErrorLine.setText("");
+                secondTransparentRatio = 1;
+            }
+        }
+        if(!thirdErrorLine.getText().equals("")){
+            thirdTransparentRatio = thirdTransparentRatio - ratio < 0 ? 0 : thirdTransparentRatio - ratio;
+            thirdErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + thirdTransparentRatio + ");");
+            if(thirdTransparentRatio == 0){
+                thirdErrorLine.setText("");
+                thirdTransparentRatio = 1;
+            }
+        }
     }
 
-    private static void informAboutError(Pane pane){
-        Thread errorThread = new Thread(()-> {
-            AnimationTimer at = new AnimationTimer() {
-                long timeBetween = 0;
-                double transparentRatio = 0.9;
-                @Override
-                public synchronized void handle(long time) {
-                    if(time - timeBetween >= 6.0 *  1_000_000_000){
-                        transparentRatio = 0.9;
-                        thirdErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255, 1);");
-                        secondErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255, 1);");
-                        firstErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255, 1);");
-                        if(errorList.size() >= 3){
-                            firstErrorLine.setText(errorList.get(0));
-                            secondErrorLine.setText(errorList.get(1));
-                            thirdErrorLine.setText(errorList.get(2));
-                            errorList.remove(2);
-                            errorList.remove(1);
-                            errorList.remove(0);
-                        }
-                        else if(errorList.size() == 2){
-                            thirdErrorLine.setText(firstErrorLine.getText());
-                            secondErrorLine.setText(errorList.get(1));
-                            firstErrorLine.setText(errorList.get(0));
-                            errorList.remove(1);
-                            errorList.remove(0);
-                        }
-                        else if(errorList.size() == 1){
-                            thirdErrorLine.setText(secondErrorLine.getText());
-                            secondErrorLine.setText(firstErrorLine.getText());
-                            firstErrorLine.setText(errorList.get(0));
-                            errorList.remove(0);
-                        }
-                        else {
-                            thirdErrorLine.setText("< ALL RIGHT - NO INFO > ");
-                            secondErrorLine.setText("");
-                            firstErrorLine.setText("");
-                        }
-                        timeBetween = time;
-                    }
-                    firstErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255," + transparentRatio + ");");
-                    secondErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255," + transparentRatio + ");");
-                    thirdErrorLine.setStyle("-fx-text-fill: rgba(255, 255, 255," + transparentRatio + ");");
-                    transparentRatio = transparentRatio - 0.003 < 0 ? 0 : transparentRatio - 0.003;
-                }
-            };
-            at.start();
-        });
-        errorThread.start();
+    public static void setErrorList(Pane pane){
+        firstErrorLine = ControllerSetter.setLabel("",GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 - 40, "minLabel", "css/tabLabel.css");
+        secondErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 -10, "minLabel", "css/tabLabel.css");
+        thirdErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder/2 + 20, "minLabel", "css/tabLabel.css");
+        ControllerSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
     }
     public static void addInformation(String error){
         errorList.add(error);

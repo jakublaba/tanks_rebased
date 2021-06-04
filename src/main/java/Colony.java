@@ -13,7 +13,7 @@ public class Colony {
         double colonyCenter = ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + 1.5 * GameSettings.CellSize, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - 1.5 * GameSettings.CellSize);
         int colonySize = ThreadLocalRandom.current().nextInt(2, 5);
         List<Integer> usedPosition = new ArrayList<>();
-        Cell centerCell = new Cell(colonyCenter - GameSettings.CellSize/2, 0, GameSettings.CellSize, GameSettings.CellVelocity, 5);
+        Cell centerCell = new Cell(colonyCenter - GameSettings.CellSize/2, 0, GameSettings.CellSize, GameSettings.CellVelocity, 5, ThreadLocalRandom.current().nextInt(1,9));
         cells.add(centerCell);
         for (int i = 0; i < colonySize; i++){
             int colonyArrangement = ThreadLocalRandom.current().nextInt(1,8);
@@ -21,14 +21,14 @@ public class Colony {
                 colonyArrangement = ThreadLocalRandom.current().nextInt(1,8);
             Cell cell = null;
             switch (colonyArrangement) {
-                case 1 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 1);
-                case 2 -> cell = new Cell(colonyCenter - 0.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 2);
-                case 3 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 3);
-                case 4 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, 0, GameSettings.CellSize, GameSettings.CellVelocity,4);
-                case 5 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, 0, GameSettings.CellSize, GameSettings.CellVelocity,6);
-                case 6 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,7);
-                case 7 -> cell = new Cell(colonyCenter - 0.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,8);
-                case 8 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,9);
+                case 1 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 1, ThreadLocalRandom.current().nextInt(1,9));
+                case 2 -> cell = new Cell(colonyCenter - 0.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 2, ThreadLocalRandom.current().nextInt(1,9));
+                case 3 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, -GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity, 3, ThreadLocalRandom.current().nextInt(1,9));
+                case 4 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, 0, GameSettings.CellSize, GameSettings.CellVelocity,4, ThreadLocalRandom.current().nextInt(1,9));
+                case 5 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, 0, GameSettings.CellSize, GameSettings.CellVelocity,6, ThreadLocalRandom.current().nextInt(1,9));
+                case 6 -> cell = new Cell(colonyCenter - 1.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,7, ThreadLocalRandom.current().nextInt(1,9));
+                case 7 -> cell = new Cell(colonyCenter - 0.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,8, ThreadLocalRandom.current().nextInt(1,9));
+                case 8 -> cell = new Cell(colonyCenter + 0.5 * GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellSize, GameSettings.CellVelocity,9, ThreadLocalRandom.current().nextInt(1,9));
                 default -> System.out.println("Warnings: Out of Range");
             }
             cells.add(cell);

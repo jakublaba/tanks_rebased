@@ -1,0 +1,10 @@
+.label {
+    -fx-font-family:"Courier New", Helvetica, Courier New, sans-serif;
+    -fx-font-size: 2em;
+    -fx-text-fill: rgb(255, 255, 255)
+}
+#minLabel {
+    -fx-font-family:"Courier New", Helvetica, Courier New, sans-serif;
+    -fx-font-size: 1em;
+    -fx-text-fill: rgb(255, 255, 255)
+}

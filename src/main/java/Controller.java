@@ -11,26 +11,25 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public final class Controller {
     //Graphic elements:
     @FXML
-    private Button startBtn;
+    private Button startButton;
     @FXML
-    private Button backBtn;
+    private Button backButton;
     @FXML
     private TabPane tabPane;
     @FXML
     private AnchorPane rootPane;
     public static Pane layerPane;
     public Pane finishPane;
+    private Pane pausePane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
     private int gameTime;
@@ -62,8 +61,8 @@ public final class Controller {
     }
 
     @FXML
-    private void startButtonPressed() throws java.io.IOException {
-        Stage Menu = (Stage)startBtn.getScene().getWindow();
+    private void startButtonPressed() {
+        Stage Menu = (Stage) startButton.getScene().getWindow();
         Menu.hide();
         Pane gameField = new Pane();
         primaryStage = new Stage();
@@ -77,8 +76,13 @@ public final class Controller {
         primaryStage.setResizable(false);
         primaryStage.show();
         setGameBoard();
-        gameTime = (int)(GameSettings.GameTime);
-        scene.setOnKeyPressed(key-> ControllerSetter.setPressedKey(key.getCode()));
+        scene.setOnKeyPressed(key-> {
+            if(key.getCode().equals(GameSettings.Pause)){
+                gameLoop.stop();
+                pausePane.setVisible(true);
+            }
+            ControllerSetter.setPressedKey(key.getCode());
+        });
         scene.setOnKeyReleased(key-> ControllerSetter.setReleasedKey(key.getCode()));
 
         gameLoop = new AnimationTimer() {
@@ -86,105 +90,58 @@ public final class Controller {
             @Override
             public void handle(long currentTime) {
                 if (gameTime == 0) {
-                    showFinishPane(false);
+                    showEndPane(false);
                 }
+                //TIMER
                 if(currentTime - lastTime >= 1000000000) {
-                    timerLabel.setVisible(true);
-                    if (gameTime == GameSettings.GameTime) {
-                        timerLabel.setVisible(false);
-                    }
-                    if (gameTime == 0) {
-                        gameLoop.stop();
-                    } else if (gameTime >= 600 && gameTime %60 <10) {
-                        timerLabel.setText((gameTime - gameTime %60)/60 + ":" + "0" + gameTime %60);
-                    } else if (gameTime >= 60 && gameTime < 600 && gameTime %60 >= 10) {
-                        timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":" + gameTime %60);
-                    } else if (gameTime >= 60 && gameTime < 600 && gameTime %60 < 10) {
-                        timerLabel.setText("0" + (gameTime - gameTime %60)/60 + ":0" + gameTime %60);
-                    } else if (gameTime > 0 && gameTime < 60 && gameTime %60 >= 10) {
-                        timerLabel.setText("00" + ":" + (gameTime %60));
-                    } else if (gameTime > 0 && gameTime < 60) {
-                        timerLabel.setText("00" + ":0" + (gameTime %60));
-                    } else {
-                        timerLabel.setText((gameTime - gameTime %60)/60 + ":" + gameTime %60);
-                    }
-                    timerLabel.setTranslateX(GameSettings.WindowWidth /2 - timerLabel.getWidth()/2);
+                    ControllerSetter.updateTimer(timerLabel, gameTime);
                     lastTime = currentTime;
                     gameTime--;
                 }
-                if (currentTime - lastTimeOfLeftPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
-                    leftPlayerAllowedToShoot = true;
-                    lastTimeOfLeftPlayerShot = currentTime;
-                }
-                if (currentTime - lastTimeOfRightPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
-                    rightPlayerAllowedToShoot = true;
-                    lastTimeOfRightPlayerShot = currentTime;
-                }
-                if (gameBoard.leftPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
-                    leftPlayerAllowedToShoot = false;
-                }
-                if (gameBoard.rightPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
-                    rightPlayerAllowedToShoot = false;
-                }
                 //TANKS
-                gameBoard.leftPlayer.getTank().draw(layerPane);
-                if (leftMoveUpPressed && !leftMoveDownPressed) {
-                    gameBoard.leftPlayer.getTank().move(GameSettings.LeftPlayerMoveUp);
-                }
-                if (leftMoveDownPressed && !leftMoveUpPressed) {
-                    gameBoard.leftPlayer.getTank().move(GameSettings.LeftPlayerMoveDown);
-                }
-                if (leftBarrelDownPressed && !leftBarrelUpPressed) {
-                    gameBoard.leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelDown);
-                }
-                if (leftBarrelUpPressed && !leftBarrelDownPressed) {
-                    gameBoard.leftPlayer.getTank().rotateBarrel(GameSettings.LeftPlayerBarrelUp);
-                }
-                if (keySpaceIsPressed && leftPlayerAllowedToShoot) {
-                    gameBoard.leftPlayer.getTank().shoot();
-                    leftPlayerAllowedToShoot = false;
-                }
-
-                gameBoard.rightPlayer.getTank().draw(layerPane);
-                if (rightMoveUpPressed && !rightMoveDownPressed) {
-                    gameBoard.rightPlayer.getTank().move(GameSettings.RightPlayerMoveUp);
-                }
-                if (rightMoveDownPressed && !rightMoveUpPressed) {
-                    gameBoard.rightPlayer.getTank().move(GameSettings.RightPlayerMoveDown);
-                }
-                if (rightBarrelUpPressed && !rightBarrelDownPressed) {
-                    gameBoard.rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelUp);
-                }
-                if (rightBarrelDownPressed && !rightBarrelUpPressed) {
-                    gameBoard.rightPlayer.getTank().rotateBarrel(GameSettings.RightPlayerBarrelDown);
-                }
-                if (keyShiftIsPressed && rightPlayerAllowedToShoot) {
-                    gameBoard.rightPlayer.getTank().shoot();
-                    rightPlayerAllowedToShoot = false;
-                }
-
+                gameBoard.updateTankPosition(layerPane);
                 //GAME BOARD
                 if(gameBoard.updateGame(currentTime, layerPane)){
-                    showFinishPane(true);
+                    showEndPane(true);
                 }
+                PlayerInfo.updateErrorInformation();
+                shootingControl(currentTime);
             }
         };
         gameLoop.start();
-        PlayerInfo.setErrorList(layerPane);
+    }
+
+    private void shootingControl(long currentTime) {
+        if (currentTime - lastTimeOfLeftPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+            leftPlayerAllowedToShoot = true;
+            lastTimeOfLeftPlayerShot = currentTime;
+        }
+        if (currentTime - lastTimeOfRightPlayerShot >= 1000000000 * GameSettings.BulletFrequencyLimit) {
+            rightPlayerAllowedToShoot = true;
+            lastTimeOfRightPlayerShot = currentTime;
+        }
+        if (gameBoard.leftPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
+            leftPlayerAllowedToShoot = false;
+        }
+        if (gameBoard.rightPlayer.getTank().getBullets().size() >= GameSettings.BulletNumberLimit) {
+            rightPlayerAllowedToShoot = false;
+        }
     }
 
     private void setGameBoard() {
         Line rightLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, 0, GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line leftLine = ControllerSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line horizontalLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
-        timerLabel = new Label("");
+        timerLabel = ControllerSetter.setLabel("", 0, GameSettings.WindowHeight /3);
         timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.1); -fx-font-weight: bold;");
-        timerLabel.setTranslateY(GameSettings.WindowHeight /3);
         timerLabel.setVisible(false);
         layerPane.setId("gameBackground");
         layerPane.getStylesheets().add("css/backgrounds.css");
+        setPausePane(layerPane);
         ControllerSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
         Bomb.draw(layerPane);
+        gameTime = (int)(GameSettings.GameTime);
+        PlayerInfo.setErrorList(layerPane);
     }
 
     @FXML
@@ -196,9 +153,8 @@ public final class Controller {
             stage.setTitle("SnakeFX - Settings");
             stage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
             stage.setResizable(false);
-            stage.show();
-            Stage stage1 = (Stage) startBtn.getScene().getWindow();
-            stage1.hide();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,55 +162,27 @@ public final class Controller {
 
     private void setGamePropertiesTab(){
         Tab tabGameProperties = tabPane.getTabs().get(0);
-        Pane pane = ControllerSetter.setPane(0, 0 ,800, "mainBackground", "css/backgrounds.css");
-
-        Label musicLabel = ControllerSetter.setLabel("Set Volume Of Music:", 50,50, "css/tabLabel.css");
-        Label soundLabel = ControllerSetter.setLabel("Set Volume Of Sounds:", 50, 150, "css/tabLabel.css");
-        Label configLabel = ControllerSetter.setLabel("Load Your Configuration File:", 50, 250, "css/tabLabel.css");
-        Label currentConfigLabel = ControllerSetter.setLabel("Current Configuration: " + GameSettings.ConfigFileName, 50, 280, "minLabel", "css/tabLabel.css");
-        Label currentScreenshotExt = ControllerSetter.setLabel("Current Extension File: " + GameSettings.ImageExtension, 50, 380, "minLabel", "css/tabLabel.css");
-        Label screenshotLabel = ControllerSetter.setLabel("Make Screenshot After Game:", 50, 350, "css/tabLabel.css");
-
-        Slider musicSlider = ControllerSetter.setSlider(0, 1, 50, 100, 700, GameSettings.VolumeOfMusic);
-        musicSlider.setOnMouseReleased(mouseEvent -> GameSettings.VolumeOfMusic = musicSlider.getValue());
-        Slider soundSlider = ControllerSetter.setSlider(0, 1, 50, 200, 700, GameSettings.VolumeOfMusicEffects);
-        soundSlider.setOnMouseReleased(mouseEvent -> GameSettings.VolumeOfMusicEffects = soundSlider.getValue());
-
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        Button configFileBtn = ControllerSetter.setButton(500, 250, "Load File", "css/tabPaneButtons.css");
-        configFileBtn.setOnMouseClicked(mouseEvent -> {
-            File file = fileChooser.showOpenDialog(pane.getScene().getWindow());
-            if(file!=null){
-                GameSettings.PathConfigFile = file.toString();
-                GameSettings.loadConfigFile();
-                currentConfigLabel.setText("Current Configuration File: " + GameSettings.ConfigFileName);
-                currentScreenshotExt.setText("Current Extension: " + GameSettings.ImageExtension);
-            }
-        });
-
-        CheckBox checkBox = new CheckBox();
-        checkBox.setLayoutX(500);
-        checkBox.setLayoutY(350);
-        checkBox.getStylesheets().add("css/checkBox.css");
+        Pane mainPane = ControllerSetter.setPane(0, 0 ,800, "mainBackground", "css/backgrounds.css");
+        ControllerSetter.setGamePropertiesTabLabels(mainPane);
+        ControllerSetter.setGamePropertiesTabControlElements(mainPane);
+        CheckBox checkBox = ControllerSetter.setCheckBox(500, 350, "css/checkBox.css");
         checkBox.setOnMouseReleased(mouseEvent -> GameSettings.MakeScreenshot = checkBox.isSelected());
-        ControllerSetter.addChildren(pane, musicLabel, musicSlider, soundLabel, soundSlider, configLabel, currentConfigLabel, configFileBtn, screenshotLabel, currentScreenshotExt, checkBox);
-        tabGameProperties.setContent(pane);
+        ControllerSetter.addChildren(mainPane, checkBox);
+        tabGameProperties.setContent(mainPane);
     }
 
     private void setManualConfigurationTab() {
         Tab tabConfiguration = tabPane.getTabs().get(1);
-        ScrollPane scrollPane = GraphicElementsSetter.setScrollPane(0, 0, 800);
-        GridPane mainGridPane = GraphicElementsSetter.setGridPane(0, 0, 800);
+        ScrollPane scrollPane = ControllerSetter.setScrollPane(0, 0 , 800);
+        GridPane mainGridPane = ControllerSetter.setGridPane(0, 0, 800);
         mainGridPane.getStylesheets().add("css/tabPaneButtons.css");
-        List<TextField> listOfTextFields = GraphicElementsSetter.setLineOfElements(mainGridPane);
-        TextField configNameTextField = GraphicElementsSetter.setTextField(100, 0, 0, "", "");
+        List<TextField> listOfTextFields = ControllerSetter.setLineOfElements(mainGridPane);
+        TextField configNameTextField = ControllerSetter.setTextField(100,0,0, "", "");
         configNameTextField.setVisible(false);
-        Label configNameLabel = GraphicElementsSetter.setLabel("Enter your config name:", 0, 0, "css/tabLabel.css");
+        Label configNameLabel = ControllerSetter.setLabel("Enter your config name:",0, 0, "css/tabLabel.css");
         configNameLabel.setVisible(false);
-        Label successLabel = GraphicElementsSetter.setLabel("Configuration File Saved", 0, 0, "css/tabLabel.css");
-        GraphicElementsSetter.setManualConfigurationTabButtons(mainGridPane, configNameTextField, configNameLabel, successLabel, listOfTextFields);
+        Label successLabel = ControllerSetter.setLabel("Configuration File Saved", 0, 0, "css/tabLabel.css");
+        ControllerSetter.setManualConfigurationTabButtons(mainGridPane, configNameTextField, configNameLabel, successLabel, listOfTextFields);
         mainGridPane.add(configNameLabel, 0, GameSettings.getConfigurationList().size() + 2);
         mainGridPane.add(configNameTextField, 0, GameSettings.getConfigurationList().size() + 3);
         scrollPane.setContent(mainGridPane);
@@ -263,93 +191,16 @@ public final class Controller {
 
     private void setControlsTab(){
         Tab tabGameProperties = tabPane.getTabs().get(2);
-        Pane pane = ControllerSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
-        Label topRightLabel = ControllerSetter.setLabel("Left Player:", 100, 30, "css/tabLabel.css");
-        Label topLeftLabel = ControllerSetter.setLabel("Right Player:", 500, 30, "css/tabLabel.css");
-        Label moveLabel = ControllerSetter.setLabel("Move:", 50, 100, "css/tabLabel.css");
-        Label shootLabel = ControllerSetter.setLabel("Shoot:", 50, 370, "css/tabLabel.css");
-        List<Button> controlButtons = new ArrayList<>();
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 100,200, GameSettings.LeftPlayerBarrelDown.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 170,200, GameSettings.LeftPlayerMoveDown.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 240,200, GameSettings.LeftPlayerBarrelUp.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 170,130, GameSettings.LeftPlayerMoveUp.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 500,200, GameSettings.RightPlayerBarrelDown.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 570,200, GameSettings.RightPlayerMoveDown.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 640,200, GameSettings.RightPlayerBarrelUp.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 570,130, GameSettings.RightPlayerMoveUp.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 170,400, GameSettings.LeftPlayerFire.toString()));
-        controlButtons.add(ControllerSetter.setGroupOfButtons(60,60, 570,400, GameSettings.RightPlayerFire.toString()));
-        for(Button x: controlButtons){
-            x.setOnMouseClicked(keyEvent -> {
-                for(Button y: controlButtons){
-                    y.setId("button");
-                }
-                x.setId("chosenButton");
-            });
-            x.setOnKeyPressed(keyEvent -> {
-                boolean keyIsUsed = false;
-                for(Button y: controlButtons){
-                    if(y.getText().equals(keyEvent.getCode().toString())){
-                        keyIsUsed = true;
-                        if(y!=x)
-                            y.setId("usedButton");
-                    }
-                }
-                if(!keyIsUsed) {
-                    if(GameSettings.LeftPlayerBarrelDown.toString().equals(x.getText()))
-                        GameSettings.LeftPlayerBarrelDown = keyEvent.getCode();
-                    else if(GameSettings.LeftPlayerBarrelUp.toString().equals(x.getText()))
-                        GameSettings.LeftPlayerBarrelUp = keyEvent.getCode();
-                    else if(GameSettings.LeftPlayerMoveDown.toString().equals(x.getText()))
-                        GameSettings.LeftPlayerMoveDown = keyEvent.getCode();
-                    else if(GameSettings.LeftPlayerMoveUp.toString().equals(x.getText()))
-                        GameSettings.LeftPlayerMoveUp = keyEvent.getCode();
-                    else if(GameSettings.RightPlayerBarrelDown.toString().equals(x.getText()))
-                        GameSettings.RightPlayerBarrelDown = keyEvent.getCode();
-                    else if(GameSettings.RightPlayerBarrelUp.toString().equals(x.getText()))
-                        GameSettings.RightPlayerBarrelUp = keyEvent.getCode();
-                    else if(GameSettings.RightPlayerMoveDown.toString().equals(x.getText()))
-                        GameSettings.RightPlayerMoveDown = keyEvent.getCode();
-                    else if(GameSettings.RightPlayerMoveUp.toString().equals(x.getText()))
-                        GameSettings.RightPlayerMoveUp = keyEvent.getCode();
-                    else if(GameSettings.RightPlayerFire.toString().equals(x.getText()))
-                        GameSettings.RightPlayerFire = keyEvent.getCode();
-                    else if(GameSettings.LeftPlayerFire.toString().equals(x.getText()))
-                        GameSettings.LeftPlayerFire = keyEvent.getCode();
-                    else
-                        System.out.println("Warning: This key is unhandled!");
-                    x.setText(keyEvent.getCode().toString());
-                    x.setStyle("-fx-font-size:" + 30.0/Math.sqrt(keyEvent.getCode().toString().length()) +"px;");
-                }
-            });
-            pane.getChildren().add(x);
-        }
+        Pane mainPane = ControllerSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
+        ControllerSetter.setControlsTabLabels(mainPane);
+        ControllerSetter.setControlsTabButtons(mainPane);
+        tabGameProperties.setContent(mainPane);
+    }
 
-    }
-    @FXML
-    private void exitButtonPressed() {
-        System.exit(1);
-    }
-    @FXML
-    public void backButtonAction() {
-        Stage stage = (Stage) backBtn.getScene().getWindow();
-        Parent root;
-        try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-            Stage mainStage = new Stage();
-            mainStage.setTitle("Snake");
-            mainStage.setScene(new Scene(root, GameSettings.WindowWidth, GameSettings.WindowHeight));
-            mainStage.show();
-            stage.hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void showFinishPane(boolean bombCollision){
+    public void showEndPane(boolean bombCollision){
         gameLoop.stop();
         finishPane = ControllerSetter.setPane(100, 50, 600, "finishPaneBackground", "css/backgrounds.css");
         finishPane.setPrefHeight(650);
-        finishPane.setVisible(true);
         Label finishLabel = ControllerSetter.setLabel("Time Over", 0, 30);
         if(bombCollision) {
             finishLabel.setText("Bomb Collision!");
@@ -365,8 +216,8 @@ public final class Controller {
         againButton.setPrefWidth(290);
         againButton.setOnAction(e -> {
             primaryStage.close();
+            gameBoard.removeAllCells();
             startButtonPressed();
-            //TODO: Obsługa tego zdarzenia - nie usuwają się komórki i kule z layerPane
         });
         layerPane.getChildren().clear();
         ControllerSetter.addChildren(finishPane, finishLabel, pieChart, quitButton, againButton);
@@ -376,6 +227,23 @@ public final class Controller {
         }
     }
 
-    private void pauseButtonPressed() {}
+    private void setPausePane(Pane pane) {
+        pausePane = ControllerSetter.setPane(100,150, 600, "finishPaneBackground", "css/backgrounds.css");
+        pausePane.setPrefHeight(300);
+        pausePane.setVisible(false);
+        Label pauseLabel = ControllerSetter.setLabel("Game Paused!", 20, 20);
+        pauseLabel.setPrefWidth(600);
+        pauseLabel.setAlignment(Pos.CENTER);
+        pauseLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
+        Button resumeButton = ControllerSetter.setButton(400, 200, "Play", "css/buttons.css");
+        resumeButton.setOnAction(e -> {
+            pausePane.setVisible(false);
+            gameLoop.start();
+        });
+        Button settingsButton = ControllerSetter.setButton(5, 200, "Settings", "css/buttons.css");
+        settingsButton.setOnAction(e -> settingsButtonPressed());
+        ControllerSetter.addChildren(pausePane, pauseLabel, resumeButton, settingsButton);
+        ControllerSetter.addChildren(pane, pausePane);
+    }
 
 }

@@ -13,16 +13,14 @@ import java.util.Scanner;
 import static javafx.scene.paint.Color.rgb;
 
 public final class GameSettings {
-    //własności okna
+    //Window
     public static double WindowWidth = 800;
     public static double WindowHeight = 800;
     public static double WidthOfTankBorder = 120;
 
-    //własności komórki
-    public static double CELL_SIZE = 10;
-    public static double CELL_VELOCITY = 5;
-    public static int CELL_HEALTH = 3;
-    public static Color [] CELL_COLOR_SEQUENCE = {Color.GREEN, Color.YELLOW, Color.RED};
+    //Cell
+    public static Color [] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
+            rgb(255, 255, 102, 0.6), rgb(255, 204, 0, 0.6), rgb(255, 153, 0, 0.6), rgb(255, 51, 0, 0.6), rgb(255, 0, 0, 0.6)};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
     public static int CellHealth = 3;
@@ -30,7 +28,7 @@ public final class GameSettings {
     public static double CellVelocityIncrease = 5;
     public static double CellSizeDecrease = 69;
 
-    //własności pocisku
+    //Bullet
     public static double BulletSize = 15;
     public static double BulletVelocity = 0.5;
     public static Color BulletColor = Color.BLACK;
@@ -40,12 +38,13 @@ public final class GameSettings {
     public static double BulletVelocityIncrease = 15;
     public static double BulletRadiusDecrease = 2;
 
-    //własności czołgu
+    //Tank
     public static double TankVelocity = 3;
     public static String TankBodyImg = "graphics/tankbody.png";
     public static String TankBarrelImg = "graphics/tankhead.png";
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
+<<<<<<< HEAD
 
     //to chyba w ogóle niepotrzebne jest
     public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
@@ -58,24 +57,37 @@ public final class GameSettings {
     public static final KeyCode LeftPlayerBarrelUp = KeyCode.D;
     public static final KeyCode LeftPlayerBarrelDown = KeyCode.A;
     public static final KeyCode LeftPlayerFire = KeyCode.SHIFT;
+=======
+    //Control
+    public static KeyCode RightPlayerMoveUp = KeyCode.UP;
+    public static KeyCode RightPlayerMoveDown = KeyCode.DOWN;
+    public static KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
+    public static KeyCode RightPlayerBarrelDown = KeyCode.LEFT;
+    public static KeyCode RightPlayerFire = KeyCode.SHIFT;
+    public static KeyCode LeftPlayerMoveUp = KeyCode.W;
+    public static KeyCode LeftPlayerMoveDown = KeyCode.S;
+    public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
+    public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
+    public static KeyCode LeftPlayerFire = KeyCode.SPACE;
+    public static KeyCode Pause = KeyCode.P;
+>>>>>>> 4f825b0 (Dodanie dwoch zmiennych do pliku konfiguracyjnego)
 
-    //rozgrywka
+    //Game
     public static double GameTime = 200;
     public static double Interval = 3;
     public static String ImageExtension = "PNG";
-    public static KeyCode Pause = KeyCode.P;
-    public static String ConfigFileName;
     public static double TimeBetweenCellGenerating = 2;
     public static double TimeBetweenColonyGeneration = 100;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
 
 
-    //okno ustawień
+    //Settings
     private static final ArrayList<String[]> ConfigurationList = new ArrayList<>();
     public static boolean MakeScreenshot = false;
 
-    //plik konfiguracyjny
+    //Configuration File
+    public static String ConfigFileName;
     public static String PathConfigFile = "src/main/resources/config/configFile.txt";
 
     public static void setConfigurationList(){
@@ -92,6 +104,8 @@ public final class GameSettings {
         ConfigurationList.add(new String[]{"Bullet Radius Decrease", "DR1", String.valueOf(BulletRadiusDecrease)});
         ConfigurationList.add(new String[]{"Cell Size Decrease", "DH1", String.valueOf(CellSizeDecrease)});
         ConfigurationList.add(new String[]{"Game Time", "T3", String.valueOf(GameTime)});
+        ConfigurationList.add(new String[]{"Time Cells Generating", "T4", String.valueOf(TimeBetweenCellGenerating)});
+        ConfigurationList.add(new String[]{"Time Colonies Generating", "T5", String.valueOf(TimeBetweenColonyGeneration)});
     }
     public static ArrayList<String[]> getConfigurationList(){
         return ConfigurationList;
@@ -192,7 +206,8 @@ public final class GameSettings {
             case "DR1" -> BulletRadiusDecrease = Double.parseDouble(y);
             case "DH1" -> CellSizeDecrease = Double.parseDouble(y);
             case "T3" -> GameTime = Double.parseDouble(y);
-            case "IMG" -> ImageExtension = y;
+            case "T4" -> TimeBetweenCellGenerating = Double.parseDouble(y);
+            case "T5" -> TimeBetweenColonyGeneration = Double.parseDouble(y);
             default -> {
                 return false;
             }
