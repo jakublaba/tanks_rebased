@@ -14,6 +14,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>16</javafx.version>
+        <junit.version>5.7.0</junit.version>
+        <annotations.version>RELEASE</annotations.version>
         <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
     </properties>
 
@@ -35,15 +37,27 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>${annotations.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

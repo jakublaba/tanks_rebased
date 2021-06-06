@@ -35,6 +35,7 @@ public final class Controller {
     private int gameTime;
     private GameBoard gameBoard;
     private Stage primaryStage;
+    private GameSoundPlayer gameSoundPlayer;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -80,6 +81,7 @@ public final class Controller {
             if(key.getCode().equals(GameSettings.Pause)){
                 gameLoop.stop();
                 pausePane.setVisible(true);
+                gameSoundPlayer.stopBackgroundSound();
             }
             ControllerSetter.setPressedKey(key.getCode());
         });
@@ -102,6 +104,16 @@ public final class Controller {
                 gameBoard.updateTankPosition(layerPane);
                 //GAME BOARD
                 if(gameBoard.updateGame(currentTime, layerPane)){
+                    var leftBullets = gameBoard.leftPlayer.getTank().getBullets();
+                    var rightBullets =  gameBoard.rightPlayer.getTank().getBullets();
+                    for (Bullet bullet : leftBullets) {
+                        bullet.erase(layerPane);
+                    }
+                    for (Bullet bullet : rightBullets) {
+                        bullet.erase(layerPane);
+                    }
+                    leftBullets.clear();
+                    rightBullets.clear();
                     showEndPane(true);
                 }
                 PlayerInfo.updateErrorInformation();
@@ -129,6 +141,7 @@ public final class Controller {
     }
 
     private void setGameBoard() {
+        gameSoundPlayer = new GameSoundPlayer();
         Line rightLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, 0, GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line leftLine = ControllerSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line horizontalLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
@@ -142,6 +155,7 @@ public final class Controller {
         Bomb.draw(layerPane);
         gameTime = (int)(GameSettings.GameTime);
         PlayerInfo.setErrorList(layerPane);
+        gameSoundPlayer.playBackgroundSound();
     }
 
     @FXML
@@ -211,7 +225,7 @@ public final class Controller {
         PieChart pieChart = ControllerSetter.setPieChart(gameBoard);
         Button quitButton = ControllerSetter.setButton(5, 500, "Quit", "css/buttons.css");
         quitButton.setPrefWidth(290);
-        quitButton.setOnAction(e -> exitButtonPressed());
+        quitButton.setOnAction(e -> System.exit(0));
         Button againButton = ControllerSetter.setButton(305, 500, "Again!", "css/buttons.css");
         againButton.setPrefWidth(290);
         againButton.setOnAction(e -> {
@@ -225,6 +239,8 @@ public final class Controller {
         if(GameSettings.MakeScreenshot) {
             ControllerSetter.makeScreenshot(layerPane);
         }
+        gameSoundPlayer.stopBackgroundSound();
+        gameSoundPlayer.playEndSound();
     }
 
     private void setPausePane(Pane pane) {
@@ -239,11 +255,11 @@ public final class Controller {
         resumeButton.setOnAction(e -> {
             pausePane.setVisible(false);
             gameLoop.start();
+            gameSoundPlayer.playBackgroundSound();
         });
         Button settingsButton = ControllerSetter.setButton(5, 200, "Settings", "css/buttons.css");
         settingsButton.setOnAction(e -> settingsButtonPressed());
         ControllerSetter.addChildren(pausePane, pauseLabel, resumeButton, settingsButton);
         ControllerSetter.addChildren(pane, pausePane);
     }
-
 }

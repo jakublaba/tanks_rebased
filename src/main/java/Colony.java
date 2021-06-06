@@ -10,7 +10,7 @@ public class Colony {
 
     public Colony () {
         cells = new ArrayList<>();
-        double colonyCenter = ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + 1.5 * GameSettings.CellSize, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - 1.5 * GameSettings.CellSize);
+        double colonyCenter = ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + 2 * GameSettings.CellSize, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - 1.5 * GameSettings.CellSize);
         int colonySize = ThreadLocalRandom.current().nextInt(2, 5);
         List<Integer> usedPosition = new ArrayList<>();
         Cell centerCell = new Cell(colonyCenter - GameSettings.CellSize/2, 0, GameSettings.CellSize, GameSettings.CellVelocity, 5, ThreadLocalRandom.current().nextInt(1,9));
@@ -49,58 +49,68 @@ public class Colony {
             x.move(timeBetween);
         }
     }
+    public boolean regenerate(){
+        boolean playSound = false;
+        for(Cell cell : cells){
+            if(cell.regenerate()){
+                playSound = true;
+            }
+        }
+        return playSound;
+    }
 
     public void resize () {
-        for(Cell x : cells){
-            x.resize();
-            if(x.getPosition() != 0){
-                switch(x.getPosition()){
+        for(Cell cell : cells){
+            cell.resize();
+            if(cell.getPosition() != 0) {
+                switch(cell.getPosition()) {
                     case 1:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() + GameSettings.CellSizeDecrease);
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() + GameSettings.CellSizeDecrease);
-                        x.setX(x.getX() + GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() + GameSettings.CellSizeDecrease);
+                        cell.setX(cell.getX() + GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() + GameSettings.CellSizeDecrease);
                         break;
                     case 2:
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() + GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() + GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() + GameSettings.CellSizeDecrease);
                         break;
                     case 3:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() - GameSettings.CellSizeDecrease );
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() + GameSettings.CellSizeDecrease );
-                        x.setX(x.getX() - GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() - GameSettings.CellSizeDecrease );
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() + GameSettings.CellSizeDecrease );
+                        cell.setX(cell.getX() - GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() + GameSettings.CellSizeDecrease);
                         break;
                     case 4:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() + GameSettings.CellSizeDecrease );
-                        x.setX(x.getX() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() + GameSettings.CellSizeDecrease );
+                        cell.setX(cell.getX() + GameSettings.CellSizeDecrease);
                         break;
                     case 5:
                         break;
                     case 6:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() - GameSettings.CellSizeDecrease);
-                        x.setX(x.getX() - GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() - GameSettings.CellSizeDecrease);
+                        cell.setX(cell.getX() - GameSettings.CellSizeDecrease);
                         break;
                     case 7:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() + GameSettings.CellSizeDecrease);
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
-                        x.setX(x.getX() + GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() - GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() + GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
+                        cell.setX(cell.getX() + GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() - GameSettings.CellSizeDecrease);
                         break;
                     case 8:
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() - GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() - GameSettings.CellSizeDecrease);
                         break;
                     case 9:
-                        x.getSegmentShape().setX(x.getSegmentShape().getX() - GameSettings.CellSizeDecrease);
-                        x.getSegmentShape().setY(x.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
-                        x.setX(x.getX() - GameSettings.CellSizeDecrease);
-                        x.setY(x.getY() - GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setX(cell.getSegmentShape().getX() - GameSettings.CellSizeDecrease);
+                        cell.getSegmentShape().setY(cell.getSegmentShape().getY() - GameSettings.CellSizeDecrease);
+                        cell.setX(cell.getX() - GameSettings.CellSizeDecrease);
+                        cell.setY(cell.getY() - GameSettings.CellSizeDecrease);
                         break;
                 }
             }
-            x.getLabel().setTranslateX(x.getX() - x.getCurrentSize()/2);
+            cell.getLabel().setTranslateX(cell.getX() - cell.getCurrentSize()/2);
         }
     }
+
     public List<Cell> getCells() { return cells; }
 }

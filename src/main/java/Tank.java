@@ -15,10 +15,6 @@ public class Tank {
     private final ImageView bodyView, barrelView;
 
     public Tank (char side) {
-        if (side != 'L' && side != 'R' && side != 'T') {
-            System.out.println("Czołg może być tylko na lewej lub prawej ścianie, podaj prawidłowy argument");
-            System.exit(1);
-        }
         this.side = side;
         position = GameSettings.WindowHeight / 2;
         barrelAngle = side == 'R' ? 180 : 0;
@@ -54,8 +50,7 @@ public class Tank {
             if (side == 'L' && bullet.getX() > GameSettings.WindowWidth - GameSettings.WidthOfTankBorder || side == 'R' && bullet.getX() < GameSettings.WidthOfTankBorder || (bullet.getY() < 0 || bullet.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder)) {
                 bullet.erase(pane);
                 removeBullet(bullet);
-                //System.out.println("Current amount of bullets: " + bullets.size());
-                break; //bez tego występuje ConcurrentModificationException - usuwamy elementy z listy, po której nadal iterujemy
+                break;
             }
         }
     }
@@ -88,6 +83,5 @@ public class Tank {
         bullets.add(bulletFired);
     }
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
-    public double getBarrelAngle () { return barrelAngle; }
     public List<Bullet> getBullets () { return bullets; }
 }
