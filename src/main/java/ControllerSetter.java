@@ -152,6 +152,9 @@ public class ControllerSetter {
         checkBox.setLayoutX(x);
         checkBox.setLayoutY(y);
         checkBox.getStylesheets().add(path);
+        if(GameSettings.MakeScreenshot) {
+            checkBox.fire();
+        }
         return checkBox;
     }
 
@@ -186,7 +189,7 @@ public class ControllerSetter {
         else if (keyCode.equals(GameSettings.RightPlayerFire)) {
             Controller.rightPlayerShootPressed = true;
         }
-        else{
+        else if(!keyCode.equals(GameSettings.Pause)){
             PlayerInfo.addInformation("[INFO]" + keyCode + "<-This key is not assigned!");
         }
     }

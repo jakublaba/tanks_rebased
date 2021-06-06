@@ -8,49 +8,45 @@ import javafx.scene.shape.Rectangle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class Cell extends GameSegment {
-    private final boolean memberOfColony;
     private final int initialHp;
     private int currentHp;
-    private final Label currentHpLabel;
-    private final Rectangle segmentShape;
+    private Label currentHpLabel;
+    private Rectangle segmentShape;
     private int position;
     private Circle coordCheck, coordCheck2;
 
     public Cell () {
         super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize/2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize/2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
-        segmentShape = new Rectangle();
-        segmentShape.setWidth(GameSettings.CellSize);
-        segmentShape.setHeight(GameSettings.CellSize);
-        segmentShape.setX(x - GameSettings.CellSize/2);
-        segmentShape.setY(y - GameSettings.CellSize/2);
-        segmentShape.setFill(GameSettings.CellColorSequence[0]);
-        this.memberOfColony = false;
+        setShape();
         initialHp = ThreadLocalRandom.current().nextInt(1,9);
         currentHp = initialHp;
         position = 0;
-        currentHpLabel = new Label(String.valueOf(initialHp));
-        currentHpLabel.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
-        currentHpLabel.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
-        currentHpLabel.setAlignment(Pos.CENTER);
-        currentHpLabel.setTranslateX(x - GameSettings.CellSize/2);
-        currentHpLabel.setStyle("-fx-font-weight: bold; -fx-text-alignment: center; -fx-font-size:" + 0.75 * GameSettings.CellSize +"px;");
-        coordCheck = new Circle(x, y,3);
-        coordCheck.setFill(Color.RED);
-        coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
-        coordCheck2.setFill(Color.BLACK);
+        setHpLabel();
     }
-    public Cell (double x, double y, double initialSize, double initialVelocity, int position) {
+    public Cell (double x, double y, double initialSize, double initialVelocity, int position, int initialHp){
         super(x, y, initialSize, initialVelocity);
+        setShape();
+        this.initialHp = initialHp;
+        currentHp = initialHp;
+        this.position = position;
+        setHpLabel();
+    }
+    public Cell (double x, double y, double cellSize, int Hp){
+        super(x, y, cellSize, GameSettings.CellVelocity);
+        setShape();
+        this.initialHp = GameSettings.CellHealth;
+        currentHp = Hp;
+        this.position = 0;
+    }
+    private void setShape(){
         segmentShape = new Rectangle();
         segmentShape.setWidth(GameSettings.CellSize);
         segmentShape.setHeight(GameSettings.CellSize);
         segmentShape.setX(x - GameSettings.CellSize/2);
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
-        this.memberOfColony = true;
-        initialHp = ThreadLocalRandom.current().nextInt(1,9);
-        currentHp = initialHp;
-        this.position = position;
+    }
+    private void setHpLabel(){
         currentHpLabel = new Label(String.valueOf(initialHp));
         currentHpLabel.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
         currentHpLabel.setMaxSize(GameSettings.CellSize, GameSettings.CellSize);
@@ -62,6 +58,7 @@ public final class Cell extends GameSegment {
         coordCheck2 = new Circle(x, y + GameSettings.CellSize/2, 3);
         coordCheck2.setFill(Color.BLACK);
     }
+
     public void draw (Pane pane){
         coordCheck.setCenterX(x);
         coordCheck.setCenterY(y);

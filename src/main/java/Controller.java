@@ -101,6 +101,7 @@ public final class Controller {
                 if(gameBoard.updateGame(currentTime, layerPane)){
                     showEndPane(true);
                 }
+                PlayerInfo.updateErrorInformation();
                 shootingControl(currentTime);
             }
         };
