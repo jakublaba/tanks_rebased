@@ -25,13 +25,13 @@ public class GameBoard {
 
     public boolean updateGame(long time, Pane pane) {
         generateObjects(time);
-        moveObjects(time, pane);
-        eraseObjects();
         resizeObjects(time, pane);
         regenerateObjects(time);
-        if(leftPlayerShots(pane) || rightPlayerShots(pane)){
+        if(playerShots(pane, leftPlayer) || playerShots(pane, rightPlayer)){
             return true;
         }
+        moveObjects(time, pane);
+        eraseObjects();
         leftPlayer.drawScore(pane, 'L');
         rightPlayer.drawScore(pane, 'R');
         return false;
@@ -46,49 +46,23 @@ public class GameBoard {
         }
     }
 
-    private boolean rightPlayerShots(Pane pane) {
-        var rightTank = rightPlayer.getTank();
-        for (Bullet bullet : rightTank.getBullets()) {
+    private boolean playerShots(Pane pane, PlayerInfo player) {
+        var tank = player.getTank();
+        for (Bullet bullet : tank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
                 bullet.erase(pane);
-                rightTank.removeBullet(bullet);
+                tank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
                     if(cell.getCurrentHp() == 0)
-                        rightPlayer.increaseScore(cell.getInitialHp());
+                        player.increaseScore(cell.getInitialHp());
                 }
                 break;
             }
             if (bombCollision(bullet)) {
                 bullet.erase(pane);
-                rightTank.removeBullet(bullet);
-                if (Bomb.fatalCollision(bullet)) {
-                    return true;
-                }
-                break;
-            }
-        }
-        return false;
-    }
-
-    private boolean leftPlayerShots(Pane pane) {
-        var leftTank = leftPlayer.getTank();
-        for (Bullet bullet : leftTank.getBullets()) {
-            var cell = cellCollision(bullet);
-            if (cell != null) {
-                bullet.erase(pane);
-                leftTank.removeBullet(bullet);
-                if (cell.getCurrentHp() > 0) {
-                    cell.getDamaged();
-                    if(cell.getCurrentHp() == 0)
-                        leftPlayer.increaseScore(cell.getInitialHp());
-                }
-                break;
-            }
-            if (bombCollision(bullet)) {
-                bullet.erase(pane);
-                leftTank.removeBullet(bullet);
+                tank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
                     return true;
                 }
