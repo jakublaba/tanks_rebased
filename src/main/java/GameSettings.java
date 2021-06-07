@@ -65,7 +65,11 @@ public final class GameSettings {
     public static double TimeBetweenColonyGeneration = 100;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
-
+    public static String BackgroundSound = "sound/background.mp3";
+    public static String EndSound = "sound/end.wav";
+    public static String GetScoreSound = "sound/getScore.wav";
+    public static String HitSound = "sound/hit.wav";
+    public static String RegenerateCellSound = "sound/regenerate.wav";
 
     //Settings
     private static final ArrayList<String[]> ConfigurationList = new ArrayList<>();

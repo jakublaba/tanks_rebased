@@ -12,7 +12,7 @@ public final class Cell extends GameSegment {
     private int currentHp;
     private Label currentHpLabel;
     private Rectangle segmentShape;
-    private int position;
+    private final int position;
     private Circle coordCheck, coordCheck2;
 
     public Cell () {
@@ -109,7 +109,16 @@ public final class Cell extends GameSegment {
     public void regenerate () {
         if(currentHp < initialHp && currentHp > 0)
             currentHp++;
-        currentHpLabel.setText(String.valueOf(currentHp));
+            for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
+                if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length) {
+                    segmentShape.setFill(GameSettings.CellColorSequence[GameSettings.CellColorSequence.length - i - 1]);
+                }
+                tmp += 1.0/GameSettings.CellColorSequence.length;
+            }
+            currentHpLabel.setText(String.valueOf(currentHp));
+            return true;
+        }
+        return false;
     }
     public void getDamaged () {
         double tmp = 0;

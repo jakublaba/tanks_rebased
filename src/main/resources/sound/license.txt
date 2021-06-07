@@ -1,0 +1,12 @@
+Background:
+Autor: bipwave
+License:CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+
+End:
+Autor: kimp10
+
+getScore:
+Autor:mixkit
+License: Mixkit Sound Effects Free License 
+Items under the Mixkit Sound Effects Free License can be used in your commercial and non-commercial projects for free.
