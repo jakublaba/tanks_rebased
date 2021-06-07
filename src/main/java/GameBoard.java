@@ -61,6 +61,30 @@ public class GameBoard {
         }
     }
 
+    public Cell cellCollision (Bullet bullet) {
+        for (Cell cell : cells) {
+            double cellCenterX = cell.getX();
+            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 && Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public Cell colonyCollision (Bullet bullet) {
+        for (Colony colony : colonies) {
+            for (Cell cell : colony.getCells()) {
+                double cellCenterX = cell.getX();
+                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 && Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                    return cell;
+                }
+            }
+        }
+        return null;
+    }
+
     private boolean playerShots(Pane pane, PlayerInfo player) {
         var tank = player.getTank();
         for (Bullet bullet : tank.getBullets()) {
@@ -85,8 +109,9 @@ public class GameBoard {
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
                     gameSoundPlayer.playHitSound();
-                    if(cell.getCurrentHp() == 0) {
-                        player.increaseScore(cell.getInitialHp());
+                    if(!cell.getColony().isColonyAlive()) {
+                        player.increaseScore(cell.getColony().getInitialCellHpSum());
+                        colonies.remove(cell.getColony());
                         gameSoundPlayer.playGetPointSound();
                     }
                 }
@@ -175,32 +200,6 @@ public class GameBoard {
             colony.getCells().removeIf(cell -> cell.getCurrentHp() <= 0);
         }
 
-    }
-
-    public Cell cellCollision (Bullet bullet) {
-        for (Cell cell : cells) {
-            double cellCenterX = cell.getX();
-            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
-            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
-                return cell;
-            }
-        }
-        return null;
-    }
-
-    public Cell colonyCollision (Bullet bullet) {
-        for (Colony colony : colonies) {
-            for (Cell cell : colony.getCells()) {
-                double cellCenterX = cell.getX();
-                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
-                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                        Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
-                    return cell;
-                }
-            }
-        }
-        return null;
     }
 
     public void generateObjects(long time){
