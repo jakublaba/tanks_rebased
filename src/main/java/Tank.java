@@ -2,6 +2,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,8 @@ public class Tank {
         double y1 = y0 - r*Math.sin(alfa);
         double vectorX = x1 - x0;
         double vectorY = y1 - y0;
-        Bullet bulletFired = new Bullet(x1, y1, vectorX, vectorY);
+        var color = side == 'L' ? GameSettings.LeftPlayerBulletColor : GameSettings.RightPlayerBulletColor;
+        Bullet bulletFired = new Bullet(x1, y1, vectorX, vectorY, color);
         bullets.add(bulletFired);
     }
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }

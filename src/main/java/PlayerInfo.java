@@ -9,7 +9,7 @@ public class PlayerInfo {
     private final Tank tank;
     private int score;
     private Label scoreLabel;
-    private static List<String> errorList = new ArrayList<>();;
+    private static final List<String> errorList = new ArrayList<>();;
     public static Label firstErrorLine;
     private static double firstTransparentRatio = 1;
     public static Label secondErrorLine;

@@ -31,7 +31,8 @@ public final class GameSettings {
     //Bullet
     public static double BulletSize = 15;
     public static double BulletVelocity = 0.5;
-    public static Color BulletColor = Color.BLACK;
+    public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
+    public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
     public static double BulletFrequencyLimit = 0.5;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 3;
@@ -44,20 +45,7 @@ public final class GameSettings {
     public static String TankBarrelImg = "graphics/tankhead.png";
     public static double BarrelRotation = 1;
     public static double BarrelAngleLimit = 50;
-<<<<<<< HEAD
 
-    //to chyba w ogóle niepotrzebne jest
-    public static final KeyCode RightPlayerMoveUp = KeyCode.UP;
-    public static final KeyCode RightPlayerMoveDown = KeyCode.DOWN;
-    public static final KeyCode RightPlayerBarrelUp = KeyCode.RIGHT;
-    public static final KeyCode RightPlayerBarrelDown = KeyCode.LEFT;
-    public static final KeyCode RightPlayerFire = KeyCode.SPACE;
-    public static final KeyCode LeftPlayerMoveUp = KeyCode.W;
-    public static final KeyCode LeftPlayerMoveDown = KeyCode.S;
-    public static final KeyCode LeftPlayerBarrelUp = KeyCode.D;
-    public static final KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static final KeyCode LeftPlayerFire = KeyCode.SHIFT;
-=======
     //Control
     public static KeyCode RightPlayerMoveUp = KeyCode.UP;
     public static KeyCode RightPlayerMoveDown = KeyCode.DOWN;
@@ -70,12 +58,11 @@ public final class GameSettings {
     public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
     public static KeyCode LeftPlayerFire = KeyCode.SPACE;
     public static KeyCode Pause = KeyCode.P;
->>>>>>> 4f825b0 (Dodanie dwoch zmiennych do pliku konfiguracyjnego)
 
     //Game
     public static double GameTime = 200;
     public static double Interval = 3;
-    public static String ImageExtension = "PNG";
+    public static final String ImageExtension = "PNG";
     public static double TimeBetweenCellGenerating = 2;
     public static double TimeBetweenColonyGeneration = 100;
     public static double VolumeOfMusic = 0.25;
@@ -87,7 +74,7 @@ public final class GameSettings {
     public static String RegenerateCellSound = "sound/regenerate.wav";
 
     //Settings
-    private static final ArrayList<String[]> ConfigurationList = new ArrayList<>();
+    private static final List<String[]> ConfigurationList = new ArrayList<>(); //nie deklarujemy implementacji kolekcji na sztywno - tak jak dr Olszewski powiedział
     public static boolean MakeScreenshot = false;
 
     //Configuration File
@@ -111,7 +98,7 @@ public final class GameSettings {
         ConfigurationList.add(new String[]{"Time Cells Generating", "T4", String.valueOf(TimeBetweenCellGenerating)});
         ConfigurationList.add(new String[]{"Time Colonies Generating", "T5", String.valueOf(TimeBetweenColonyGeneration)});
     }
-    public static ArrayList<String[]> getConfigurationList(){
+    public static List<String[]> getConfigurationList(){
         return ConfigurationList;
     }
 

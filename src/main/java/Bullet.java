@@ -1,17 +1,18 @@
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public final class Bullet extends GameSegment {
     private final Circle segmentShape;
     private final double dirX, dirY;
-    public Bullet (double x, double y, double dirX, double dirY) {
+    public Bullet (double x, double y, double dirX, double dirY, Color color) {
         super(x, y, GameSettings.BulletSize, GameSettings.BulletVelocity);
         this.dirX = dirX;
         this.dirY = dirY;
         segmentShape = new Circle(x, y, currentSize);
         segmentShape.setCenterX(x);
         segmentShape.setCenterY(y);
-        segmentShape.setFill(GameSettings.BulletColor);
+        segmentShape.setFill(color);
     }
     @Override
     public void move() {
