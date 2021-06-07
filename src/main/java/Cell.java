@@ -90,7 +90,7 @@ public final class Cell extends GameSegment {
     public int getCurrentHp () {
         return currentHp;
     }
-    public Rectangle getSegmentShape(){return segmentShape;}
+    public Rectangle getSegmentShape() {return segmentShape;}
     public int getPosition(){return position;}
     public Label getLabel(){ return currentHpLabel; }
     public double getCurrentSize(){return currentSize;}
@@ -99,6 +99,12 @@ public final class Cell extends GameSegment {
     }
     public void setY(double y){
         this.y = y;
+    }
+    public void eraseFromPane (Pane pane) {
+        pane.getChildren().remove(segmentShape);
+        pane.getChildren().remove(currentHpLabel);
+        pane.getChildren().remove(coordCheck);
+        pane.getChildren().remove(coordCheck2);
     }
     public void regenerate () {
         if(currentHp < initialHp && currentHp > 0)

@@ -31,6 +31,7 @@ public class GameBoard {
             return true;
         }
         moveObjects(time, pane);
+        eraseObjectsFromPane(pane);
         eraseObjects();
         leftPlayer.drawScore(pane, 'L');
         rightPlayer.drawScore(pane, 'R');
@@ -116,10 +117,33 @@ public class GameBoard {
             lastTimeOfMoveCell = time;
         }
     }
-    public void eraseObjects(){
+
+    public void eraseObjectsFromPane (Pane pane) {
+        for (Cell cell : cells) {
+            if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() <= 0) {
+                cell.eraseFromPane(pane);
+            }
+        }
+        for (Colony colony : colonies) {
+            for (Cell cell : colony.getCells()) {
+                if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() <= 0) {
+                    cell.eraseFromPane(pane);
+                }
+            }
+        }
+    }
+
+    public void eraseObjects() {
         cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         cells.removeIf(cell -> cell.getCurrentSize() <= 0);
         cells.removeIf(cell -> cell.getCurrentHp() <= 0);
+
+        for (Colony colony : colonies) {
+            colony.getCells().removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+            colony.getCells().removeIf(cell -> cell.getCurrentSize() <= 0);
+            colony.getCells().removeIf(cell -> cell.getCurrentHp() <= 0);
+        }
+
     }
 
     public Cell cellCollision (Bullet bullet) {
