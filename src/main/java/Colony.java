@@ -10,7 +10,7 @@ public class Colony {
 
     public Colony () {
         cells = new ArrayList<>();
-        double colonyCenter = ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + 1.5 * GameSettings.CellSize, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - 1.5 * GameSettings.CellSize);
+        double colonyCenter = ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + 2 * GameSettings.CellSize, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - 1.5 * GameSettings.CellSize);
         int colonySize = ThreadLocalRandom.current().nextInt(2, 5);
         List<Integer> usedPosition = new ArrayList<>();
         Cell centerCell = new Cell(colonyCenter - GameSettings.CellSize/2, 0, GameSettings.CellSize, GameSettings.CellVelocity, 5, ThreadLocalRandom.current().nextInt(1,9));
@@ -48,6 +48,15 @@ public class Colony {
         for (Cell x : cells){
             x.move(timeBetween);
         }
+    }
+    public boolean regenerate(){
+        boolean playSound = false;
+        for(Cell cell : cells){
+            if(cell.regenerate()){
+                playSound = true;
+            }
+        }
+        return playSound;
     }
 
     public void resize () {

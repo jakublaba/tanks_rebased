@@ -11,12 +11,14 @@ public class GameBoard {
     private long lastTimeOfMoveCell;
     private long lastTimeOfDecrease;
     private long lastTimeOfGeneratingColony;
+    private GameSoundPlayer gameSoundPlayer;
 
     public GameBoard () {
         leftPlayer = new PlayerInfo('L');
         rightPlayer = new PlayerInfo('R');
         cells = new ArrayList<>();
         colonies = new ArrayList<>();
+        gameSoundPlayer = new GameSoundPlayer();
     }
     public GameBoard(List<Cell> cells, List<Colony> colonies){
         this.cells = cells;
@@ -38,9 +40,21 @@ public class GameBoard {
     }
 
     private void regenerateObjects(long time) {
+        boolean soundPlayed = false;
+        if(lastTimeOfIncreaseHealth == 0)
+            lastTimeOfIncreaseHealth = time;
         if (time - lastTimeOfIncreaseHealth >= GameSettings.CellRegenerationInterval * 1_000_000_000) {
             for(Cell cell : cells){
-                cell.regenerate();
+                if(cell.regenerate() && !soundPlayed){
+                    gameSoundPlayer.playRegenerateCellSound();
+                    soundPlayed = true;
+                }
+            }
+            for(Colony colony : colonies){
+                if(colony.regenerate() && !soundPlayed){
+                    gameSoundPlayer.playRegenerateCellSound();
+                    soundPlayed = true;
+                }
             }
             lastTimeOfIncreaseHealth = time;
         }
@@ -55,8 +69,11 @@ public class GameBoard {
                 tank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                    if(cell.getCurrentHp() == 0)
+                    gameSoundPlayer.playHitSound();
+                    if(cell.getCurrentHp() == 0) {
                         player.increaseScore(cell.getInitialHp());
+                        gameSoundPlayer.playGetPointSound();
+                    }
                 }
                 break;
             }
@@ -144,15 +161,15 @@ public class GameBoard {
         return null;
     }
     public void generateObjects(long time){
-        if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
-            Cell cell = new Cell ();
-            cells.add(cell);
-            lastTimeOfGeneratingCell = time;
-        }
         if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
             Colony colony = new Colony();
             colonies.add(colony);
             lastTimeOfGeneratingColony = time;
+        }
+        if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
+            Cell cell = new Cell ();
+            cells.add(cell);
+            lastTimeOfGeneratingCell = time;
         }
     }
     public boolean bombCollision (Bullet bullet) {
