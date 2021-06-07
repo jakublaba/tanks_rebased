@@ -78,6 +78,20 @@ public class GameBoard {
                 }
                 break;
             }
+            cell = colonyCollision(bullet);
+            if (cell != null) {
+                bullet.erase(pane);
+                tank.removeBullet(bullet);
+                if (cell.getCurrentHp() > 0) {
+                    cell.getDamaged();
+                    gameSoundPlayer.playHitSound();
+                    if(cell.getCurrentHp() == 0) {
+                        player.increaseScore(cell.getInitialHp());
+                        gameSoundPlayer.playGetPointSound();
+                    }
+                }
+                break;
+            }
             if (bombCollision(bullet)) {
                 bullet.erase(pane);
                 tank.removeBullet(bullet);
@@ -172,6 +186,10 @@ public class GameBoard {
                 return cell;
             }
         }
+        return null;
+    }
+
+    public Cell colonyCollision (Bullet bullet) {
         for (Colony colony : colonies) {
             for (Cell cell : colony.getCells()) {
                 double cellCenterX = cell.getX();
@@ -184,6 +202,7 @@ public class GameBoard {
         }
         return null;
     }
+
     public void generateObjects(long time){
         if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
             Colony colony = new Colony();

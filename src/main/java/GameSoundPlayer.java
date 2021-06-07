@@ -26,7 +26,7 @@ public final class GameSoundPlayer {
             regenerateCellHealthSound = new AudioClip(Objects.requireNonNull(getClass().getResource(GameSettings.RegenerateCellSound)).toExternalForm());
             regenerateCellHealthSound.setVolume(GameSettings.VolumeOfMusicEffects);
         } catch (NullPointerException e) {
-            PlayerInfo.addInformation("[WARM]There is no music file" + e);
+            PlayerInfo.addInformation("[WARNING]There is no music file" + e);
         }
     }
     public void playBackgroundSound() {

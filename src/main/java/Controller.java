@@ -101,6 +101,16 @@ public final class Controller {
                 gameBoard.updateTankPosition(layerPane);
                 //GAME BOARD
                 if(gameBoard.updateGame(currentTime, layerPane)){
+                    var leftBullets = gameBoard.leftPlayer.getTank().getBullets();
+                    var rightBullets =  gameBoard.rightPlayer.getTank().getBullets();
+                    for (Bullet bullet : leftBullets) {
+                        bullet.erase(layerPane);
+                    }
+                    for (Bullet bullet : rightBullets) {
+                        bullet.erase(layerPane);
+                    }
+                    leftBullets.clear();
+                    rightBullets.clear();
                     showEndPane(true);
                 }
                 PlayerInfo.updateErrorInformation();
@@ -224,7 +234,7 @@ public final class Controller {
         PieChart pieChart = ControllerSetter.setPieChart(gameBoard);
         Button quitButton = ControllerSetter.setButton(5, 500, "Quit", "css/buttons.css");
         quitButton.setPrefWidth(290);
-        quitButton.setOnAction(e -> exitButtonPressed());
+        quitButton.setOnAction(e -> System.exit(0));
         Button againButton = ControllerSetter.setButton(305, 500, "Again!", "css/buttons.css");
         againButton.setPrefWidth(290);
         againButton.setOnAction(e -> {

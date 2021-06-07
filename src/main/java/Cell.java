@@ -23,6 +23,7 @@ public final class Cell extends GameSegment {
         position = 0;
         setHpLabel();
     }
+
     public Cell (double x, double y, double initialSize, double initialVelocity, int position, int initialHp){
         super(x, y, initialSize, initialVelocity);
         setShape();
@@ -31,6 +32,7 @@ public final class Cell extends GameSegment {
         this.position = position;
         setHpLabel();
     }
+
     public Cell (double x, double y, double cellSize, int Hp){
         super(x, y, cellSize, GameSettings.CellVelocity);
         setShape();
@@ -38,6 +40,7 @@ public final class Cell extends GameSegment {
         currentHp = Hp;
         this.position = 0;
     }
+
     private void setShape(){
         segmentShape = new Rectangle();
         segmentShape.setWidth(GameSettings.CellSize);
@@ -46,6 +49,7 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y - GameSettings.CellSize/2);
         segmentShape.setFill(GameSettings.CellColorSequence[0]);
     }
+
     private void setHpLabel(){
         currentHpLabel = new Label(String.valueOf(initialHp));
         currentHpLabel.setMinSize(GameSettings.CellSize, GameSettings.CellSize);
@@ -59,7 +63,7 @@ public final class Cell extends GameSegment {
         coordCheck2.setFill(Color.BLACK);
     }
 
-    public void draw (Pane pane){
+    public void draw (Pane pane) {
         coordCheck.setCenterX(x);
         coordCheck.setCenterY(y);
         coordCheck2.setCenterX(x);
@@ -83,31 +87,43 @@ public final class Cell extends GameSegment {
         }
 
     }
+
     public void move (double time){
         y += GameSettings.CellVelocity * time;
     }
+
     public int getInitialHp () { return initialHp; }
+
     public int getCurrentHp () {
         return currentHp;
     }
+
     public Rectangle getSegmentShape() {return segmentShape;}
-    public int getPosition(){return position;}
-    public Label getLabel(){ return currentHpLabel; }
-    public double getCurrentSize(){return currentSize;}
-    public void setX(double x){
+
+    public int getPosition() {return position;}
+
+    public Label getLabel() { return currentHpLabel; }
+
+    public double getCurrentSize() {return currentSize;}
+
+    public void setX(double x) {
         this.x = x;
     }
-    public void setY(double y){
+
+    public void setY(double y) {
         this.y = y;
     }
+
     public void eraseFromPane (Pane pane) {
         pane.getChildren().remove(segmentShape);
         pane.getChildren().remove(currentHpLabel);
         pane.getChildren().remove(coordCheck);
         pane.getChildren().remove(coordCheck2);
     }
-    public void regenerate () {
-        if(currentHp < initialHp && currentHp > 0)
+
+    public boolean regenerate () {
+        if(currentHp < initialHp && currentHp > 0) {
+            double tmp = 0;
             currentHp++;
             for(int i = 0; i < GameSettings.CellColorSequence.length; i++){
                 if((double)currentHp/(double)initialHp >= tmp && (double)currentHp/(double)initialHp < tmp + 1.0/GameSettings.CellColorSequence.length) {
@@ -120,6 +136,9 @@ public final class Cell extends GameSegment {
         }
         return false;
     }
+
+
+
     public void getDamaged () {
         double tmp = 0;
         currentHp = currentHp < 1 ? currentHp : currentHp - 1;
