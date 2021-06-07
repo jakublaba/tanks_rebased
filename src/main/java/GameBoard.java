@@ -25,6 +25,14 @@ public class GameBoard {
         this.colonies = colonies;
     }
 
+    public void actualizeTime(long currentTime){
+        lastTimeOfGeneratingColony = currentTime;
+        lastTimeOfGeneratingCell = currentTime;
+        lastTimeOfIncreaseHealth = currentTime;
+        lastTimeOfDecrease = currentTime;
+        lastTimeOfMoveCell = currentTime;
+    }
+
     public boolean updateGame(long time, Pane pane) {
         generateObjects(time);
         resizeObjects(time, pane);

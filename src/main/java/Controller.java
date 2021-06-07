@@ -29,10 +29,12 @@ public final class Controller {
     private Pane pausePane;
     public static AnimationTimer gameLoop;
     public static Label timerLabel;
-    private int gameTime;
     private GameBoard gameBoard;
     private Stage primaryStage;
     private GameSoundPlayer gameSoundPlayer;
+    private int gameTime;
+    private long timerTime;
+    private boolean actualizationTimeRequired = false;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -47,7 +49,6 @@ public final class Controller {
     public static boolean leftPlayerAllowedToShoot, rightPlayerAllowedToShoot;
     public static boolean leftPlayerShootPressed;
     public static boolean rightPlayerShootPressed;
-
     @FXML
     private void initialize(){
         gameBoard = new GameBoard();
@@ -77,7 +78,7 @@ public final class Controller {
         scene.setOnKeyPressed(key-> {
             if(key.getCode().equals(GameSettings.Pause)){
                 gameLoop.stop();
-                pausePane.setVisible(true);
+                setPausePane(layerPane);
                 gameSoundPlayer.stopBackgroundSound();
             }
             ControllerSetter.setPressedKey(key.getCode());
@@ -88,6 +89,11 @@ public final class Controller {
             long lastTime = 0;
             @Override
             public void handle(long currentTime) {
+                if(actualizationTimeRequired){
+                    gameBoard.actualizeTime(currentTime);
+                    actualizationTimeRequired = false;
+                }
+                timerTime = currentTime;
                 if (gameTime == 0) {
                     showEndPane(false);
                 }
@@ -147,7 +153,6 @@ public final class Controller {
         timerLabel.setVisible(false);
         layerPane.setId("gameBackground");
         layerPane.getStylesheets().add("css/backgrounds.css");
-        setPausePane(layerPane);
         ControllerSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
         Bomb.draw(layerPane);
         gameTime = (int)(GameSettings.GameTime);
@@ -255,7 +260,6 @@ public final class Controller {
     private void setPausePane(Pane pane) {
         pausePane = ControllerSetter.setPane(100,150, 600, "finishPaneBackground", "css/backgrounds.css");
         pausePane.setPrefHeight(300);
-        pausePane.setVisible(false);
         Label pauseLabel = ControllerSetter.setLabel("Game Paused!", 20, 20);
         pauseLabel.setPrefWidth(600);
         pauseLabel.setAlignment(Pos.CENTER);
@@ -263,6 +267,7 @@ public final class Controller {
         Button resumeButton = ControllerSetter.setButton(400, 200, "Play", "css/buttons.css");
         resumeButton.setOnAction(e -> {
             pausePane.setVisible(false);
+            actualizationTimeRequired = true;
             gameLoop.start();
             gameSoundPlayer.playBackgroundSound();
         });
