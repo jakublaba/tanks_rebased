@@ -19,7 +19,7 @@ public final class GameSettings {
     public static double WidthOfTankBorder = 120;
 
     //Cell
-    public static Color [] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
+    public static Color[] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
             rgb(255, 255, 102, 0.6), rgb(255, 204, 0, 0.6), rgb(255, 153, 0, 0.6), rgb(255, 51, 0, 0.6), rgb(255, 0, 0, 0.6)};
     public static double CellVelocity = 10;
     public static double CellSize = 20;
@@ -29,15 +29,14 @@ public final class GameSettings {
     public static double CellSizeDecrease = 69;
 
     //Bullet
-    public static double BulletSize = 15;
+    public static double BulletRadius = 15;
     public static double BulletVelocity = 0.5;
     public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
     public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
     public static double BulletFrequencyLimit = 0.5;
     public static int BulletNumberLimit = 15;
-    public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
-    public static double BulletRadiusDecrease = 2;
+    public static double BulletRadiusDecrease = 3;
 
     //Tank
     public static double TankVelocity = 3;
@@ -54,9 +53,9 @@ public final class GameSettings {
     public static KeyCode RightPlayerFire = KeyCode.SHIFT;
     public static KeyCode LeftPlayerMoveUp = KeyCode.W;
     public static KeyCode LeftPlayerMoveDown = KeyCode.S;
-    public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
-    public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static KeyCode LeftPlayerFire = KeyCode.SPACE;
+    public static KeyCode LeftPlayerBarrelUp = KeyCode.A;
+    public static KeyCode LeftPlayerBarrelDown = KeyCode.D;
+    public static KeyCode LeftPlayerFire = KeyCode.J;
     public static KeyCode Pause = KeyCode.P;
 
     //Game
@@ -81,14 +80,14 @@ public final class GameSettings {
     public static String ConfigFileName;
     public static String PathConfigFile = "src/main/resources/config/configFile.txt";
 
-    public static void setConfigurationList(){
+    public static void setConfigurationList() {
         ConfigurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
         ConfigurationList.add(new String[]{"Number Of Bullets", "X1", String.valueOf(BulletNumberLimit)});
         ConfigurationList.add(new String[]{"Bullet Radius", "R1", String.valueOf(BulletRadius)});
         ConfigurationList.add(new String[]{"Cell Velocity", "V2", String.valueOf(CellVelocity)});
         ConfigurationList.add(new String[]{"Cell Size", "H1", String.valueOf(CellSize)});
         ConfigurationList.add(new String[]{"Cell Health", "P1", String.valueOf(CellHealth)});
-        ConfigurationList.add(new String[]{"Interval", "T1", String.valueOf(CellRegenerationInterval)});
+        ConfigurationList.add(new String[]{"Interval", "T1", String.valueOf(Interval)});
         ConfigurationList.add(new String[]{"Cell Regeneration Interval", "T2", String.valueOf(CellRegenerationInterval)});
         ConfigurationList.add(new String[]{"Bullet Velocity Increase", "DV1", String.valueOf(BulletVelocityIncrease)});
         ConfigurationList.add(new String[]{"Cell Velocity Increase", "DV2", String.valueOf(CellVelocityIncrease)});
@@ -98,7 +97,8 @@ public final class GameSettings {
         ConfigurationList.add(new String[]{"Time Cells Generating", "T4", String.valueOf(TimeBetweenCellGenerating)});
         ConfigurationList.add(new String[]{"Time Colonies Generating", "T5", String.valueOf(TimeBetweenColonyGeneration)});
     }
-    public static List<String[]> getConfigurationList(){
+
+    public static List<String[]> getConfigurationList() {
         return ConfigurationList;
     }
 
@@ -107,9 +107,9 @@ public final class GameSettings {
         try {
             readingFile = new Scanner(new File(PathConfigFile));
             ConfigFileName = readingFile.nextLine();
-            while(readingFile.hasNextLine()) {
+            while (readingFile.hasNextLine()) {
                 String tmpLine = readingFile.nextLine();
-                if(!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)]$")) {
+                if (!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)]$")) {
                     PlayerInfo.addInformation("[WARNING]Incorrect Format:" + tmpLine + " - LINE SKIPPED!");
                 }
                 else {
@@ -176,13 +176,12 @@ public final class GameSettings {
                 }
 
             }
-        }
-        catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             PlayerInfo.addInformation("[WARNING]No Configuration File: " + PathConfigFile);
         }
     }
 
-    public static boolean setGameSettings(String x, String y) throws NumberFormatException{
+    public static boolean setGameSettings(String x, String y) throws NumberFormatException {
         switch (x) {
             case "V1" -> BulletVelocity = Double.parseDouble(y);
             case "X1" -> BulletNumberLimit = Integer.parseInt(y);
@@ -206,18 +205,18 @@ public final class GameSettings {
         return true;
     }
 
-    public static List<TextField> saveConfigFile(List<TextField> textFieldsList, String nameOfFile){
-        List <TextField> incorrectTextFieldList = new ArrayList<>();
+    public static List<TextField> saveConfigFile(List<TextField> textFieldsList, String nameOfFile) {
+        List<TextField> incorrectTextFieldList = new ArrayList<>();
         String nameOfFileWithExtension = nameOfFile.replace(' ', '_') + ".txt";
         PrintWriter writingFile;
         try {
-            writingFile = new PrintWriter("src/main/resources/config/"+ nameOfFileWithExtension);
+            writingFile = new PrintWriter("src/main/resources/config/" + nameOfFileWithExtension);
             writingFile.println(nameOfFile);
-            for (int i = 0; i < textFieldsList.size(); i++){
-                try{
+            for (int i = 0; i < textFieldsList.size(); i++) {
+                try {
                     GameSettings.setGameSettings(GameSettings.getConfigurationList().get(i)[1], textFieldsList.get(i).getText());
                     writingFile.println("[" + GameSettings.getConfigurationList().get(i)[1] + "] " + GameSettings.getConfigurationList().get(i)[0].replaceAll(" ", "") + " [" + textFieldsList.get(i).getText() + "]");
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     incorrectTextFieldList.add(textFieldsList.get(i));
                 }
             }
