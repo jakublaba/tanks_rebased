@@ -262,7 +262,4 @@ public class GameBoard {
             Controller.rightPlayerAllowedToShoot = false;
         }
     }
-    public List<Cell> getCellsList(){
-        return cells;
-    }
 }
