@@ -1,6 +1,6 @@
-Przykład 1
-[V1] BulletVelocity [1.5]
-[X1] NumberOfBullets [3]
+Tryb skokowy
+[V1] BulletVelocity [8]
+[X1] NumberOfBullets [10]
 [R1] BulletRadius [20]
 [V2] CellVelocity [100]
 [H1] CellSize [50]
@@ -12,4 +12,5 @@ Przykład 1
 [DR1] BulletRadiusDecrease [1]
 [DH1] CellSizeDecrease [2]
 [T3] GameTime [5]
-[IMG] ImageExtension [PNG]
+[T4] TimeBetweenCellGenerating [100]
+[T5] TimeBetweenColonyGeneration [3]

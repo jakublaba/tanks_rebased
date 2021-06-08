@@ -186,7 +186,7 @@ public final class Controller {
     }
 
     @FXML
-    public void backButtonAction() {
+    private void backButtonAction() {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
     }
@@ -195,7 +195,7 @@ public final class Controller {
         Tab tabGameProperties = tabPane.getTabs().get(0);
         Pane mainPane = ControllerSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
         ControllerSetter.setGamePropertiesTabLabels(mainPane);
-        ControllerSetter.setGamePropertiesTabControlElements(mainPane);
+        ControllerSetter.setGamePropertiesTabControlElements(mainPane, tabPane);
         CheckBox checkBox = ControllerSetter.setCheckBox(500, 350, "css/checkBox.css");
         checkBox.setOnMouseReleased(mouseEvent -> GameSettings.MakeScreenshot = checkBox.isSelected());
         ControllerSetter.addChildren(mainPane, checkBox);
@@ -228,7 +228,7 @@ public final class Controller {
         tabGameProperties.setContent(mainPane);
     }
 
-    public void showEndPane(boolean bombCollision) {
+    private void showEndPane(boolean bombCollision) {
         gameLoop.stop();
         finishPane = ControllerSetter.setPane(100, 50, 600, "finishPaneBackground", "css/backgrounds.css");
         finishPane.setPrefHeight(650);

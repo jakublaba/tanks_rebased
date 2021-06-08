@@ -11,11 +11,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -298,11 +300,8 @@ public class ControllerSetter {
         for (int i = 0; i < GameSettings.getConfigurationList().size(); i++) {
             Label tmpLabel = ControllerSetter.setLabel(GameSettings.getConfigurationList().get(i)[0], 20, 0);
             tmpLabel.setStyle("-fx-font-size: 20px;-fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
-
             Button tmpBtn = ControllerSetter.setButton(200, 0, "Save " + GameSettings.getConfigurationList().get(i)[1], "css/tabPaneButtons.css");
-
             TextField tmpTextField = ControllerSetter.setTextField(100, 50, 0, GameSettings.getConfigurationList().get(i)[2], GameSettings.getConfigurationList().get(i)[1]);
-
             gridConfigurationPane.add(tmpLabel, 0, i + 1);
             gridConfigurationPane.add(tmpTextField, 1, i + 1);
             gridConfigurationPane.add(tmpBtn, 2, i + 1);
@@ -366,7 +365,7 @@ public class ControllerSetter {
         addChildren(pane, musicLabel, soundLabel, configLabel, screenshotLabel);
     }
 
-    public static void setGamePropertiesTabControlElements(Pane mainPane) {
+    public static void setGamePropertiesTabControlElements(Pane mainPane, TabPane tabPane) {
         Label currentConfigLabel = ControllerSetter.setLabel("Current Configuration: " + GameSettings.ConfigFileName, 50, 280, "minLabel", "css/tabLabel.css");
         Label currentScreenshotExt = ControllerSetter.setLabel("Current Extension File: " + GameSettings.ImageExtension, 50, 380, "minLabel", "css/tabLabel.css");
         Slider musicSlider = ControllerSetter.setSlider(0, 1, 50, 100, 700, GameSettings.VolumeOfMusic);
@@ -384,6 +383,7 @@ public class ControllerSetter {
                 GameSettings.loadConfigFile();
                 currentConfigLabel.setText("Current Configuration File: " + GameSettings.ConfigFileName);
                 currentScreenshotExt.setText("Current Extension: " + GameSettings.ImageExtension);
+                tabPane.getTabs().get(1).setDisable(true);
             }
         });
         addChildren(mainPane, musicSlider, soundSlider, currentConfigLabel, configFileBtn, currentScreenshotExt);

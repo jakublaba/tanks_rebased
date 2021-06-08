@@ -87,7 +87,7 @@ public final class GameSettings {
         ConfigurationList.add(new String[]{"Cell Velocity", "V2", String.valueOf(CellVelocity)});
         ConfigurationList.add(new String[]{"Cell Size", "H1", String.valueOf(CellSize)});
         ConfigurationList.add(new String[]{"Cell Health", "P1", String.valueOf(CellHealth)});
-        ConfigurationList.add(new String[]{"Interval", "T1", String.valueOf(CellRegenerationInterval)});
+        ConfigurationList.add(new String[]{"Interval", "T1", String.valueOf(Interval)});
         ConfigurationList.add(new String[]{"Cell Regeneration Interval", "T2", String.valueOf(CellRegenerationInterval)});
         ConfigurationList.add(new String[]{"Bullet Velocity Increase", "DV1", String.valueOf(BulletVelocityIncrease)});
         ConfigurationList.add(new String[]{"Cell Velocity Increase", "DV2", String.valueOf(CellVelocityIncrease)});
