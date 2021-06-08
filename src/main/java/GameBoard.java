@@ -11,84 +11,124 @@ public class GameBoard {
     private long lastTimeOfMoveCell;
     private long lastTimeOfDecrease;
     private long lastTimeOfGeneratingColony;
+    private GameSoundPlayer gameSoundPlayer;
 
     public GameBoard () {
         leftPlayer = new PlayerInfo('L');
         rightPlayer = new PlayerInfo('R');
         cells = new ArrayList<>();
         colonies = new ArrayList<>();
+        gameSoundPlayer = new GameSoundPlayer();
     }
     public GameBoard(List<Cell> cells, List<Colony> colonies){
         this.cells = cells;
         this.colonies = colonies;
     }
 
+    public void actualizeTime(long currentTime){
+        lastTimeOfGeneratingColony = currentTime;
+        lastTimeOfGeneratingCell = currentTime;
+        lastTimeOfIncreaseHealth = currentTime;
+        lastTimeOfDecrease = currentTime;
+        lastTimeOfMoveCell = currentTime;
+    }
+
     public boolean updateGame(long time, Pane pane) {
         generateObjects(time);
-        moveObjects(time, pane);
-        eraseObjects();
         resizeObjects(time, pane);
         regenerateObjects(time);
-        if(leftPlayerShots(pane) || rightPlayerShots(pane)){
+        if(playerShots(pane, leftPlayer) || playerShots(pane, rightPlayer)){
             return true;
         }
-        leftPlayer.drawScore(pane, 'L');
-        rightPlayer.drawScore(pane, 'R');
+        moveObjects(time, pane);
+        eraseObjectsFromPane(pane);
+        eraseObjects();
+        leftPlayer.drawScore(pane);
+        rightPlayer.drawScore(pane);
         return false;
     }
 
     private void regenerateObjects(long time) {
+        boolean soundPlayed = false;
+        if(lastTimeOfIncreaseHealth == 0)
+            lastTimeOfIncreaseHealth = time;
         if (time - lastTimeOfIncreaseHealth >= GameSettings.CellRegenerationInterval * 1_000_000_000) {
             for(Cell cell : cells){
-                cell.regenerate();
+                if(cell.regenerate() && !soundPlayed){
+                    gameSoundPlayer.playRegenerateCellSound();
+                    soundPlayed = true;
+                }
+            }
+            for(Colony colony : colonies){
+                if(colony.regenerate() && !soundPlayed){
+                    gameSoundPlayer.playRegenerateCellSound();
+                    soundPlayed = true;
+                }
             }
             lastTimeOfIncreaseHealth = time;
         }
     }
 
-    private boolean rightPlayerShots(Pane pane) {
-        var rightTank = rightPlayer.getTank();
-        for (Bullet bullet : rightTank.getBullets()) {
-            var cell = cellCollision(bullet);
-            if (cell != null) {
-                bullet.erase(pane);
-                rightTank.removeBullet(bullet);
-                if (cell.getCurrentHp() > 0) {
-                    cell.getDamaged();
-                    if(cell.getCurrentHp() == 0)
-                        rightPlayer.increaseScore(cell.getInitialHp());
-                }
-                break;
-            }
-            if (bombCollision(bullet)) {
-                bullet.erase(pane);
-                rightTank.removeBullet(bullet);
-                if (Bomb.fatalCollision(bullet)) {
-                    return true;
-                }
-                break;
+    public Cell cellCollision (Bullet bullet) {
+        for (Cell cell : cells) {
+            double cellCenterX = cell.getX();
+            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 && Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                return cell;
             }
         }
-        return false;
+        return null;
     }
 
-    private boolean leftPlayerShots(Pane pane) {
-        var leftTank = leftPlayer.getTank();
-        for (Bullet bullet : leftTank.getBullets()) {
+    public Cell colonyCollision (Bullet bullet) {
+        for (Colony colony : colonies) {
+            for (Cell cell : colony.getCells()) {
+                double cellCenterX = cell.getX();
+                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
+                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 && Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
+                    return cell;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean playerShots(Pane pane, PlayerInfo player) {
+        var tank = player.getTank();
+        for (Bullet bullet : tank.getBullets()) {
             var cell = cellCollision(bullet);
             if (cell != null) {
                 bullet.erase(pane);
-                leftTank.removeBullet(bullet);
+                tank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
-                    if(cell.getCurrentHp() == 0)
-                        leftPlayer.increaseScore(cell.getInitialHp());
+                    gameSoundPlayer.playHitSound();
+                    if(cell.getCurrentHp() == 0) {
+                        player.increaseScore(cell.getInitialHp());
+                        gameSoundPlayer.playGetPointSound();
+                    }
+                }
+                break;
+            }
+            cell = colonyCollision(bullet);
+            if (cell != null && cell.getCurrentHp() != 0){
+                bullet.erase(pane);
+                tank.removeBullet(bullet);
+                if (cell.getCurrentHp() > 0) {
+                    cell.getDamaged();
+                    gameSoundPlayer.playHitSound();
+                    if(!cell.getColony().isColonyAlive()) {
+                        player.increaseScore(cell.getColony().getInitialCellHpSum());
+                        colonies.remove(cell.getColony());
+                        gameSoundPlayer.playGetPointSound();
+                        eraseColonyFromPane(cell.getColony(), pane);
+                    }
                 }
                 break;
             }
             if (bombCollision(bullet)) {
                 bullet.erase(pane);
-                leftTank.removeBullet(bullet);
+                tank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
                     return true;
                 }
@@ -142,43 +182,49 @@ public class GameBoard {
             lastTimeOfMoveCell = time;
         }
     }
-    public void eraseObjects(){
-        cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-        cells.removeIf(cell -> cell.getCurrentSize() <= 0);
-        cells.removeIf(cell -> cell.getCurrentHp() <= 0);
-    }
 
-    public Cell cellCollision (Bullet bullet) {
+    public void eraseObjectsFromPane (Pane pane) {
         for (Cell cell : cells) {
-            double cellCenterX = cell.getX();
-            double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
-            if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
-                return cell;
+            if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() <= 0) {
+                cell.eraseFromPane(pane);
             }
         }
         for (Colony colony : colonies) {
             for (Cell cell : colony.getCells()) {
-                double cellCenterX = cell.getX();
-                double cellCenterY = cell.getY() + cell.getCurrentSize()/2;
-                if (Math.abs(bullet.getX() - cellCenterX) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2 &&
-                        Math.abs(bullet.getY() - cellCenterY) < (bullet.getCurrentSize() + cell.getCurrentSize()) / 2) {
-                    return cell;
+                if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0) {
+                    cell.eraseFromPane(pane);
                 }
             }
         }
-        return null;
     }
-    public void generateObjects(long time){
-        if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
-            Cell cell = new Cell ();
-            cells.add(cell);
-            lastTimeOfGeneratingCell = time;
+    public void eraseColonyFromPane(Colony colony, Pane pane){
+        for(Cell cell : colony.getCells()){
+            cell.eraseFromPane(pane);
         }
+    }
+
+    public void eraseObjects() {
+        cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+        cells.removeIf(cell -> cell.getCurrentSize() <= 0);
+        cells.removeIf(cell -> cell.getCurrentHp() <= 0);
+
+        for (Colony colony : colonies) {
+            colony.getCells().removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+            colony.getCells().removeIf(cell -> cell.getCurrentSize() <= 0);
+        }
+
+    }
+
+    public void generateObjects(long time){
         if (time - lastTimeOfGeneratingColony >= GameSettings.TimeBetweenColonyGeneration * 1_000_000_000) {
             Colony colony = new Colony();
             colonies.add(colony);
             lastTimeOfGeneratingColony = time;
+        }
+        if (time - lastTimeOfGeneratingCell >= GameSettings.TimeBetweenCellGenerating * 1_000_000_000) {
+            Cell cell = new Cell ();
+            cells.add(cell);
+            lastTimeOfGeneratingCell = time;
         }
     }
     public boolean bombCollision (Bullet bullet) {

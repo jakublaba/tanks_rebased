@@ -2,6 +2,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,6 @@ public class Tank {
     private final ImageView bodyView, barrelView;
 
     public Tank (char side) {
-        if (side != 'L' && side != 'R' && side != 'T') {
-            System.out.println("Czołg może być tylko na lewej lub prawej ścianie, podaj prawidłowy argument");
-            System.exit(1);
-        }
         this.side = side;
         position = GameSettings.WindowHeight / 2;
         barrelAngle = side == 'R' ? 180 : 0;
@@ -54,8 +51,7 @@ public class Tank {
             if (side == 'L' && bullet.getX() > GameSettings.WindowWidth - GameSettings.WidthOfTankBorder || side == 'R' && bullet.getX() < GameSettings.WidthOfTankBorder || (bullet.getY() < 0 || bullet.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder)) {
                 bullet.erase(pane);
                 removeBullet(bullet);
-                //System.out.println("Current amount of bullets: " + bullets.size());
-                break; //bez tego występuje ConcurrentModificationException - usuwamy elementy z listy, po której nadal iterujemy
+                break;
             }
         }
     }
@@ -84,10 +80,10 @@ public class Tank {
         double y1 = y0 - r*Math.sin(alfa);
         double vectorX = x1 - x0;
         double vectorY = y1 - y0;
-        Bullet bulletFired = new Bullet(x1, y1, vectorX, vectorY);
+        var color = side == 'L' ? GameSettings.LeftPlayerBulletColor : GameSettings.RightPlayerBulletColor;
+        Bullet bulletFired = new Bullet(x1, y1, vectorX, vectorY, color);
         bullets.add(bulletFired);
     }
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
-    public double getBarrelAngle () { return barrelAngle; }
     public List<Bullet> getBullets () { return bullets; }
 }

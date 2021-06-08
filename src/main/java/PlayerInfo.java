@@ -1,4 +1,5 @@
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
@@ -9,7 +10,7 @@ public class PlayerInfo {
     private final Tank tank;
     private int score;
     private Label scoreLabel;
-    private static List<String> errorList = new ArrayList<>();;
+    private static final List<String> errorList = new ArrayList<>();;
     public static Label firstErrorLine;
     private static double firstTransparentRatio = 1;
     public static Label secondErrorLine;
@@ -21,17 +22,20 @@ public class PlayerInfo {
         tank = new Tank(side);
         score = 0;
         if(side == 'L') {
-            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), 20, (int)GameSettings.WindowHeight - 100);
+            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), 10, (int)GameSettings.WindowHeight - 100);
+            scoreLabel.setAlignment(Pos.TOP_LEFT);
             scoreLabel.setStyle("-fx-font-size: 70px; -fx-text-fill: rgba(204, 0, 0, 0.7); -fx-font-weight: bold;");
         }
         else if(side == 'R'){
-            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), (int)GameSettings.WindowWidth - 70, (int)GameSettings.WindowHeight - 100);
+            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), (int)GameSettings.WindowWidth - 210, (int)GameSettings.WindowHeight - 100);
+            scoreLabel.setAlignment(Pos.TOP_RIGHT);
             scoreLabel.setStyle("-fx-font-size: 70px; -fx-text-fill: rgba(0, 102, 255, 0.7); -fx-font-weight: bold;");
         }
+        scoreLabel.setPrefWidth(200);
     }
     public Tank getTank () { return tank; }
     public void increaseScore (int points) { score += points; }
-    public void drawScore(Pane pane, char side){
+    public void drawScore(Pane pane){
         pane.getChildren().remove(scoreLabel);
         scoreLabel.setText(String.valueOf(score));
         pane.getChildren().add(scoreLabel);
