@@ -119,7 +119,6 @@ public class GameBoard {
                     gameSoundPlayer.playHitSound();
                     if(!cell.getColony().isColonyAlive()) {
                         player.increaseScore(cell.getColony().getInitialCellHpSum());
-                        colonies.remove(cell.getColony());
                         gameSoundPlayer.playGetPointSound();
                     }
                 }
@@ -208,6 +207,7 @@ public class GameBoard {
             colony.getCells().removeIf(cell -> cell.getCurrentHp() <= 0);
         }
 
+        colonies.removeIf(colony -> !colony.isColonyAlive());
     }
 
     public void generateObjects(long time){
@@ -222,11 +222,13 @@ public class GameBoard {
             lastTimeOfGeneratingCell = time;
         }
     }
+
     public boolean bombCollision (Bullet bullet) {
         boolean yCondition = bullet.getY() >= GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - Bomb.height;
         boolean xCondition = bullet.getX() >= GameSettings.WindowWidth/2 - Bomb.width/2 && bullet.getX() <= GameSettings.WindowWidth/2 + Bomb.width/2;
         return yCondition && xCondition;
     }
+
     public void removeAllCells(){
         cells.clear();
         colonies.clear();

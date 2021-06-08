@@ -38,7 +38,10 @@ public class Colony {
         }
     }
     public int getInitialCellHpSum () { return initialCellHpSum; }
-    public boolean isColonyAlive () { return cells.size() != 0; }
+    public boolean isColonyAlive () {
+        int hpSum = cells.stream().mapToInt(Cell::getCurrentHp).sum();
+        return hpSum != 0;
+    }
     public void draw (Pane pane) {
         for (Cell cell : cells){
             cell.draw(pane);

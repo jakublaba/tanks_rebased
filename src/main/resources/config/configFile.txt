@@ -12,5 +12,5 @@ Spokojny wariant gry
 [DR1] BulletRadiusDecrease [1]
 [DH1] CellSizeDecrease [2]
 [T3] GameTime [600]
-[T4] TimeBetweenCellGenerating [1]
-[T5] TimeBetweenColonyGeneration [10]
+[T4] TimeBetweenCellGenerating [100]
+[T5] TimeBetweenColonyGeneration [3]
