@@ -29,6 +29,17 @@ public class Tank {
         }
     }
 
+    public Tank (char side, boolean test) {
+        this.side = side;
+        position = GameSettings.WindowHeight / 2;
+        barrelAngle = side == 'R' ? 180 : 0;
+        bullets = new ArrayList<>();
+        bodyImg = null;
+        bodyView = null;
+        barrelImg = null;
+        barrelView = null;
+    }
+
     public void draw (Pane pane) {
         if (side == 'L') {
             bodyView.setX(0);
@@ -65,6 +76,14 @@ public class Tank {
         }
     }
 
+    public void move (KeyCode key, double tankHeight) {
+        if ((key == GameSettings.LeftPlayerMoveUp && side == 'L' || key == GameSettings.RightPlayerMoveUp && side == 'R') && position > tankHeight/2) {
+            position -= GameSettings.TankVelocity;
+        } else if ((key == GameSettings.LeftPlayerMoveDown && side == 'L' || key == GameSettings.RightPlayerMoveDown && side == 'R') && position < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - tankHeight/2) {
+            position += GameSettings.TankVelocity;
+        }
+    }
+
     public void setPosition (double position) {
         this.position = position;
     }
@@ -77,6 +96,10 @@ public class Tank {
             barrelAngle += GameSettings.BarrelRotation;
             barrelView.setRotate(barrelView.getRotate() - GameSettings.BarrelRotation);
         }
+    }
+
+    public void setBarrelAngle (double barrelAngle) {
+        this.barrelAngle = barrelAngle;
     }
 
     public void shoot () {
@@ -99,5 +122,5 @@ public class Tank {
 
     public double getPosition () { return position; }
 
-    public double getHeight () { return bodyImg.getHeight(); }
+    public double getBarrelAngle () { return barrelAngle; }
 }

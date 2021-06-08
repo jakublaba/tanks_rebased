@@ -1,5 +1,6 @@
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
+
 import java.util.Objects;
 
 public final class GameSoundPlayer {
@@ -12,7 +13,8 @@ public final class GameSoundPlayer {
     public GameSoundPlayer() {
         loadSoundFiles();
     }
-    private void loadSoundFiles(){
+
+    private void loadSoundFiles() {
         try {
             backgroundSound = new AudioClip(Objects.requireNonNull(getClass().getResource(GameSettings.BackgroundSound)).toExternalForm());
             backgroundSound.setVolume(GameSettings.VolumeOfMusic);
@@ -29,57 +31,57 @@ public final class GameSoundPlayer {
             PlayerInfo.addInformation("[WARNING]There is no music file" + e);
         }
     }
+
     public void playBackgroundSound() {
         try {
             backgroundSound.setVolume(GameSettings.VolumeOfMusic);
             backgroundSound.play();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.BackgroundSound);
         }
     }
+
     public void stopBackgroundSound() {
-        try{
+        try {
             backgroundSound.setVolume(GameSettings.VolumeOfMusic);
             backgroundSound.stop();
-        }
-        catch (NullPointerException e){
-            PlayerInfo.addInformation ("[WARNING]There is no file: " + GameSettings.BackgroundSound);
+        } catch (NullPointerException e) {
+            PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.BackgroundSound);
         }
     }
+
     public void playGetPointSound() {
-        try{
+        try {
             getPointSound.play();
             getPointSound.setVolume(GameSettings.VolumeOfMusicEffects);
-        }
-        catch (NullPointerException e){
-            PlayerInfo.addInformation ("[WARNING]There is no file: " + GameSettings.GetScoreSound);
+        } catch (NullPointerException e) {
+            PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.GetScoreSound);
         }
     }
+
     public void playHitSound() {
-        try{
+        try {
             getHitSound.setVolume(GameSettings.VolumeOfMusicEffects);
             getHitSound.play();
-        }
-        catch (NullPointerException e){
-            PlayerInfo.addInformation ("[WARNING]There is no file: " + GameSettings.HitSound);
+        } catch (NullPointerException e) {
+            PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.HitSound);
         }
     }
+
     public void playEndSound() {
         try {
             endGameSound.setVolume(GameSettings.VolumeOfMusicEffects);
             endGameSound.play();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.EndSound);
         }
     }
+
     public void playRegenerateCellSound() {
         try {
             regenerateCellHealthSound.setVolume(GameSettings.VolumeOfMusicEffects);
             regenerateCellHealthSound.play();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             PlayerInfo.addInformation("[WARNING]There is no file: " + GameSettings.RegenerateCellSound);
         }
     }
