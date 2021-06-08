@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GameBoardTest {
     private GameBoard gameBoard;
     private List<Cell> cells;
@@ -20,7 +19,7 @@ public class GameBoardTest {
         Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 1, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
-        gameBoard.eraseObjects();
+        gameBoard.removeCells();
         Assertions.assertEquals(1, gameBoard.getCells().size());
     }
     @Test
@@ -28,7 +27,7 @@ public class GameBoardTest {
         Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
-        gameBoard.eraseObjects();
+        gameBoard.removeCells();
         Assertions.assertEquals(1, gameBoard.getCells().size());
     }
     @Test
@@ -36,7 +35,7 @@ public class GameBoardTest {
         Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
-        gameBoard.eraseObjects();
+        gameBoard.removeCells();
         Assertions.assertEquals(0, gameBoard.getCells().size());
     }
     @Test
@@ -44,7 +43,7 @@ public class GameBoardTest {
         Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder , 0, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
-        gameBoard.eraseObjects();
+        gameBoard.removeCells();
         Assertions.assertEquals(0, gameBoard.getCells().size());
     }
     @Test
@@ -52,7 +51,7 @@ public class GameBoardTest {
         Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 0);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
-        gameBoard.eraseObjects();
+        gameBoard.removeCells();
         Assertions.assertEquals(0, gameBoard.getCells().size());
     }
 }

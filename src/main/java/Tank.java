@@ -94,7 +94,7 @@ public class Tank {
     }
 
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
-
+    
     public List<Bullet> getBullets () { return bullets; }
 
     public double getPosition () { return position; }

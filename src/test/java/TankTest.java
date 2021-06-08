@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TankTest {
     private Tank testTank;
-    private final tankHeight = 115;
+    private final double tankHeight = 115;
     @BeforeEach
     public void tankTestSetUp () {
         testTank = new Tank('L');

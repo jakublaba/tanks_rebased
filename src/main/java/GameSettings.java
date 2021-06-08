@@ -33,7 +33,7 @@ public final class GameSettings {
     public static double BulletVelocity = 0.5;
     public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
     public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
-    public static double BulletFrequencyLimit = 0.1;
+    public static final double BulletFrequencyLimit = 0.1;
     public static int BulletNumberLimit = 15;
     public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
@@ -56,15 +56,15 @@ public final class GameSettings {
     public static KeyCode LeftPlayerMoveDown = KeyCode.S;
     public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
     public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static KeyCode LeftPlayerFire = KeyCode.SPACE;
+    public static KeyCode LeftPlayerFire = KeyCode.J;
     public static KeyCode Pause = KeyCode.P;
 
     //Game
     public static double GameTime = 200;
     public static double Interval = 3;
     public static final String ImageExtension = "PNG";
-    public static double TimeBetweenCellGenerating = 200;
-    public static double TimeBetweenColonyGeneration = 2;
+    public static double TimeBetweenCellGenerating = 2;
+    public static double TimeBetweenColonyGeneration = 100;
     public static double VolumeOfMusic = 0.25;
     public static double VolumeOfMusicEffects = 0.25;
     public static String BackgroundSound = "sound/background.mp3";

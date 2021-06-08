@@ -33,8 +33,8 @@ public final class Controller {
     private Stage primaryStage;
     private GameSoundPlayer gameSoundPlayer;
     private int gameTime;
-    private long timerTime;
     private boolean actualizationTimeRequired = false;
+    private boolean gamePaused = false;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -76,7 +76,8 @@ public final class Controller {
         primaryStage.show();
         setGameBoard();
         scene.setOnKeyPressed(key-> {
-            if(key.getCode().equals(GameSettings.Pause)){
+            if(key.getCode().equals(GameSettings.Pause) && !gamePaused){
+                gamePaused = true;
                 gameLoop.stop();
                 setPausePane(layerPane);
                 gameSoundPlayer.stopBackgroundSound();
@@ -93,7 +94,6 @@ public final class Controller {
                     gameBoard.actualizeTime(currentTime);
                     actualizationTimeRequired = false;
                 }
-                timerTime = currentTime;
                 if (gameTime == 0) {
                     showEndPane(false);
                 }
@@ -266,6 +266,7 @@ public final class Controller {
         pauseLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
         Button resumeButton = ControllerSetter.setButton(400, 200, "Play", "css/buttons.css");
         resumeButton.setOnAction(e -> {
+            gamePaused = false;
             pausePane.setVisible(false);
             actualizationTimeRequired = true;
             gameLoop.start();

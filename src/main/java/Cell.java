@@ -66,20 +66,20 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y);
         pane.getChildren().remove(segmentShape);
         pane.getChildren().remove(currentHpLabel);
-        if(y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - currentSize){
+        if (y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - currentSize) {
             segmentShape.setHeight(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - y);
         }
-        if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && currentHp > 0) {
+        if (y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && (currentHp > 0 || position != 0)) {
             pane.getChildren().add(segmentShape);
             currentHpLabel.setTranslateY(y);
-            if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 0.75 * currentSize){
+            if (y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 0.75 * currentSize) {
                 pane.getChildren().add(currentHpLabel);
             }
         }
 
     }
 
-    public void move (double time){
+    public void move (double time) {
         y += GameSettings.CellVelocity * time;
     }
 
@@ -139,16 +139,17 @@ public final class Cell extends GameSegment {
         }
         currentHpLabel.setText(String.valueOf(currentHp));
     }
-    public void resize(){
-        this.currentSize -= GameSettings.CellSizeDecrease;
-        this.segmentShape.setWidth(currentSize);
-        this.segmentShape.setHeight(currentSize);
-        this.segmentShape.setX(segmentShape.getX()+GameSettings.CellSizeDecrease/2);
-        this.segmentShape.setY(segmentShape.getY()-GameSettings.CellSizeDecrease/2);
-        this.currentHpLabel.setMinSize(currentSize, currentSize);
-        this.currentHpLabel.setMaxSize(currentSize, currentSize);
-        this.currentHpLabel.setAlignment(Pos.CENTER);
-        this.currentHpLabel.setTranslateX(x - currentSize/2);
-        this.currentHpLabel.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
+
+    public void resize() {
+        currentSize -= GameSettings.CellSizeDecrease;
+        segmentShape.setWidth(currentSize);
+        segmentShape.setHeight(currentSize);
+        segmentShape.setX(segmentShape.getX()+GameSettings.CellSizeDecrease/2);
+        segmentShape.setY(segmentShape.getY()-GameSettings.CellSizeDecrease/2);
+        currentHpLabel.setMinSize(currentSize, currentSize);
+        currentHpLabel.setMaxSize(currentSize, currentSize);
+        currentHpLabel.setAlignment(Pos.CENTER);
+        currentHpLabel.setTranslateX(x - currentSize/2);
+        currentHpLabel.setStyle("-fx-text-alignment: center; -fx-font-weight: bold; -fx-font-size:" + 0.75 * currentSize + "px;");
     }
 }

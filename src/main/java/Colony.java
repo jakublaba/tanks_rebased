@@ -38,20 +38,24 @@ public class Colony {
         }
     }
     public int getInitialCellHpSum () { return initialCellHpSum; }
-    public boolean isColonyAlive () {
+
+    public boolean isDead() {
         int hpSum = cells.stream().mapToInt(Cell::getCurrentHp).sum();
-        return hpSum != 0;
+        return hpSum == 0;
     }
+
     public void draw (Pane pane) {
         for (Cell cell : cells){
             cell.draw(pane);
         }
     }
+
     public void move (double timeBetween) {
         for (Cell cell : cells){
             cell.move(timeBetween);
         }
     }
+    
     public boolean regenerate(){
         boolean playSound = false;
         for(Cell cell : cells){
