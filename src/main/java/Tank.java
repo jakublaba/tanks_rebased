@@ -28,6 +28,7 @@ public class Tank {
             barrelView.setRotate(180);
         }
     }
+
     public void draw (Pane pane) {
         if (side == 'L') {
             bodyView.setX(0);
@@ -55,6 +56,7 @@ public class Tank {
             }
         }
     }
+
     public void move (KeyCode key) {
         if ((key == GameSettings.LeftPlayerMoveUp && side == 'L' || key == GameSettings.RightPlayerMoveUp && side == 'R') && position > bodyImg.getHeight()/2) {
             position -= GameSettings.TankVelocity;
@@ -62,6 +64,11 @@ public class Tank {
             position += GameSettings.TankVelocity;
         }
     }
+
+    public void setPosition (double position) {
+        this.position = position;
+    }
+
     public void rotateBarrel (KeyCode key) {
         if ((key == GameSettings.LeftPlayerBarrelDown && side == 'L' && barrelAngle > -GameSettings.BarrelAngleLimit) || (key == GameSettings.RightPlayerBarrelDown && side == 'R' && barrelAngle - 180 > -GameSettings.BarrelAngleLimit )) {
             barrelAngle -= GameSettings.BarrelRotation;
@@ -71,6 +78,7 @@ public class Tank {
             barrelView.setRotate(barrelView.getRotate() - GameSettings.BarrelRotation);
         }
     }
+
     public void shoot () {
         double r = barrelImg.getWidth()/2;
         double alfa = Math.toRadians(barrelAngle);
@@ -80,10 +88,16 @@ public class Tank {
         double y1 = y0 - r*Math.sin(alfa);
         double vectorX = x1 - x0;
         double vectorY = y1 - y0;
-        var color = side == 'L' ? GameSettings.LeftPlayerBulletColor : GameSettings.RightPlayerBulletColor;
+        Color color = side == 'L' ? GameSettings.LeftPlayerBulletColor : GameSettings.RightPlayerBulletColor;
         Bullet bulletFired = new Bullet(x1, y1, vectorX, vectorY, color);
         bullets.add(bulletFired);
     }
+
     public void removeBullet (Bullet bulletToRemove) { bullets.remove(bulletToRemove); }
+
     public List<Bullet> getBullets () { return bullets; }
+
+    public double getPosition () { return position; }
+
+    public double getHeight () { return bodyImg.getHeight(); }
 }

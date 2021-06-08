@@ -107,8 +107,8 @@ public final class Controller {
                 gameBoard.updateTankPosition(layerPane);
                 //GAME BOARD
                 if(gameBoard.updateGame(currentTime, layerPane)){
-                    var leftBullets = gameBoard.leftPlayer.getTank().getBullets();
-                    var rightBullets =  gameBoard.rightPlayer.getTank().getBullets();
+                    List<Bullet> leftBullets = gameBoard.leftPlayer.getTank().getBullets();
+                    List<Bullet> rightBullets =  gameBoard.rightPlayer.getTank().getBullets();
                     for (Bullet bullet : leftBullets) {
                         bullet.erase(layerPane);
                     }

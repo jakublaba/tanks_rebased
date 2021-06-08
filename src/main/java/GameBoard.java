@@ -94,9 +94,9 @@ public class GameBoard {
     }
 
     private boolean playerShots(Pane pane, PlayerInfo player) {
-        var tank = player.getTank();
+        Tank tank = player.getTank();
         for (Bullet bullet : tank.getBullets()) {
-            var cell = cellCollision(bullet);
+            Cell cell = cellCollision(bullet);
             if (cell != null) {
                 bullet.erase(pane);
                 tank.removeBullet(bullet);
@@ -272,4 +272,6 @@ public class GameBoard {
             Controller.rightPlayerAllowedToShoot = false;
         }
     }
+
+    public List<Cell> getCells () { return cells; }
 }
