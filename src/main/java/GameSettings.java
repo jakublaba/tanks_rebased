@@ -53,9 +53,9 @@ public final class GameSettings {
     public static KeyCode RightPlayerFire = KeyCode.SHIFT;
     public static KeyCode LeftPlayerMoveUp = KeyCode.W;
     public static KeyCode LeftPlayerMoveDown = KeyCode.S;
-    public static KeyCode LeftPlayerBarrelUp = KeyCode.D;
-    public static KeyCode LeftPlayerBarrelDown = KeyCode.A;
-    public static KeyCode LeftPlayerFire = KeyCode.J;
+    public static KeyCode LeftPlayerBarrelUp = KeyCode.A;
+    public static KeyCode LeftPlayerBarrelDown = KeyCode.D;
+    public static KeyCode LeftPlayerFire = KeyCode.SPACE;
     public static KeyCode Pause = KeyCode.P;
 
     //Game

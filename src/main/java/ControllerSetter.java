@@ -135,8 +135,8 @@ public class ControllerSetter {
 
     public static PieChart setPieChart(GameBoard gameBoard) {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Left Player: " + gameBoard.rightPlayer.getScore(), gameBoard.rightPlayer.getScore() == 0 ? 1 : gameBoard.rightPlayer.getScore()),
-                new PieChart.Data("Right Player: " + gameBoard.leftPlayer.getScore(), gameBoard.leftPlayer.getScore() == 0 ? 1 : gameBoard.leftPlayer.getScore()));
+                new PieChart.Data("Right: " + gameBoard.rightPlayer.getScore(), gameBoard.rightPlayer.getScore() == 0 ? 1 : gameBoard.rightPlayer.getScore()),
+                new PieChart.Data("Left: " + gameBoard.leftPlayer.getScore(), gameBoard.leftPlayer.getScore() == 0 ? 1 : gameBoard.leftPlayer.getScore()));
         PieChart chart = new PieChart(pieChartData);
         chart.setLegendVisible(false);
         chart.setStyle("-fx-font-size: 17px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
