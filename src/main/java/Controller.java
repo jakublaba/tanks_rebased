@@ -113,10 +113,10 @@ public final class Controller {
                     List<Bullet> leftBullets = gameBoard.leftPlayer.getTank().getBullets();
                     List<Bullet> rightBullets = gameBoard.rightPlayer.getTank().getBullets();
                     for (Bullet bullet : leftBullets) {
-                        bullet.erase(layerPane);
+                        bullet.eraseFromPane(layerPane);
                     }
                     for (Bullet bullet : rightBullets) {
-                        bullet.erase(layerPane);
+                        bullet.eraseFromPane(layerPane);
                     }
                     leftBullets.clear();
                     rightBullets.clear();
@@ -247,7 +247,7 @@ public final class Controller {
         againButton.setPrefWidth(290);
         againButton.setOnAction(e -> {
             primaryStage.close();
-            gameBoard.removeAllCells();
+            gameBoard.reset();
             startButtonPressed();
         });
         layerPane.getChildren().clear();

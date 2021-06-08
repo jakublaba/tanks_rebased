@@ -1,8 +1,10 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameBoardTest {
     private GameBoard gameBoard;
@@ -10,48 +12,53 @@ public class GameBoardTest {
     private List<Colony> colonies;
 
     @BeforeEach
-    public void setUp(){
+    public void gameBoardTestSetup() {
         cells = new ArrayList<>();
         colonies = new ArrayList<>();
     }
+
     @Test
-    public void CellAboveBorderLine_eraseObject(){
-        Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 1, GameSettings.CellSize, 1);
+    public void cellAboveBorderLine_removeCell() {
+        Cell cell = new Cell(GameSettings.WindowWidth / 2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 1, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
         gameBoard.removeCells();
-        Assertions.assertEquals(1, gameBoard.getCells().size());
+        assertEquals(1, gameBoard.getCells().size());
     }
+
     @Test
-    public void CellOnBorderLine_eraseObject(){
-        Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder, GameSettings.CellSize, 1);
+    public void cellOnBorderLine_removeCell() {
+        Cell cell = new Cell(GameSettings.WindowWidth / 2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
         gameBoard.removeCells();
-        Assertions.assertEquals(1, gameBoard.getCells().size());
+        assertEquals(1, gameBoard.getCells().size());
     }
+
     @Test
-    public void CellUnderBorderLine_eraseObject(){
-        Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 1);
+    public void cellUnderBorderLine_removeCell() {
+        Cell cell = new Cell(GameSettings.WindowWidth / 2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
         gameBoard.removeCells();
-        Assertions.assertEquals(0, gameBoard.getCells().size());
+        assertEquals(0, gameBoard.getCells().size());
     }
+
     @Test
-    public void CellTooReduced_eraseObject(){
-        Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder , 0, 1);
+    public void cellTooReduced_removeCell() {
+        Cell cell = new Cell(GameSettings.WindowWidth / 2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder, 0, 1);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
         gameBoard.removeCells();
-        Assertions.assertEquals(0, gameBoard.getCells().size());
+        assertEquals(0, gameBoard.getCells().size());
     }
+
     @Test
-    public void CellNotAliveBorderLine_eraseObject(){
-        Cell cell = new Cell(GameSettings.WindowWidth/2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 0);
+    public void cellNotAliveBorderLine_removeCell() {
+        Cell cell = new Cell(GameSettings.WindowWidth / 2, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder + 1, GameSettings.CellSize, 0);
         cells.add(cell);
         gameBoard = new GameBoard(cells, colonies);
         gameBoard.removeCells();
-        Assertions.assertEquals(0, gameBoard.getCells().size());
+        assertEquals(0, gameBoard.getCells().size());
     }
 }

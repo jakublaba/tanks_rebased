@@ -101,7 +101,7 @@ public class GameBoard {
         for (Bullet bullet : tank.getBullets()) {
             Cell cell = cellCollision(bullet);
             if (cell != null) {
-                bullet.erase(pane);
+                bullet.eraseFromPane(pane);
                 tank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
@@ -115,7 +115,7 @@ public class GameBoard {
             }
             cell = colonyCollision(bullet);
             if (cell != null && cell.getCurrentHp() != 0) {
-                bullet.erase(pane);
+                bullet.eraseFromPane(pane);
                 tank.removeBullet(bullet);
                 if (cell.getCurrentHp() > 0) {
                     cell.getDamaged();
@@ -128,7 +128,7 @@ public class GameBoard {
                 break;
             }
             if (bombCollision(bullet)) {
-                bullet.erase(pane);
+                bullet.eraseFromPane(pane);
                 tank.removeBullet(bullet);
                 if (Bomb.fatalCollision(bullet)) {
                     return true;
@@ -150,7 +150,7 @@ public class GameBoard {
             for (Bullet bullet : leftPlayer.getTank().getBullets()) {
                 bullet.resize();
                 if (bullet.getCurrentSize() <= 0) {
-                    bullet.erase(pane);
+                    bullet.eraseFromPane(pane);
                     leftPlayer.getTank().removeBullet(bullet);
                     break;
                 }
@@ -158,7 +158,7 @@ public class GameBoard {
             for (Bullet bullet : rightPlayer.getTank().getBullets()) {
                 bullet.resize();
                 if (bullet.getCurrentSize() <= 0) {
-                    bullet.erase(pane);
+                    bullet.eraseFromPane(pane);
                     rightPlayer.getTank().removeBullet(bullet);
                     break;
                 }
@@ -287,6 +287,12 @@ public class GameBoard {
             rightPlayer.getTank().shoot();
             Controller.rightPlayerAllowedToShoot = false;
         }
+    }
+
+    public void reset() {
+        leftPlayer.reset();
+        rightPlayer.reset();
+        removeAllCells();
     }
 
     public List<Cell> getCells() {

@@ -29,15 +29,14 @@ public final class GameSettings {
     public static double CellSizeDecrease = 69;
 
     //Bullet
-    public static double BulletSize = 15;
+    public static double BulletRadius = 15;
     public static double BulletVelocity = 0.5;
     public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
     public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
     public static final double BulletFrequencyLimit = 0.1;
     public static int BulletNumberLimit = 15;
-    public static double BulletRadius = 3;
     public static double BulletVelocityIncrease = 15;
-    public static double BulletRadiusDecrease = 2;
+    public static double BulletRadiusDecrease = 3;
 
     //Tank
     public static double TankVelocity = 3;

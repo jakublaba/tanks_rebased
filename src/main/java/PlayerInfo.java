@@ -50,6 +50,11 @@ public class PlayerInfo {
         return score;
     }
 
+    public void reset() {
+        score = 0;
+        tank.reset();
+    }
+
     public static void updateErrorInformation() {
         double ratio = 0.005;
         if (errorList.size() != 0) {
