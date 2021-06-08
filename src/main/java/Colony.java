@@ -33,9 +33,8 @@ public class Colony {
             }
             cells.add(cell);
             usedPosition.add(colonyArrangement);
-            assert cell != null;
-            initialCellHpSum += cell.getInitialHp();
         }
+        cells.forEach(cell -> initialCellHpSum += cell.getInitialHp());
     }
 
     public int getInitialCellHpSum() {

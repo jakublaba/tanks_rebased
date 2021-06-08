@@ -78,7 +78,7 @@ public final class GameSettings {
 
     //Configuration File
     public static String ConfigFileName;
-    public static String PathConfigFile = "src/main/resources/config/configFile.txt";
+    public static String PathConfigFile = "src/main/resources/config/default_settings.txt";
 
     public static void setConfigurationList() {
         ConfigurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
