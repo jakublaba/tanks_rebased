@@ -56,7 +56,7 @@ public class PlayerInfo {
     }
 
     public static void updateErrorInformation() {
-        double ratio = 0.005;
+        double ratio = 0.002;
         if (errorList.size() != 0) {
             if (firstTransparentRatio == 1) {
                 firstErrorLine.setText(errorList.get(0));

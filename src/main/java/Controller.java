@@ -147,6 +147,11 @@ public final class Controller {
     }
 
     private void setGameBoard() {
+        PlayerInfo.addInformation("DEFAULT CONTROLS:");
+        PlayerInfo.addInformation("Left Player Movement - WSAD");
+        PlayerInfo.addInformation("Left Player Fire - " + GameSettings.LeftPlayerFire.toString());
+        PlayerInfo.addInformation("Right Player Movement: Arrows");
+        PlayerInfo.addInformation("Right Player Fire - " + GameSettings.RightPlayerFire.toString());
         gameSoundPlayer = new GameSoundPlayer();
         Line rightLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, 0, GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         Line leftLine = ControllerSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);

@@ -5,7 +5,7 @@ Spokojny wariant gry
 [V2] CellVelocity [75]
 [H1] CellSize [50]
 [P1] CellHealth [10]
-[T2] CellRegenerationInterval [20]
+[T2] CellRegenerationInterval [1]
 [T1] Interval [0.7]
 [DV1] BulletVelocityIncrease [0.02]
 [DV2] CellVelocityIncrease [1]
