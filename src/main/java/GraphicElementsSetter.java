@@ -11,20 +11,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ControllerSetter {
+public class GraphicElementsSetter {
     public static void addChildren(Pane pane, Node... elements) {
         for (Node node : elements) {
             pane.getChildren().add(node);
@@ -223,25 +221,25 @@ public class ControllerSetter {
     }
 
     public static void setControlsTabLabels(Pane pane) {
-        Label topRightLabel = ControllerSetter.setLabel("Left Player:", 100, 30, "css/tabLabel.css");
-        Label topLeftLabel = ControllerSetter.setLabel("Right Player:", 500, 30, "css/tabLabel.css");
-        Label moveLabel = ControllerSetter.setLabel("Move:", 50, 100, "css/tabLabel.css");
-        Label shootLabel = ControllerSetter.setLabel("Shoot:", 50, 370, "css/tabLabel.css");
+        Label topRightLabel = GraphicElementsSetter.setLabel("Left Player:", 100, 30, "css/tabLabel.css");
+        Label topLeftLabel = GraphicElementsSetter.setLabel("Right Player:", 500, 30, "css/tabLabel.css");
+        Label moveLabel = GraphicElementsSetter.setLabel("Move:", 50, 100, "css/tabLabel.css");
+        Label shootLabel = GraphicElementsSetter.setLabel("Shoot:", 50, 370, "css/tabLabel.css");
         addChildren(pane, topRightLabel, topLeftLabel, moveLabel, shootLabel);
     }
 
     public static void setControlsTabButtons(Pane pane) {
         List<Button> controlButtons = new ArrayList<>();
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 100, 200, GameSettings.LeftPlayerBarrelDown.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 170, 200, GameSettings.LeftPlayerMoveDown.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 240, 200, GameSettings.LeftPlayerBarrelUp.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 170, 130, GameSettings.LeftPlayerMoveUp.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 500, 200, GameSettings.RightPlayerBarrelDown.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 570, 200, GameSettings.RightPlayerMoveDown.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 640, 200, GameSettings.RightPlayerBarrelUp.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 570, 130, GameSettings.RightPlayerMoveUp.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 170, 400, GameSettings.LeftPlayerFire.toString()));
-        controlButtons.add(ControllerSetter.setButtonOfGroup(60, 60, 570, 400, GameSettings.RightPlayerFire.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 100, 200, GameSettings.LeftPlayerBarrelDown.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 170, 200, GameSettings.LeftPlayerMoveDown.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 240, 200, GameSettings.LeftPlayerBarrelUp.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 170, 130, GameSettings.LeftPlayerMoveUp.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 500, 200, GameSettings.RightPlayerBarrelDown.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 570, 200, GameSettings.RightPlayerMoveDown.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 640, 200, GameSettings.RightPlayerBarrelUp.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 570, 130, GameSettings.RightPlayerMoveUp.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 170, 400, GameSettings.LeftPlayerFire.toString()));
+        controlButtons.add(GraphicElementsSetter.setButtonOfGroup(60, 60, 570, 400, GameSettings.RightPlayerFire.toString()));
         for (Button x : controlButtons) {
             x.setOnMouseClicked(keyEvent -> {
                 for (Button y : controlButtons) {
@@ -298,10 +296,10 @@ public class ControllerSetter {
     public static List<TextField> setLineOfElements(GridPane gridConfigurationPane) {
         List<TextField> listOfTextFields = new ArrayList<>();
         for (int i = 0; i < GameSettings.getConfigurationList().size(); i++) {
-            Label tmpLabel = ControllerSetter.setLabel(GameSettings.getConfigurationList().get(i)[0], 20, 0);
+            Label tmpLabel = GraphicElementsSetter.setLabel(GameSettings.getConfigurationList().get(i)[0], 20, 0);
             tmpLabel.setStyle("-fx-font-size: 20px;-fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
-            Button tmpBtn = ControllerSetter.setButton(200, 0, "Save " + GameSettings.getConfigurationList().get(i)[1], "css/tabPaneButtons.css");
-            TextField tmpTextField = ControllerSetter.setTextField(100, 50, 0, GameSettings.getConfigurationList().get(i)[2], GameSettings.getConfigurationList().get(i)[1]);
+            Button tmpBtn = GraphicElementsSetter.setButton(200, 0, "Save " + GameSettings.getConfigurationList().get(i)[1], "css/tabPaneButtons.css");
+            TextField tmpTextField = GraphicElementsSetter.setTextField(100, 50, 0, GameSettings.getConfigurationList().get(i)[2], GameSettings.getConfigurationList().get(i)[1]);
             gridConfigurationPane.add(tmpLabel, 0, i + 1);
             gridConfigurationPane.add(tmpTextField, 1, i + 1);
             gridConfigurationPane.add(tmpBtn, 2, i + 1);
@@ -358,24 +356,24 @@ public class ControllerSetter {
     }
 
     public static void setGamePropertiesTabLabels(Pane pane) {
-        Label musicLabel = ControllerSetter.setLabel("Set Volume Of Music:", 50, 50, "css/tabLabel.css");
-        Label soundLabel = ControllerSetter.setLabel("Set Volume Of Sounds:", 50, 150, "css/tabLabel.css");
-        Label configLabel = ControllerSetter.setLabel("Load Your Configuration File:", 50, 250, "css/tabLabel.css");
-        Label screenshotLabel = ControllerSetter.setLabel("Make Screenshot After Game:", 50, 350, "css/tabLabel.css");
+        Label musicLabel = GraphicElementsSetter.setLabel("Set Volume Of Music:", 50, 50, "css/tabLabel.css");
+        Label soundLabel = GraphicElementsSetter.setLabel("Set Volume Of Sounds:", 50, 150, "css/tabLabel.css");
+        Label configLabel = GraphicElementsSetter.setLabel("Load Your Configuration File:", 50, 250, "css/tabLabel.css");
+        Label screenshotLabel = GraphicElementsSetter.setLabel("Make Screenshot After Game:", 50, 350, "css/tabLabel.css");
         addChildren(pane, musicLabel, soundLabel, configLabel, screenshotLabel);
     }
 
     public static void setGamePropertiesTabControlElements(Pane mainPane, TabPane tabPane) {
-        Label currentConfigLabel = ControllerSetter.setLabel("Current Configuration: " + GameSettings.ConfigFileName, 50, 280, "minLabel", "css/tabLabel.css");
-        Label currentScreenshotExt = ControllerSetter.setLabel("Current Extension File: " + GameSettings.ImageExtension, 50, 380, "minLabel", "css/tabLabel.css");
-        Slider musicSlider = ControllerSetter.setSlider(0, 1, 50, 100, 700, GameSettings.VolumeOfMusic);
+        Label currentConfigLabel = GraphicElementsSetter.setLabel("Current Configuration: " + GameSettings.ConfigFileName, 50, 280, "minLabel", "css/tabLabel.css");
+        Label currentScreenshotExt = GraphicElementsSetter.setLabel("Current Extension File: " + GameSettings.ImageExtension, 50, 380, "minLabel", "css/tabLabel.css");
+        Slider musicSlider = GraphicElementsSetter.setSlider(0, 1, 50, 100, 700, GameSettings.VolumeOfMusic);
         musicSlider.setOnMouseReleased(mouseEvent -> GameSettings.VolumeOfMusic = musicSlider.getValue());
-        Slider soundSlider = ControllerSetter.setSlider(0, 1, 50, 200, 700, GameSettings.VolumeOfMusicEffects);
+        Slider soundSlider = GraphicElementsSetter.setSlider(0, 1, 50, 200, 700, GameSettings.VolumeOfMusicEffects);
         soundSlider.setOnMouseReleased(mouseEvent -> GameSettings.VolumeOfMusicEffects = soundSlider.getValue());
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-        Button configFileBtn = ControllerSetter.setButton(500, 250, "Load File", "css/tabPaneButtons.css");
+        Button configFileBtn = GraphicElementsSetter.setButton(500, 250, "Load File", "css/tabPaneButtons.css");
         configFileBtn.setOnMouseClicked(mouseEvent -> {
             File file = fileChooser.showOpenDialog(mainPane.getScene().getWindow());
             if (file != null) {

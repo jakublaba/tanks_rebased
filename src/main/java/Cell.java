@@ -1,8 +1,6 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,7 +16,7 @@ public final class Cell extends GameSegment {
     public Cell() {
         super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize / 2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize / 2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
         setShape();
-        initialHp = ThreadLocalRandom.current().nextInt(1, 9);
+        initialHp = Math.min(ThreadLocalRandom.current().nextInt(1, GameSettings.CellHealth + 1), 9);
         currentHp = initialHp;
         position = 0;
         colony = null;

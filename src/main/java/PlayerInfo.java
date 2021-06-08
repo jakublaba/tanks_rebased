@@ -21,11 +21,11 @@ public class PlayerInfo {
         tank = new Tank(side);
         score = 0;
         if (side == 'L') {
-            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), 10, (int) GameSettings.WindowHeight - 100);
+            scoreLabel = GraphicElementsSetter.setLabel(String.valueOf(score), 10, (int) GameSettings.WindowHeight - 100);
             scoreLabel.setAlignment(Pos.TOP_LEFT);
             scoreLabel.setStyle("-fx-font-size: 70px; -fx-text-fill: rgba(204, 0, 0, 0.7); -fx-font-weight: bold;");
         } else if (side == 'R') {
-            scoreLabel = ControllerSetter.setLabel(String.valueOf(score), (int) GameSettings.WindowWidth - 210, (int) GameSettings.WindowHeight - 100);
+            scoreLabel = GraphicElementsSetter.setLabel(String.valueOf(score), (int) GameSettings.WindowWidth - 210, (int) GameSettings.WindowHeight - 100);
             scoreLabel.setAlignment(Pos.TOP_RIGHT);
             scoreLabel.setStyle("-fx-font-size: 70px; -fx-text-fill: rgba(0, 102, 255, 0.7); -fx-font-weight: bold;");
         }
@@ -96,10 +96,10 @@ public class PlayerInfo {
     }
 
     public static void setErrorList(Pane pane) {
-        firstErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 - 40, "minLabel", "css/tabLabel.css");
-        secondErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 - 10, "minLabel", "css/tabLabel.css");
-        thirdErrorLine = ControllerSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 + 20, "minLabel", "css/tabLabel.css");
-        ControllerSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
+        firstErrorLine = GraphicElementsSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 - 40, "minLabel", "css/tabLabel.css");
+        secondErrorLine = GraphicElementsSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 - 10, "minLabel", "css/tabLabel.css");
+        thirdErrorLine = GraphicElementsSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 + 20, "minLabel", "css/tabLabel.css");
+        GraphicElementsSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
     }
     public static void addInformation(String error){
         errorList.add(error);

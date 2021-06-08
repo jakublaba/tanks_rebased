@@ -87,9 +87,9 @@ public final class Controller {
                 setPausePane(layerPane);
                 gameSoundPlayer.stopBackgroundSound();
             }
-            ControllerSetter.setPressedKey(key.getCode());
+            GraphicElementsSetter.setPressedKey(key.getCode());
         });
-        scene.setOnKeyReleased(key -> ControllerSetter.setReleasedKey(key.getCode()));
+        scene.setOnKeyReleased(key -> GraphicElementsSetter.setReleasedKey(key.getCode()));
 
         gameLoop = new AnimationTimer() {
             long lastTime = 0;
@@ -100,13 +100,12 @@ public final class Controller {
                     gameBoard.actualizeTime(currentTime);
                     actualizationTimeRequired = false;
                 }
-                timerTime = currentTime;
-                if (gameTime == 0) {
+                if (gameTime <= 0) {
                     showEndPane(false);
                 }
                 //TIMER
                 if (currentTime - lastTime >= 1000000000) {
-                    ControllerSetter.updateTimer(timerLabel, gameTime);
+                    GraphicElementsSetter.updateTimer(timerLabel, gameTime);
                     lastTime = currentTime;
                     gameTime--;
                 }
@@ -157,15 +156,15 @@ public final class Controller {
         PlayerInfo.addInformation("Right Player Movement: Arrows");
         PlayerInfo.addInformation("Right Player Fire - " + GameSettings.RightPlayerFire.toString());
         gameSoundPlayer = new GameSoundPlayer();
-        Line rightLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, 0, GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-        Line leftLine = ControllerSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-        Line horizontalLine = ControllerSetter.setLine(GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
-        timerLabel = ControllerSetter.setLabel("", 0, GameSettings.WindowHeight / 3);
+        Line rightLine = GraphicElementsSetter.setLine(GameSettings.WidthOfTankBorder, 0, GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+        Line leftLine = GraphicElementsSetter.setLine(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, 0, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
+        Line horizontalLine = GraphicElementsSetter.setLine(GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder);
+        timerLabel = GraphicElementsSetter.setLabel("", 0, GameSettings.WindowHeight / 3);
         timerLabel.setStyle("-fx-font-size: 12em; -fx-text-fill: rgba(153, 0, 76, 0.1); -fx-font-weight: bold;");
         timerLabel.setVisible(false);
         layerPane.setId("gameBackground");
         layerPane.getStylesheets().add("css/backgrounds.css");
-        ControllerSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
+        GraphicElementsSetter.addChildren(layerPane, rightLine, leftLine, horizontalLine, timerLabel);
         Bomb.draw(layerPane);
         gameTime = (int) (GameSettings.GameTime);
         PlayerInfo.setErrorList(layerPane);
@@ -202,27 +201,27 @@ public final class Controller {
 
     private void setGamePropertiesTab() {
         Tab tabGameProperties = tabPane.getTabs().get(0);
-        Pane mainPane = ControllerSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
-        ControllerSetter.setGamePropertiesTabLabels(mainPane);
-        ControllerSetter.setGamePropertiesTabControlElements(mainPane, tabPane);
-        CheckBox checkBox = ControllerSetter.setCheckBox(500, 350, "css/checkBox.css");
+        Pane mainPane = GraphicElementsSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
+        GraphicElementsSetter.setGamePropertiesTabLabels(mainPane);
+        GraphicElementsSetter.setGamePropertiesTabControlElements(mainPane, tabPane);
+        CheckBox checkBox = GraphicElementsSetter.setCheckBox(500, 350, "css/checkBox.css");
         checkBox.setOnMouseReleased(mouseEvent -> GameSettings.MakeScreenshot = checkBox.isSelected());
-        ControllerSetter.addChildren(mainPane, checkBox);
+        GraphicElementsSetter.addChildren(mainPane, checkBox);
         tabGameProperties.setContent(mainPane);
     }
 
     private void setManualConfigurationTab() {
         Tab tabConfiguration = tabPane.getTabs().get(1);
-        ScrollPane scrollPane = ControllerSetter.setScrollPane(0, 0, 800);
-        GridPane mainGridPane = ControllerSetter.setGridPane(0, 0, 800);
+        ScrollPane scrollPane = GraphicElementsSetter.setScrollPane(0, 0, 800);
+        GridPane mainGridPane = GraphicElementsSetter.setGridPane(0, 0, 800);
         mainGridPane.getStylesheets().add("css/tabPaneButtons.css");
-        List<TextField> listOfTextFields = ControllerSetter.setLineOfElements(mainGridPane);
-        TextField configNameTextField = ControllerSetter.setTextField(100, 0, 0, "", "");
+        List<TextField> listOfTextFields = GraphicElementsSetter.setLineOfElements(mainGridPane);
+        TextField configNameTextField = GraphicElementsSetter.setTextField(100, 0, 0, "", "");
         configNameTextField.setVisible(false);
-        Label configNameLabel = ControllerSetter.setLabel("Enter your config name:", 0, 0, "css/tabLabel.css");
+        Label configNameLabel = GraphicElementsSetter.setLabel("Enter your config name:", 0, 0, "css/tabLabel.css");
         configNameLabel.setVisible(false);
-        Label successLabel = ControllerSetter.setLabel("Configuration File Saved", 0, 0, "css/tabLabel.css");
-        ControllerSetter.setManualConfigurationTabButtons(mainGridPane, configNameTextField, configNameLabel, successLabel, listOfTextFields);
+        Label successLabel = GraphicElementsSetter.setLabel("Configuration File Saved", 0, 0, "css/tabLabel.css");
+        GraphicElementsSetter.setManualConfigurationTabButtons(mainGridPane, configNameTextField, configNameLabel, successLabel, listOfTextFields);
         mainGridPane.add(configNameLabel, 0, GameSettings.getConfigurationList().size() + 2);
         mainGridPane.add(configNameTextField, 0, GameSettings.getConfigurationList().size() + 3);
         scrollPane.setContent(mainGridPane);
@@ -231,28 +230,28 @@ public final class Controller {
 
     private void setControlsTab() {
         Tab tabGameProperties = tabPane.getTabs().get(2);
-        Pane mainPane = ControllerSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
-        ControllerSetter.setControlsTabLabels(mainPane);
-        ControllerSetter.setControlsTabButtons(mainPane);
+        Pane mainPane = GraphicElementsSetter.setPane(0, 0, 800, "mainBackground", "css/backgrounds.css");
+        GraphicElementsSetter.setControlsTabLabels(mainPane);
+        GraphicElementsSetter.setControlsTabButtons(mainPane);
         tabGameProperties.setContent(mainPane);
     }
 
     private void showEndPane(boolean bombCollision) {
         gameLoop.stop();
-        finishPane = ControllerSetter.setPane(100, 50, 600, "finishPaneBackground", "css/backgrounds.css");
+        finishPane = GraphicElementsSetter.setPane(100, 50, 600, "finishPaneBackground", "css/backgrounds.css");
         finishPane.setPrefHeight(650);
-        Label finishLabel = ControllerSetter.setLabel("Time Over", 0, 30);
+        Label finishLabel = GraphicElementsSetter.setLabel("Time Over", 0, 30);
         if (bombCollision) {
             finishLabel.setText("Bomb Collision!");
         }
         finishLabel.setPrefWidth(600);
         finishLabel.setAlignment(Pos.CENTER);
         finishLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
-        PieChart pieChart = ControllerSetter.setPieChart(gameBoard);
-        Button quitButton = ControllerSetter.setButton(5, 500, "Quit", "css/buttons.css");
+        PieChart pieChart = GraphicElementsSetter.setPieChart(gameBoard);
+        Button quitButton = GraphicElementsSetter.setButton(5, 500, "Quit", "css/buttons.css");
         quitButton.setPrefWidth(290);
         quitButton.setOnAction(e -> System.exit(0));
-        Button againButton = ControllerSetter.setButton(305, 500, "Again!", "css/buttons.css");
+        Button againButton = GraphicElementsSetter.setButton(305, 500, "Again!", "css/buttons.css");
         againButton.setPrefWidth(290);
         againButton.setOnAction(e -> {
             primaryStage.close();
@@ -260,32 +259,32 @@ public final class Controller {
             startButtonPressed();
         });
         layerPane.getChildren().clear();
-        ControllerSetter.addChildren(finishPane, finishLabel, pieChart, quitButton, againButton);
-        ControllerSetter.addChildren(layerPane, finishPane);
+        GraphicElementsSetter.addChildren(finishPane, finishLabel, pieChart, quitButton, againButton);
+        GraphicElementsSetter.addChildren(layerPane, finishPane);
         if (GameSettings.MakeScreenshot) {
-            ControllerSetter.makeScreenshot(layerPane);
+            GraphicElementsSetter.makeScreenshot(layerPane);
         }
         gameSoundPlayer.stopBackgroundSound();
         gameSoundPlayer.playEndSound();
     }
 
     private void setPausePane(Pane pane) {
-        pausePane = ControllerSetter.setPane(100, 150, 600, "finishPaneBackground", "css/backgrounds.css");
+        pausePane = GraphicElementsSetter.setPane(100, 150, 600, "finishPaneBackground", "css/backgrounds.css");
         pausePane.setPrefHeight(300);
-        Label pauseLabel = ControllerSetter.setLabel("Game Paused!", 20, 20);
+        Label pauseLabel = GraphicElementsSetter.setLabel("Game Paused!", 20, 20);
         pauseLabel.setPrefWidth(600);
         pauseLabel.setAlignment(Pos.CENTER);
         pauseLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
-        Button resumeButton = ControllerSetter.setButton(400, 200, "Play", "css/buttons.css");
+        Button resumeButton = GraphicElementsSetter.setButton(400, 200, "Play", "css/buttons.css");
         resumeButton.setOnAction(e -> {
             pausePane.setVisible(false);
             actualizationTimeRequired = true;
             gameLoop.start();
             gameSoundPlayer.playBackgroundSound();
         });
-        Button settingsButton = ControllerSetter.setButton(5, 200, "Settings", "css/buttons.css");
+        Button settingsButton = GraphicElementsSetter.setButton(5, 200, "Settings", "css/buttons.css");
         settingsButton.setOnAction(e -> settingsButtonPressed());
-        ControllerSetter.addChildren(pausePane, pauseLabel, resumeButton, settingsButton);
-        ControllerSetter.addChildren(pane, pausePane);
+        GraphicElementsSetter.addChildren(pausePane, pauseLabel, resumeButton, settingsButton);
+        GraphicElementsSetter.addChildren(pane, pausePane);
     }
 }
