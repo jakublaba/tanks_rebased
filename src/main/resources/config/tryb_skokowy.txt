@@ -1,7 +1,7 @@
 Tryb Skokowy
 [V1] BulletVelocity [8.0]
 [X1] NumberOfBullets [15]
-[R1] BulletRadius [15.0]
+[R1] BulletRadius [60]
 [V2] CellVelocity [80.0]
 [H1] CellSize [100]
 [P1] CellHealth [5]
@@ -9,7 +9,7 @@ Tryb Skokowy
 [T2] CellRegenerationInterval [300]
 [DV1] BulletVelocityIncrease [0.2]
 [DV2] CellVelocityIncrease [0.2]
-[DR1] BulletRadiusDecrease [0.2]
+[DR1] BulletRadiusDecrease [2]
 [DH1] CellSizeDecrease [25]
 [T3] GameTime [300]
 [T4] TimeCellsGenerating [1]

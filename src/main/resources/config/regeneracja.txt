@@ -12,5 +12,5 @@ Prezentacja Regeneracji
 [DR1] BulletRadiusDecrease [2]
 [DH1] CellSizeDecrease [0]
 [T3] GameTime [90]
-[T4] TimeCellsGenerating [1]
+[T4] TimeCellsGenerating [100]
 [T5] TimeColoniesGenerating [3]
