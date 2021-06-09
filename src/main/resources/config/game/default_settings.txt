@@ -1,4 +1,4 @@
-Spokojny wariant gry
+Default Game
 [V1] BulletVelocity [8]
 [X1] NumberOfBullets [10]
 [R1] BulletRadius [15]

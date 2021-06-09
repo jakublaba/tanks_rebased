@@ -21,22 +21,22 @@ public final class GameSettings {
     //Cell
     public static Color[] CellColorSequence = {rgb(7, 110, 41, 0.6), rgb(0, 153, 51, 0.6), rgb(0, 204, 102, 0.6), rgb(153, 255, 204, 0.6),
             rgb(255, 255, 102, 0.6), rgb(255, 204, 0, 0.6), rgb(255, 153, 0, 0.6), rgb(255, 51, 0, 0.6), rgb(255, 0, 0, 0.6)};
-    public static double CellVelocity = 10;
+    public static double CellVelocity = 50;
     public static double CellSize = 20;
-    public static int CellHealth = 3;
-    public static double CellRegenerationInterval = 10;
-    public static double CellVelocityIncrease = 5;
-    public static double CellSizeDecrease = 69;
+    public static int CellHealth = 10;
+    public static double CellRegenerationInterval = 15;
+    public static double CellVelocityIncrease = 1;
+    public static double CellSizeDecrease = 2;
 
     //Bullet
     public static double BulletRadius = 15;
-    public static double BulletVelocity = 0.5;
+    public static double BulletVelocity = 8;
     public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
     public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
     public static final double BulletFrequencyLimit = 0.1;
-    public static int BulletNumberLimit = 15;
-    public static double BulletVelocityIncrease = 15;
-    public static double BulletRadiusDecrease = 3;
+    public static int BulletNumberLimit = 10;
+    public static double BulletVelocityIncrease = 1;
+    public static double BulletRadiusDecrease = 1;
 
     //Tank
     public static double TankVelocity = 3;
@@ -59,11 +59,11 @@ public final class GameSettings {
     public static KeyCode Pause = KeyCode.P;
 
     //Game
-    public static double GameTime = 200;
-    public static double Interval = 3;
+    public static double GameTime = 300;
+    public static double Interval = 0.7;
     public static final String ImageExtension = "PNG";
-    public static double TimeBetweenCellGenerating = 2;
-    public static double TimeBetweenColonyGeneration = 100;
+    public static double TimeBetweenCellGenerating = 1;
+    public static double TimeBetweenColonyGeneration = 3;
     public static double VolumeOfMusic = 0.15;
     public static double VolumeOfMusicEffects = 0.25;
     public static String BackgroundSound = "sound/background.mp3";
