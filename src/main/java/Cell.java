@@ -18,7 +18,7 @@ public final class Cell extends GameSegment {
     public Cell() {
         super(ThreadLocalRandom.current().nextDouble(GameSettings.WidthOfTankBorder + GameSettings.CellSize / 2, GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - GameSettings.CellSize / 2), 0, GameSettings.CellSize, GameSettings.CellVelocity);
         setShape();
-        initialHp = ThreadLocalRandom.current().nextInt(1, 9);
+        initialHp = ThreadLocalRandom.current().nextInt(1, GameSettings.CellHealth + 1);
         currentHp = initialHp;
         position = 0;
         colony = null;

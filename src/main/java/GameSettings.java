@@ -64,7 +64,7 @@ public final class GameSettings {
     public static final String ImageExtension = "PNG";
     public static double TimeBetweenCellGenerating = 2;
     public static double TimeBetweenColonyGeneration = 100;
-    public static double VolumeOfMusic = 0.25;
+    public static double VolumeOfMusic = 0.15;
     public static double VolumeOfMusicEffects = 0.25;
     public static String BackgroundSound = "sound/background.mp3";
     public static String EndSound = "sound/end.wav";
@@ -73,12 +73,12 @@ public final class GameSettings {
     public static String RegenerateCellSound = "sound/regenerate.wav";
 
     //Settings
-    private static final List<String[]> ConfigurationList = new ArrayList<>(); //nie deklarujemy implementacji kolekcji na sztywno - tak jak dr Olszewski powiedział
+    private static final List<String[]> ConfigurationList = new ArrayList<>();
     public static boolean MakeScreenshot = false;
 
     //Configuration File
     public static String ConfigFileName;
-    public static String PathConfigFile = "src/main/resources/config/default_settings.txt";
+    public static String PathConfigFile = "src/main/resources/config/game/default_settings.txt";
 
     public static void setConfigurationList() {
         ConfigurationList.add(new String[]{"Bullet Velocity", "V1", String.valueOf(BulletVelocity)});
