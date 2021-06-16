@@ -9,7 +9,7 @@ public class PlayerInfo {
     private final Tank tank;
     private int score;
     private Label scoreLabel;
-    private static final List<String> errorList = new ArrayList<>();;
+    private static final List<String> errorList = new ArrayList<>();
     public static Label firstErrorLine;
     private static double firstTransparentRatio = 1;
     public static Label secondErrorLine;
@@ -69,7 +69,7 @@ public class PlayerInfo {
                 errorList.remove(0);
             }
         }
-        if(!firstErrorLine.getText().equals("")){
+        if (!firstErrorLine.getText().equals("")) {
             firstTransparentRatio = firstTransparentRatio - ratio < 0 ? 0 : firstTransparentRatio - ratio;
             firstErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + firstTransparentRatio + ");");
             if (firstTransparentRatio == 0) {
@@ -77,7 +77,7 @@ public class PlayerInfo {
                 firstTransparentRatio = 1;
             }
         }
-        if(!secondErrorLine.getText().equals("")){
+        if (!secondErrorLine.getText().equals("")) {
             secondTransparentRatio = secondTransparentRatio - ratio < 0 ? 0 : secondTransparentRatio - ratio;
             secondErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + secondTransparentRatio + ");");
             if (secondTransparentRatio == 0) {
@@ -85,7 +85,7 @@ public class PlayerInfo {
                 secondTransparentRatio = 1;
             }
         }
-        if(!thirdErrorLine.getText().equals("")){
+        if (!thirdErrorLine.getText().equals("")) {
             thirdTransparentRatio = thirdTransparentRatio - ratio < 0 ? 0 : thirdTransparentRatio - ratio;
             thirdErrorLine.setStyle("-fx-text-fill: rgba(255,255,255," + thirdTransparentRatio + ");");
             if (thirdTransparentRatio == 0) {
@@ -101,7 +101,8 @@ public class PlayerInfo {
         thirdErrorLine = GraphicElementsSetter.setLabel("", GameSettings.WidthOfTankBorder, GameSettings.WindowHeight - GameSettings.WidthOfTankBorder / 2 + 20, "minLabel", "css/tabLabel.css");
         GraphicElementsSetter.addChildren(pane, firstErrorLine, secondErrorLine, thirdErrorLine);
     }
-    public static void addInformation(String error){
+
+    public static void addInformation(String error) {
         errorList.add(error);
     }
 

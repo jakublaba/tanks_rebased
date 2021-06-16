@@ -43,7 +43,7 @@ public class Colony {
 
     public boolean isDead() {
         int hpSum = cells.stream().mapToInt(Cell::getCurrentHp).sum();
-        return hpSum != 0;
+        return hpSum == 0;
     }
 
     public void draw(Pane pane) {

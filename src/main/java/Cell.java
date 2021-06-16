@@ -64,20 +64,17 @@ public final class Cell extends GameSegment {
         segmentShape.setY(y);
         pane.getChildren().remove(segmentShape);
         pane.getChildren().remove(currentHpLabel);
-        if(y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - currentSize){
+        if (y > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - currentSize) {
             segmentShape.setHeight(GameSettings.WindowWidth - GameSettings.WidthOfTankBorder - y);
         }
-        if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && (currentHp > 0 || position != 0)) {
+        if (y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder && (currentHp > 0 || position != 0)) {
             pane.getChildren().add(segmentShape);
             currentHpLabel.setTranslateY(y);
-            if(y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 0.75 * currentSize){
+            if (y < GameSettings.WindowHeight - GameSettings.WidthOfTankBorder - 0.75 * currentSize) {
                 pane.getChildren().add(currentHpLabel);
             }
         }
-        label.setTranslateY(y);
-        pane.getChildren().remove(label);
-        if(y < GameSettings.WINDOW_HEIGHT - GameSettings.WidthOfTankBorder )
-        pane.getChildren().add(label);
+
     }
 
     public void move(double time) {

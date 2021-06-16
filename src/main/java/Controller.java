@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -26,8 +25,6 @@ public final class Controller {
     private Button backButton;
     @FXML
     private TabPane tabPane;
-    @FXML
-    private AnchorPane rootPane;
     public static Pane layerPane;
     public Pane finishPane;
     private Pane pausePane;
@@ -37,8 +34,8 @@ public final class Controller {
     private Stage primaryStage;
     private GameSoundPlayer gameSoundPlayer;
     private int gameTime;
-    private long timerTime;
     private boolean actualizationTimeRequired = false;
+    private boolean gamePaused = false;
     //Movement:
     public static boolean leftBarrelUpPressed;
     public static boolean leftBarrelDownPressed;
@@ -172,7 +169,7 @@ public final class Controller {
     }
 
     @FXML
-    private void settingsButtonPressed() throws IOException {
+    private void settingsButtonPressed() {
         Parent root;
         try {
             root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("settings.fxml")));
@@ -277,6 +274,7 @@ public final class Controller {
         pauseLabel.setStyle("-fx-font-size: 60 px; -fx-font-family:\"Courier New\", Helvetica, Courier New, sans-serif;");
         Button resumeButton = GraphicElementsSetter.setButton(400, 200, "Play", "css/buttons.css");
         resumeButton.setOnAction(e -> {
+            gamePaused = false;
             pausePane.setVisible(false);
             actualizationTimeRequired = true;
             gameLoop.start();

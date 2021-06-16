@@ -33,7 +33,7 @@ public final class GameSettings {
     public static double BulletVelocity = 8;
     public static Color LeftPlayerBulletColor = rgb(204, 0, 0, 0.7);
     public static Color RightPlayerBulletColor = rgb(0, 102, 255, 0.7);
-    public static final double BulletFrequencyLimit = 0.01;
+    public static final double BulletFrequencyLimit = 0.1;
     public static int BulletNumberLimit = 10;
     public static double BulletVelocityIncrease = 1;
     public static double BulletRadiusDecrease = 1;
@@ -64,8 +64,8 @@ public final class GameSettings {
     public static final String ImageExtension = "PNG";
     public static double TimeBetweenCellGenerating = 1;
     public static double TimeBetweenColonyGeneration = 3;
-    public static double VolumeOfMusic = 0.15;
-    public static double VolumeOfMusicEffects = 0.25;
+    public static double VolumeOfMusic = 0.05;
+    public static double VolumeOfMusicEffects = 0.15;
     public static String BackgroundSound = "sound/background.mp3";
     public static String EndSound = "sound/end.wav";
     public static String GetScoreSound = "sound/getScore.wav";
@@ -111,70 +111,10 @@ public final class GameSettings {
                 String tmpLine = readingFile.nextLine();
                 if (!tmpLine.matches("^\\[[A-Z]+\\d*] .+ \\[(\\d+\\.\\d*|\\d+|JPG|PNG|JPEG|BMP)]$")) {
                     PlayerInfo.addInformation("[WARNING]Incorrect Format:" + tmpLine + " - LINE SKIPPED!");
+                } else {
+                    if (!setGameSettings(tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]")), tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"))))
+                        PlayerInfo.addInformation("[WARNING]This line is unhandled: " + tmpLine);
                 }
-                else {
-                    String numberSubstring = tmpLine.substring(tmpLine.lastIndexOf("[") + 1, tmpLine.lastIndexOf("]"));
-                    switch (tmpLine.substring(tmpLine.indexOf("[") + 1, tmpLine.indexOf("]"))) {
-                        case "V1" -> {
-                            BulletVelocity = Double.parseDouble(numberSubstring);
-                            System.out.println("Set V1: " + BulletVelocity);
-                        }
-                        case "X1" -> {
-                            BulletNumberLimit = Integer.parseInt(numberSubstring);
-                            System.out.println("Set X1: " + BulletNumberLimit);
-                        }
-                        case "R1" -> {
-                            BulletRadius = Double.parseDouble(numberSubstring);
-                            System.out.println("Set R1: " + BulletRadius);
-                        }
-                        case "V2" -> {
-                            CellVelocity = Double.parseDouble(numberSubstring);
-                            System.out.println("Set V2: " + CellVelocity);
-                        }
-                        case "H1" -> {
-                            CellSize = Double.parseDouble(numberSubstring);
-                            System.out.println("Set H1: " + CellSize);
-                        }
-                        case "P1" -> {
-                            CellHealth = Integer.parseInt(numberSubstring);
-                            System.out.println("Set P1: " + CellHealth);
-                        }
-                        case "T2" -> {
-                            CellRegenerationInterval = Double.parseDouble(numberSubstring);
-                            System.out.println("Set T2: " + CellRegenerationInterval);
-                        }
-                        case "T1" -> {
-                            Interval = Double.parseDouble(numberSubstring);
-                            System.out.println("Set T1: " + Interval);
-                        }
-                        case "DV1" -> {
-                            BulletVelocityIncrease = Double.parseDouble(numberSubstring);
-                            System.out.println("Set DV1: " + BulletVelocityIncrease);
-                        }
-                        case "DV2" -> {
-                            CellVelocityIncrease = Double.parseDouble(numberSubstring);
-                            System.out.println("Set DV2: " + CellVelocityIncrease);
-                        }
-                        case "DR1" -> {
-                            BulletRadiusDecrease = Double.parseDouble(numberSubstring);
-                            System.out.println("Set DR1: " + BulletRadiusDecrease);
-                        }
-                        case "DH1" -> {
-                            CellSizeDecrease = Double.parseDouble(numberSubstring);
-                            System.out.println("Set DH1: " + CellSizeDecrease);
-                        }
-                        case "T3" -> {
-                            GameTime = Double.parseDouble(numberSubstring);
-                            System.out.println("Set T3: " + GameTime);
-                        }
-                        case "IMG" -> {
-                            ImageExtension = numberSubstring;
-                            System.out.println("Set IMG: " + numberSubstring);
-                        }
-                        default -> System.out.println("Warnings! This line is unhandled: " + tmpLine);
-                    }
-                }
-
             }
         } catch (FileNotFoundException e) {
             PlayerInfo.addInformation("[WARNING]No Configuration File: " + PathConfigFile);
@@ -182,7 +122,7 @@ public final class GameSettings {
     }
 
     public static boolean setGameSettings(String x, String y) throws NumberFormatException {
-        if(Double.parseDouble(y) < 0){
+        if (Double.parseDouble(y) < 0) {
             throw new NumberFormatException();
         }
         switch (x) {

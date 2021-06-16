@@ -44,9 +44,10 @@ public class GameBoard {
         }
         moveObjects(time, pane);
         eraseObjectsFromPane(pane);
-        eraseObjects();
-        leftPlayer.drawScore(pane, 'L');
-        rightPlayer.drawScore(pane, 'R');
+        removeCells();
+        removeColonies();
+        leftPlayer.drawScore(pane);
+        rightPlayer.drawScore(pane);
         return false;
     }
 
@@ -96,9 +97,9 @@ public class GameBoard {
     }
 
     private boolean playerShots(Pane pane, PlayerInfo player) {
-        var tank = player.getTank();
+        Tank tank = player.getTank();
         for (Bullet bullet : tank.getBullets()) {
-            var cell = cellCollision(bullet);
+            Cell cell = cellCollision(bullet);
             if (cell != null) {
                 bullet.eraseFromPane(pane);
                 tank.removeBullet(bullet);
@@ -121,9 +122,7 @@ public class GameBoard {
                     gameSoundPlayer.playHitSound();
                     if (cell.getColony().isDead()) {
                         player.increaseScore(cell.getColony().getInitialCellHpSum());
-                        colonies.remove(cell.getColony());
                         gameSoundPlayer.playGetPointSound();
-                        eraseColonyFromPane(cell.getColony(), pane);
                     }
                 }
                 break;
@@ -187,17 +186,22 @@ public class GameBoard {
 
     public void eraseObjectsFromPane(Pane pane) {
         for (Cell cell : cells) {
-            if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() <= 0) {
+            if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() == 0) {
                 cell.eraseFromPane(pane);
             }
         }
         for (Colony colony : colonies) {
             for (Cell cell : colony.getCells()) {
-                if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0 || cell.getCurrentHp() <= 0) {
+                if (cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder || cell.getCurrentSize() <= 0) {
                     cell.eraseFromPane(pane);
                 }
             }
+            if (colony.isDead()) {
+                eraseColonyFromPane(colony, pane);
+                break;
+            }
         }
+
     }
 
     public void eraseColonyFromPane(Colony colony, Pane pane) {
@@ -209,17 +213,17 @@ public class GameBoard {
     public void removeCells() {
         cells.removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
         cells.removeIf(cell -> cell.getCurrentSize() <= 0);
-        cells.removeIf(cell -> cell.getCurrentHp() <= 0);
+        cells.removeIf(cell -> cell.getCurrentHp() == 0);
     }
 
     public void removeColonies() {
         for (Colony colony : colonies) {
-            colony.getCells().removeIf(cell -> cell.getY() > GameSettings.WindowHeight - GameSettings.WidthOfTankBorder);
-            colony.getCells().removeIf(cell -> cell.getCurrentSize() <= 0);
-            colony.getCells().removeIf(cell -> cell.getCurrentHp() <= 0);
+            if (colony.isDead()) {
+                colony.getCells().clear();
+                colonies.remove(colony);
+                break;
+            }
         }
-
-        colonies.removeIf(colony -> !colony.isColonyAlive());
     }
 
     public void generateObjects(long time) {

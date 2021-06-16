@@ -1,6 +1,6 @@
 Default Game
 [V1] BulletVelocity [10]
-[X1] NumberOfBullets [1000]
+[X1] NumberOfBullets [10]
 [R1] BulletRadius [15]
 [V2] CellVelocity [50]
 [H1] CellSize [50]
